@@ -1,1 +1,1 @@
-Yelp - a food application.# yelpApp
+Yelp - a food application.
