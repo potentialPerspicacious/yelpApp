@@ -39,6 +39,15 @@
   line-height: 50px;
   padding: 0;
 }
+.login-form  .btn.btn-secondary {
+  background: blue none repeat scroll 0 0;
+  color: #ffffff;
+  font-size: 14px;
+  width: 100%;
+  height: 50px;
+  line-height: 50px;
+  padding: 0;
+}
 .forgot {
   text-align: left; margin-bottom:30px;
 }
@@ -208,12 +217,67 @@
 
 }
 .banner {
+  position: relative;
   background-color:red;
   height: 15mm;
 }
 .bannerlogo {
+  position: relative;
   width: 80px;
   height: 40px;
-  margin: 5px 15.5cm;
+  margin: 1.5px 15.5cm;
+}
+.lgbanner{
+  position: relative;
+  float: right;
+}
+.edit{
+  float: right;
+  margin-right: 5mm;
+  margin-top: 5mm;
+}
+.card {
+  /* Add shadows to create the "card" effect */
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
 }
 
+/* On mouse-over, add a deeper shadow */
+.card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+/* Add some padding inside the card container */
+.container {
+  padding-top: 15mm;
+  padding: 2px 16px;
+}
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+  border-radius: 5px; /* 5px rounded corners */
+}
+
+/* Add rounded corners to the top left and the top right corner of the image */
+img {
+  border-radius: 5px 5px 0 0;
+}
+.restitle{
+  margin-left: 10mm;
+  margin-top: 1em;
+}
+.cmargin{
+  margin-left: 10mm;
+}
+.linkmargin{
+  margin-left: 7cm;
+  margin-bottom: 5mm;
+}
+.reviewbutton{
+  margin-bottom: 5mm;
+  margin-left: 1cm;
+
+}
+.at{
+  text-transform: uppercase;
+}

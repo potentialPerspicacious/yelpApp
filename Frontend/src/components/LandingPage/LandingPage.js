@@ -10,7 +10,7 @@ class LandingPage extends Component {
     render() {
         let redirectVar = null;
         if(cookie.load('cookie')){
-            redirectVar = <Redirect to="/chome"/>
+            redirectVar = <Redirect to="/rhome"/>
         } else {
             redirectVar = <Redirect to = "/"/>
         }

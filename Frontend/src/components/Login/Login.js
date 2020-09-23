@@ -58,8 +58,14 @@ class Login extends Component{
         //make a post request with the user data
         axios.post('http://localhost:3001/login',data)
             .then(response => {
-                //console.log("Status Code : ",response.status);
+                console.log("Status Code : ",response.data);
                 if(response.status === 200){
+                    localStorage.setItem("email_id", response.data.email_id);
+                    // localStorage.setItem("user_id", this.props.restaurant.idrestaurant);
+                    localStorage.setItem("name", response.data.name);
+                    localStorage.setItem("user_id", response.data.user_id);
+
+
                     this.setState({
                         authFlag : true
                     })
@@ -75,7 +81,8 @@ class Login extends Component{
         //redirect based on successful login
         let redirectVar = null;
         if(cookie.load('cookie')){
-            redirectVar = <Redirect to= "/chome"/>
+            redirectVar = <Redirect to= "/rhome"/>
+
         } else {
             redirectVar = <Redirect to= "/login"/>
         }
@@ -84,7 +91,7 @@ class Login extends Component{
             {redirectVar}
             <div>
                 <Banner/>
-                <Grid>
+                {/* <Grid> */}
                 <Row>
                     <Col>
                         <div className="form">
@@ -118,7 +125,7 @@ class Login extends Component{
                     </Col>
                     </div>
                 </Row>
-                </Grid>
+                {/* </Grid> */}
             </div>
         </div>
         )
