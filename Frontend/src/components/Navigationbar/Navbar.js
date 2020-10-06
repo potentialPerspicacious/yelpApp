@@ -2,6 +2,15 @@ import React,{Component} from 'react';
 import {Link} from 'react-router-dom';
 import cookie from 'react-cookies';
 import {Redirect} from 'react-router';
+import { userLogout } from '../../actions/login'
+import { connect } from 'react-redux';
+import logo from '../../images/logo.png';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSignInAlt, faUserPlus } from "@fortawesome/free-solid-svg-icons";
+import { faSearch, faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
+
+
+
 
 //create the Navbar Component
 class Navbar extends Component {
@@ -11,58 +20,80 @@ class Navbar extends Component {
     }
     //handle logout to destroy the cookie
     handleLogout = () => {
-        cookie.remove('cookie', { path: '/' })
+        window.localStorage.clear();
+        cookie.remove('cookie', { path: '/' });
+        this.props.userLogout();
     }
     render(){
         //if Cookie is set render Logout Button
         let navLogin = null;
         if(cookie.load('cookie')){
-            console.log("Able to read cookie");
             navLogin = (
                 <div>
-                <ul class="nav navbar-nav navbar-left navposl">
-                <li><Link to="/write-review"><a className='navtext'>Write a Review</a></Link></li>
-                <li><Link to="/events"> <a className='navtext'>Events</a></Link></li>
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                        <li><Link to="/login" onClick = {this.handleLogout}><span class="glyphicon glyphicon-user navicon"></span><a className='navtext'>Logout</a></Link></li>
-                </ul>
-                </div>
+                <nav class="navbar navbar-expand-lg">
+                <a class="navbar-brand" href="/">
+                  <img src={logo} width="90" height="45" alt="logo"/>
+              </a>
+                       <div class="form-group col-md-3">
+                       {/* <FontAwesomeIcon icon={faBuilding} /> */}
+                           <input onChange = {this.onChange} type="search" class="form-control hsearch" name="find" placeholder="Restaurant" style={{color:"black"}}/>
+                       </div>
+
+                       <div class="form-group col-md-3">
+                       {/* <FontAwesomeIcon icon={faSearchLocation} /> */}
+                           <input onChange = {this.onChange}  type="search" class="form-control hsloc" name="location" placeholder="Location" style={{color:"black"}}/>
+                       </div>
+                       <div class="form-group col-md-3">
+                       <button class="btn btn-primary hsb" type="submit"> <FontAwesomeIcon icon={faSearch} />
+                              </button></div>
+
+                          <li class="nav-item">
+                        <a class="nav-link navtext2"  href="/login" onClick = {this.handleLogout}><FontAwesomeIcon className="signico" icon={faSignOutAlt} /> Logout</a>
+                          </li>
+          </nav>
+          </div>
+
             );
         }else{
             navLogin = (
-                <div>
-                <ul class="nav navbar-nav navbar-left navposl">
-                <li><Link to="/write-review"><a className='navtext'>Write a Review</a></Link></li>
-                <li><Link to="/events"> <a className='navtext'>Events</a></Link></li>
-                </ul>
+                <nav class="navbar navbar-expand-lg navposl navpad">
+                          <li class="nav-item">
+                        <a class="nav-link navtext" href="/write-review">Write a Review</a>
+                          </li>
+                          <li class="nav-item">
+                        <a class="nav-link navtext" href="/events">Events</a>
+                          </li>
 
-                <ul class="nav navbar-nav navbar-right">
-                        <li><Link to="/login"><span class="glyphicon glyphicon-log-in navicon"></span> <a className='navtext'>Login</a></Link></li>
-                        <li><Link to="/signup"><span class="glyphicon glyphicon-user navicon"></span> <a className='navtext'>Sign up</a></Link></li>
-                </ul>
-                </div>
+                          <li class="nav-item navpos"> 
+                          
+                        <a class="nav-link navtext" href="/login"> <FontAwesomeIcon className="signico" icon={faSignInAlt} /> Login</a>
+                          </li>
+                          <li class="nav-item">
+                        <a class="nav-link navtext" href="/signup"><FontAwesomeIcon className="signico" icon={faUserPlus} /> Sign Up</a>
+                          </li>
+                    </nav>
+
+                
             );
         }
         let redirectVar = null;
         if(cookie.load('cookie')){
-            redirectVar = <Redirect to="/rhome"/>
+            if (localStorage.getItem("isOwner") === "off"){
+                redirectVar = <Redirect to="/chome"/>
+            } else {
+                redirectVar = <Redirect to="/rhome"/>
+
+            }
         } else {
             redirectVar = <Redirect to = "/"/>
         }
         return(
             <div>
                 {redirectVar}
-            <nav class="navbar.transparent navbar navPad">
-                <div class="container-fluid">
-                    <div class="navbar-header">
-                    </div>
-                    {navLogin}
-                </div>
-            </nav>
+                {navLogin}
         </div>
         )
     }
 }
 
-export default Navbar;
+export default connect(null, { userLogout })(Navbar);

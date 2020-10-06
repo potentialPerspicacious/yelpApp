@@ -1,11 +1,13 @@
 import React, {Component} from 'react';
 import '../../App.css';
-import axios from 'axios';
 import cookie from 'react-cookies';
 import {Redirect} from 'react-router';
 import { Grid, Row, Col } from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 import Banner from '../Navigationbar/banner'
+import { userLogin } from '../../actions/login'
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types'
 
 
 
@@ -19,11 +21,14 @@ class Login extends Component{
         this.state = {
             username : "",
             password : "",
+            isOwner: "off",
             authFlag : false
         }
         //Bind the handlers to this class
         this.usernameChangeHandler = this.usernameChangeHandler.bind(this);
         this.passwordChangeHandler = this.passwordChangeHandler.bind(this);
+        this.isOwner = this.isOwner.bind(this);
+
         this.submitLogin = this.submitLogin.bind(this);
     }
     //Call the Will Mount to set the auth Flag to false
@@ -44,6 +49,12 @@ class Login extends Component{
             password : e.target.value
         })
     }
+    isOwner = (e) => {
+        this.setState({
+            isOwner: e.target.value
+
+        }) 
+    }
     //submit Login handler to send a request to the node backend
     submitLogin = (e) => {
         var headers = new Headers();
@@ -51,40 +62,50 @@ class Login extends Component{
         e.preventDefault();
         const data = {
             username : this.state.username,
-            password : this.state.password
+            password : this.state.password, 
+            isOwner: this.state.isOwner
         }
-        //set the with credentials to true
-        axios.defaults.withCredentials = true;
-        //make a post request with the user data
-        axios.post('http://localhost:3001/login',data)
-            .then(response => {
-                console.log("Status Code : ",response.data);
-                if(response.status === 200){
-                    localStorage.setItem("email_id", response.data.email_id);
-                    // localStorage.setItem("user_id", this.props.restaurant.idrestaurant);
-                    localStorage.setItem("name", response.data.name);
-                    localStorage.setItem("user_id", response.data.user_id);
-
-
-                    this.setState({
-                        authFlag : true
-                    })
-                }else{
-                    this.setState({
-                        authFlag : false
-                    })
-                } 
-            });
+        // console.log(data)
+        this.props.userLogin(data);
+        this.setState({
+            loginFlag: 1
+        });
+        this.setState({
+            username : this.state.username,
+            password : this.state.password, 
+            isOwner: this.state.isOwner
+        })
     }
 
     render(){
         //redirect based on successful login
+        const isowner = this.state.isOwner
+        const error = {
+            message: null
+        }
         let redirectVar = null;
         if(cookie.load('cookie')){
-            redirectVar = <Redirect to= "/rhome"/>
+            if (isowner === "on"){
+                redirectVar = <Redirect to= "/rhome"/>
+            } else {
+                redirectVar = <Redirect to= "/chome"/>
 
+            }
         } else {
             redirectVar = <Redirect to= "/login"/>
+        }
+        if(this.props.description == 'INCORRECT_PASSWORD'){
+            error.message = 'Invalid username/password.'
+            setTimeout(function() {window.location = '/login'}, 2000);
+        } else if(this.props.description == 'NO_USER'){
+            error.message = 'User does not exists. Please signup.'
+            setTimeout(function() {window.location = '/login'}, 2000);
+        }
+        console.log(this.props.description)
+        if(this.props.description && this.props.description.user_id){
+            localStorage.setItem("email_id", this.props.description.email_id);
+            localStorage.setItem("user_id", this.props.description.user_id);
+            localStorage.setItem("isOwner", this.props.description.isOwner);
         }
         return(
             <div>
@@ -94,7 +115,7 @@ class Login extends Component{
                 {/* <Grid> */}
                 <Row>
                     <Col>
-                        <div className="form">
+                        <div className="lgform">
                             <div class="login-form">
                     <div class="main-div">
                         <div class="panel">
@@ -110,14 +131,25 @@ class Login extends Component{
                             <div class="form-group">
                                 <input onChange = {this.passwordChangeHandler} type="password" class="form-control" name="password" placeholder="Password" style={{color:"black"}}/>
                             </div>
+        
+                                <Row className="" style={{marginLeft:"1mm"}}>
+                                <p> Check if owner </p>
+                                    <input onChange = {this.isOwner} type="checkbox" name="isowner" placeholder="" style={{marginTop:"2mm", marginLeft:"1mm"}}/> 
+
+                                </Row>
+
                             <button onClick = {this.submitLogin} class="btn btn-primary">Login</button>  
                             
                             <div class="row mb-4 px-3 registerlogin"> 
-                            <medium class="font-weight-bold">Don't have an account? <a href="/signup">Register</a></medium> 
-                            </div>               
+                            <medium class="font-weight">Don't have an account? <a href="/signup">Register</a></medium> 
+                            </div>    
+           
                     </div>
+                    {error.message && <div className='alert alert-danger'>{error.message}</div>}
                             </div>
+
                         </div>
+
                     </Col>
                     <div className="lico">
                     <Col>
@@ -127,9 +159,19 @@ class Login extends Component{
                 </Row>
                 {/* </Grid> */}
             </div>
+
         </div>
         )
     }
 }
-//export Login Component
-export default Login;
+Login.propTypes = {
+    userLogin: PropTypes.func.isRequired,
+    description: PropTypes.object.isRequired
+}
+
+const mapStateToProps = state => { 
+    return ({
+        description: state.login.description
+})};
+
+export default connect(mapStateToProps, { userLogin })(Login);

@@ -6,6 +6,9 @@ import {Redirect} from 'react-router';
 import Banner from '../Navigationbar/banner'
 import TimePicker from 'react-bootstrap-time-picker';
 import ImageUploader from 'react-images-upload';
+import { editProfile } from '../../actions/editProfile'
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types'
 
 
 class EditProfile extends Component {
@@ -58,7 +61,7 @@ componentWillMount() {
             rname: this.state.rname || details.name,
             email: this.state.email || details.email,
             zipcode: this.state.zipcode || details.zipcode,
-            address: this.state.address || details.location,
+            location: this.state.location || details.location,
             contact: this.state.contact || details.contact,
             cusine: this.state.cusine || details.cusine,
             description: this.state.description || details.description,
@@ -66,38 +69,22 @@ componentWillMount() {
             // starttime: this.state.starttime || details.starttime,
             // closetime: this.state.closetime || details.closetime
         }
+        this.props.editProfile(data);
+
+    }
+    render(){
         const error = {
             message: null
         }
         const success = {
             message: null
         }
-        console.log(data)
-        console.log(localStorage.getItem("user_id"))
-        axios.defaults.withCredentials = true;
-        axios.post(`http://localhost:3001/restaurant/editProfile/${localStorage.getItem("user_id")}`, data)
-            .then(response => {
-                if(response.data == "USER_UPDATED"){
-                    success.message = "Successfully update the profile."
-                    this.setState({success})
-                    setTimeout(function(){
-                        window.location = '/rhome'}, 1000)
-                    
-                } 
-                if(response.data === 'PROFILE_NOT_UPDATED'){
-                    error.message = "Unable to update the profile."
-                    this.setState({error})
-                    setTimeout(function(){
-                        window.location = "/editProfile";
-                       },1500);
-                       
-                }
-            });
-    }
-    render(){
-        let error = this.state.error;
-        let success = this.state.success;
         let details = this.state.profile;
+        // console.log(this.props.description)
+        if(this.props.description == 'USER_UPDATED'){
+            success.message = 'Successfully updated the user.'
+            setTimeout(function() {window.location = '/rhome'}, 3000);
+        }
         return(
             <div>
                 <Banner/>
@@ -131,7 +118,7 @@ componentWillMount() {
                        </div>
                        <div class="form-group">
                        <label class="label-form"> Add/Edit your address</label>
-                           <input onChange = {this.onChange} type="name" class="form-control" name="address" placeholder="Address" style={{color:"black"}} defaultValue={details.location}/>
+                           <input onChange = {this.onChange} type="name" class="form-control" name="location" placeholder="Address" style={{color:"black"}} defaultValue={details.location}/>
                        </div>
                        <div class="row">
                        <div class="form-group col-md-6">
@@ -175,8 +162,8 @@ componentWillMount() {
                        <button class="btn btn-primary col-md-6" onClick = {this.goBack}>Cancel</button> 
                        </div> 
                         </div>
-                        {error && <div className='alert alert-danger'>{error.message}</div>}
-                        {success && <div className='alert alert-success'>{success.message}</div>}
+                        {error.message && <div className='alert alert-danger'>{error.message}</div>}
+                        {success.message && <div className='alert alert-success'>{success.message}</div>}
                         </div>
                     </div>
                     </div>
@@ -186,5 +173,13 @@ componentWillMount() {
         )
     }
 }
+EditProfile.propTypes = {
+    editProfile: PropTypes.func.isRequired,
+    description: PropTypes.object.isRequired
+}
 
-export default EditProfile
+const mapStateToProps = state => { 
+    return ({
+        description: state.edit.description
+})};
+export default connect(mapStateToProps, { editProfile })(EditProfile);

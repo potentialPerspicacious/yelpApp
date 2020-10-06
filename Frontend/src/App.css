@@ -12,10 +12,10 @@
 .main-div {
   background: #ffffff none repeat scroll 0 0;
   border-radius: 2px;
-  /* margin: 30px auto 30px; */
+  margin-left: 2cm;
   max-width: 50%;
-  padding: 30px 70px 70px 70px;
-  padding-top: 25%;
+  padding: 50px 110px 90px 90px;
+  padding-top: 20%;
 }
 .login-form .form-group {
   margin-bottom:10px;
@@ -100,6 +100,24 @@
   font-weight: bolder;
 
 }
+.navtext2{
+  color: red;
+  font-weight: bolder;
+  margin-left: 3cm;
+
+}
+.navtext3{
+  color: red;
+  font-weight: bolder;
+  margin-left: 0cm;
+
+}
+.navtext3:hover, .navtext3:focus, .navtext3:active {
+  color: rgba(214, 16, 56, 0.884);
+}
+.navtext2:hover, .navtext2:focus, .navtext2:active {
+  color: rgba(214, 16, 56, 0.884);
+}
 .centered {
   position: absolute;
   top: 50%;
@@ -148,6 +166,11 @@
   float: right;
   padding: 10px;
 }
+.registercheck{
+  color: black;
+  float: right;
+  padding: 0px;
+}
 .linkback{
   position: absolute;
   top: 3.5%;
@@ -192,10 +215,13 @@
 
 .navposl{
   margin-left: 5cm;
+  padding-top: 50px;
+  margin-right: 5cm;
 }
 
 .navpos{
-  position: right;
+margin-left: 13cm;
+  
 }
 .form{
   float: left;
@@ -206,6 +232,11 @@
 
 .lico{
   float: right;
+  width: 40%;
+  padding-top: 5cm;
+}
+.licomen{
+  float: left;
   width: 40%;
   padding-top: 5cm;
 }
@@ -220,6 +251,7 @@
   position: relative;
   background-color:red;
   height: 15mm;
+  width: 36.5cm;
 }
 .bannerlogo {
   position: relative;
@@ -280,4 +312,119 @@ img {
 }
 .at{
   text-transform: uppercase;
+}
+.lgout{
+  position: absolute;
+}
+.search{
+  width: 300px;
+}
+.searchbar{
+  margin-left: 6cm;
+  margin-top: 3mm;
+}
+.sloc{
+  margin-left: 3cm;
+}
+.sb{
+  margin-left: 2.5cm;
+  background-color: red;
+  border-color: red;
+}
+
+.sb:hover, .sb:focus, .sb:active {
+  background-color: red;
+
+}
+.navtext:hover, .navtext:focus, .navtext:active {
+  color: rgb(196, 192, 192);
+  font-weight: bolder;
+}
+.navbar {
+  list-style:none;
+}
+.lgnvtext{
+  color: #ff0000;
+}
+.lgnvtext:hover, .lgnvtext:focus, .lgnvtext:active {
+  color: rgba(117, 11, 32, 0.712);
+}
+
+.signico{
+  color: rgb(22, 22, 22);
+}
+.signico2{
+  color: rgb(22, 22, 22);
+  margin-left: 14cm;
+}
+
+.ssearch{
+  margin-top: 1cm;
+  width: 300px;
+  margin-left: 4.2cm;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+
+.ssloc{
+  margin-top: 1cm;
+  margin-left: 4.5cm;
+  border-radius: 0px;
+  border-radius: 0px;
+}
+
+.ssb{
+  margin-top: 1cm;
+  background-color: red;
+  border-color: red;
+  margin-left: 3.5cm;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+}
+
+.ssb:hover, .ssb:focus, .ssb:active {
+  background-color: red;
+
+}
+.hsearch{
+  margin-top: 5mm;
+  width: 300px;
+  margin-left: 1.7cm;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+
+.hsloc{
+  margin-top: 5mm;
+  margin-left: 8mm;
+  border-radius: 0px;
+  border-radius: 0px;
+}
+.hsb{
+  margin-top: 5mm;
+  background-color: red;
+  border-color: red;
+  margin-left: 0cm;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+}
+
+.hsb:hover, .hsb:focus, .hsb:active {
+  background-color: red;
+
+}
+.additem{
+    width: 150%;
+    padding: 50px 10px 50px 0;
+    margin-left: 4.5cm;
+
+}
+
+.bgmen{
+  background-image: url('./images/menubg.jpg') no-repeat center fixed;;
+
+}
+
+.dob{
+  margin-top: 0cm;
 }

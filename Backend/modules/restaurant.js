@@ -3,7 +3,7 @@ const router = express.Router();
 const db = require('../db.js');
 
 router.post('/editProfile/:user_id', (req, res) => {
-    let sql = `CALL Restaurant_Update_BasicProfile('${req.params.user_id}', '${req.body.rname}', '${req.body.email}', '${req.body.zipcode}', '${req.body.address}', '${req.body.contact}', '${req.body.cusine}', '${req.body.description}', '${req.body.timings}');`;
+    let sql = `CALL Restaurant_Update_BasicProfile('${req.params.user_id}', '${req.body.rname}', '${req.body.email}', '${req.body.zipcode}', '${req.body.location}', '${req.body.contact}', '${req.body.cusine}', '${req.body.description}', '${req.body.timings}');`;
     db.query(sql, (err, result) => {
       if (err) {
         res.end("Error in Data");

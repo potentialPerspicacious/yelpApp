@@ -6,15 +6,68 @@ import {Redirect} from 'react-router';
 import {Link} from 'react-router-dom';
 import { Grid, Row, Col } from 'react-bootstrap';
 import Banner from '../Navigationbar/banner'
+import {customerSignup} from '../../actions/signup'
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types'
+
 
 
 class Signup extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {};
+    }
+
+    onChange = (e) => {
+        this.setState({
+            [e.target.name]: e.target.value
+        })
+    }
+
+
+    submitSignup = (e) => {
+        //prevent page from refresh
+        e.preventDefault();
+        const data = {
+            fname: this.state.fname,
+            lname: this.state.lname,
+            email: this.state.email,
+            password: this.state.password,
+            zipcode: this.state.zipcode,
+            email: this.state.email,
+            month: this.state.month,
+            date: this.state.date,
+            year: this.state.year
+        }
+        console.log(data)
+        this.props.customerSignup(data);
+
+        this.setState({
+            signupFlag: 1
+        });
+    }
+
+
     render(){
         let redirectVar = null;
+        let error = {
+            message: null
+        }
+        let success = {
+            message: null
+        }
         if(cookie.load('cookie')){
             redirectVar = <Redirect to="/chome"/>
         } else {
             redirectVar = <Redirect to = "/signup"/>
+        }
+        if(this.props.description == 'USER_ADDED'){
+            success.message = 'Successfully added the new user.'
+            console.log('Success')
+            setTimeout(function() {window.location = '/login'}, 5000);
+        } else if (this.props.description == 'USER_EXISTS'){
+            error.message = 'User already exists please add a different one.'
+            setTimeout(function() {window.location = '/signup-restaurant'}, 1500);
         }
         return(
         <div>
@@ -28,39 +81,39 @@ class Signup extends Component {
                         <div class="row">
                         <div class="form-group col-md-6">
                             <label class="label-form"> Enter your first name</label>
-                                <input type="text" class="form-control" name="name" placeholder="First Name" style={{color:"black"}}/>
+                                <input type="text" class="form-control" name="fname" placeholder="First Name" style={{color:"black"}} onChange = {this.onChange}/>
                                </div> 
                                 <div class="form-group col-md-6">
                                 <label class="label-form"> Enter your last name</label>
-                                <input type="text" class="form-control" name="name" placeholder="Last Name" style={{color:"black"}}/>
+                                <input type="text" class="form-control" name="lname" placeholder="Last Name" style={{color:"black"}} onChange = {this.onChange}/>
                             </div>
                             </div>
                             <div class="form-group">
                             <label class="label-form"> Enter your email</label>
-                                <input type="email" class="form-control" name="email" placeholder="Email" style={{color:"black"}}/>
+                                <input type="email" class="form-control" name="email" placeholder="Email" style={{color:"black"}} onChange = {this.onChange}/>
                             </div>
                             <div class="row">
                             <div class="form-group col-md-6">
                             <label class="label-form"> Enter your desired password</label>
-                                <input type="password" class="form-control" name="password" placeholder="Password" style={{color:"black"}}/>
+                                <input type="password" class="form-control" name="password" placeholder="Password" style={{color:"black"}} onChange = {this.onChange}/>
                             </div>
 
                             <div class="form-group col-md-6">
                             <label class="label-form"> Please confirm your password</label>
-                                <input type="password" class="form-control" name="cpassword" placeholder="Password" style={{color:"black"}}/>
+                                <input type="password" class="form-control" name="cpassword" placeholder="Password" style={{color:"black"}} onChange = {this.onChange}/>
                             </div>
                             </div>
                             <div class="form-group">
                                 <p>
                                     <label class="label-form"> Enter your zip code</label>
-                                <input type="text" class="form-control" name="username" placeholder="Zipcode" style={{color:"black"}}/>
+                                <input type="text" class="form-control" name="zipcode" placeholder="Zipcode" style={{color:"black"}} onChange = {this.onChange}/>
                                 </p>
                             </div>
                             
                             <div class="row">
                             <div class="form-group col-sm-4">
                             <label class="label-form"> Enter your Birthday</label>
-                            <select class="form-control">
+                            <select class="form-control" onChange = {this.onChange} name="month">
                             <option selected>Month</option>
                             <option value="January">January</option>
 <option value="Febuary">Febuary</option>
@@ -78,7 +131,7 @@ class Signup extends Component {
                             </div>
 
                             <div class="form-group col-sm-4 dob-form">
-                            <select class="form-control">
+                            <select class="form-control" onChange = {this.onChange} name="date">
                             <option selected>Day</option>
                             <option value="1">1</option>
 <option value="2">2</option>
@@ -115,7 +168,7 @@ class Signup extends Component {
                             </div>
 
                             <div class="form-group col-sm-4 dob-form">
-                            <select class="form-control">
+                            <select class="form-control" onChange = {this.onChange} name="year">
                             <option selected>Year</option>
                             <option value="2020">2020</option>
 <option value="2019">2019</option>
@@ -213,11 +266,15 @@ class Signup extends Component {
                             </div>
                             </div>
 
-                            <button class="btn btn-primary">Register</button>  
+                            <button class="btn btn-primary" onClick = {this.submitSignup}>Register</button>  
                             <div class="row mb-4 px-3 register"> 
-                            <medium class="font-weight-bold">Own a restaurant? <a href="/signup-restaurant" style={{marginRight:"0.1cm"}}>Register</a></medium> 
-                            <medium class="font-weight-bold reregister"> | Already a member? <a href="/login">Login</a></medium> 
+                            <medium class="font-weight">Own a restaurant? <a href="/signup-restaurant" style={{marginRight:"0.1cm"}}>Register</a></medium> 
+                            <medium class="font-weight reregister"> | Already a member? <a href="/login">Login</a></medium> 
                             </div>
+                        </div>
+                        <div>
+                        {error.message && <div className='alert alert-danger'>{error.message}</div>}
+                        {success.message && <div className='alert alert-success'>{success.message}</div>}
                         </div>
                     </div>
                     </div>
@@ -228,5 +285,14 @@ class Signup extends Component {
         )
     }
 }
+Signup.propTypes = {
+    customerSignup: PropTypes.func.isRequired,
+    description: PropTypes.object.isRequired
 
-export default Signup
+};
+
+const mapStateToProps = state => ({
+    description: state.customersignup.description
+});
+
+export default connect(mapStateToProps, {customerSignup})(Signup);

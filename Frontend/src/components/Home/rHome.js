@@ -3,7 +3,7 @@ import '../../App.css';
 import axios from 'axios';
 import cookie from 'react-cookies';
 import {Redirect} from 'react-router';
-import  Banner  from '../Navigationbar/banner';
+import  Navbar  from '../Navigationbar/Navbar';
 import Resinfo from '../Profile/resinfo';
 import {Link} from 'react-router-dom';
 
@@ -17,7 +17,8 @@ class rHome extends Component {
         }
         return( 
             <div>
-                <Banner />
+                {redirectVar}
+                <Navbar />
                 <Resinfo />
             </div>
 

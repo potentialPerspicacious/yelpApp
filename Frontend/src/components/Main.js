@@ -7,7 +7,13 @@ import rHome from './Home/rHome';
 import LandingPage from './LandingPage/LandingPage';
 import SignupRestaurant from './Signup/SignupRestaurant'
 import EditProfile from './Profile/editProfile'
-
+import AddItem from './Menu/addItem'
+import EditItem from './Menu/EditMenuItems'
+import Cusinfo from './Profile/cusinfo';
+import editCprofile from './Profile/editCprofile';
+import Csearch from './Search/csearch'
+import RestaurantPage from './Search/restaurantPage'
+import CusOrders from './Orders/corders';
 
 //Create a Main Component
 class Main extends Component {
@@ -22,7 +28,16 @@ class Main extends Component {
                 <Route exact path="/chome" component={cHome}/>
                 <Route exact path="/rhome" component={rHome}/>
                 <Route exact path="/editProfile" component={EditProfile}/>
+                <Route exact path="/menu/addItem" component={AddItem}/>
+                <Route exact path="/menu/editItem" component={EditItem}/>
+                <Route exact path="/cprofile" component={Cusinfo}/>
+                <Route exact path="/editCprofile" component={editCprofile}/>
+                <Route exact path="/csearch" component={Csearch}/>
+                <Route exact path="/restaurantPage" component={RestaurantPage}/>
+                <Route exact path="/corders" component={CusOrders}/>
 
+
+                
 
 
             </div>

@@ -4,9 +4,8 @@ const passwordHash = require('password-hash');
 const db = require('../db.js');
 
 router.post('/customer', (req, res) => {
-    console.log(req.body)
     var hashedPassword = passwordHash.generate(req.body.password);
-    let sql = `CALL customer_put('${req.body.name}', '${req.body.email_id}', '${hashedPassword}', '${req.body.address}', '${req.body.phone_number}');`;
+    let sql = `CALL customer_put('${req.body.fname}','${req.body.lname}', '${req.body.email}', '${hashedPassword}', '${req.body.zipcode}', '${req.body.month}','${req.body.date}','${req.body.year}');`;
   
     db.query(sql, (err, result) => {
       if (err) {
