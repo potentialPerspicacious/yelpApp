@@ -11,6 +11,7 @@ class OrderCard extends Component {
     super(props);
     this.state = {
         status: {},
+        status_message: {},status_message2:{},
         order_items: [],
     };
     
@@ -24,6 +25,8 @@ getOrderedItems = () => {
     .then(response => {
             this.setState({
                 order_items: this.state.order_items.concat(response.data),
+                status_message: (response.data),
+                status_message2: (response.data[0].STATUS)
             });
     })
     }
@@ -52,10 +55,19 @@ pickup = () => {
 delivery = () => {
     localStorage.setItem("ordermode", "delivery")
 }
-// placeOrder = () => {
-//     axios.post
-// }
+placeOrder = () => {
+    localStorage.setItem("orderstatus", "Order Recieved")
+    localStorage.setItem("status", 'item_not_present')
+    axios.post(`http://localhost:3001/customer/placeOrder/${localStorage.getItem("user_id")}/${localStorage.getItem("resID")}/${localStorage.getItem("orderstatus")}/${localStorage.getItem("ordermode")}`)
+    .then(response => {
+            this.setState({
+                status: (response.data)
+            });
+    })
+    }
 cancelOrder = () => {
+    localStorage.removeItem("ordertype")
+    localStorage.removeItem("orderstatus")
     localStorage.setItem("status", 'item_not_present')
     axios.post(`http://localhost:3001/customer/cancelOrders/${localStorage.getItem("user_id")}/${localStorage.getItem("resID")}`)
     .then(response => {
@@ -65,6 +77,14 @@ cancelOrder = () => {
     })
     }
 render (){
+    // let message2 = this.state.status_message
+    // let message3 = this.state.status_message2
+    // if(message2 == "ITEM_NOT_PRESENT"){
+    //     localStorage.setItem("status", 'item_not_present')
+    // }
+    // if(message3 == "ITEM_PRESENT"){
+    //     localStorage.setItem("status", 'item_present')
+    // }
     let section,
     renderOutput = [];
     if (this.state && this.state.order_items && this.state.order_items.length > 0) {
@@ -76,15 +96,20 @@ render (){
     let success = {
         message: null
             }
+
+
     let message = this.state.status
     if(message == 'ORDER_CANCELLED'){
         success.message = 'Successfully cancelled the order.'
         setTimeout(function() {window.location = '/csearch'}, 1000);
             }
-
+    if(message == 'ORDER_PLACED'){
+                success.message = 'Successfully placed the order.'
+                setTimeout(function() {window.location = '/orderhistory'}, 1000);
+                    }
             
     return(
-        <div>
+        <div >
             {renderOutput}
                 <div onChange={this.onChange} style={{marginTop:"4mm", marginLeft:"2cm"}}> 
                 <p> Choose your delivery option</p>

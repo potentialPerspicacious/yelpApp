@@ -5,7 +5,7 @@ import  Navbar  from '../Navigationbar/Navbar';
 import logo from '../../images/logo.png';
 import {Link} from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSearch, faIdCard, faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
+import { faSearch, faIdCard, faSignOutAlt, faClock } from "@fortawesome/free-solid-svg-icons";
 
 
 class CusLP extends Component {
@@ -32,6 +32,7 @@ class CusLP extends Component {
       if (cookie.load('cookie')){
         localStorage.setItem("find", this.state.find)
         localStorage.setItem("location", this.state.location)
+        localStorage.setItem("status", "item_not_present")
         window.location = '/csearch'
       }
     }
@@ -56,9 +57,12 @@ class CusLP extends Component {
                           <li class="nav-item">
                         <a class="nav-link" href="/cprofile"><FontAwesomeIcon className="signico2" icon={faIdCard} /></a>
                           </li>
+                          <li class="nav-item">
+                        <a class="nav-link navtext3" style={{marginTop:"3mm", marginLeft:"1.5mm"}} href="/orderhistory"><FontAwesomeIcon className="signico" icon={faClock} /> Order History</a>
+                          </li>
 
                           <li class="nav-item">
-                        <a class="nav-link navtext3"  href="/login" onClick = {this.handleLogout}><FontAwesomeIcon className="signico" icon={faSignOutAlt} /> Logout</a>
+                        <a class="nav-link navtext3" style={{marginTop:"4mm"}}  href="/login" onClick = {this.handleLogout}><FontAwesomeIcon className="signico" icon={faSignOutAlt} /> Logout</a>
                           </li>
 
                     </nav>

@@ -14,6 +14,8 @@ import editCprofile from './Profile/editCprofile';
 import Csearch from './Search/csearch'
 import RestaurantPage from './Search/restaurantPage'
 import CusOrders from './Orders/corders';
+import CorderHistory from './Orders/orderhistory';
+import RorderHistory from './Orders/rorders';
 
 //Create a Main Component
 class Main extends Component {
@@ -35,6 +37,9 @@ class Main extends Component {
                 <Route exact path="/csearch" component={Csearch}/>
                 <Route exact path="/restaurantPage" component={RestaurantPage}/>
                 <Route exact path="/corders" component={CusOrders}/>
+                <Route exact path="/orderhistory" component={CorderHistory}/>
+                <Route exact path="/rorders" component={RorderHistory}/>
+
 
 
                 

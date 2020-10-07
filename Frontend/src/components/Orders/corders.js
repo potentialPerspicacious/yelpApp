@@ -52,7 +52,6 @@ render (){
     renderOutput = [];
     if (this.state && this.state.ordered_items && this.state.ordered_items.length > 0) {
         section = this.orders(this.state.ordered_items);
-        console.log(section)
         renderOutput.push(section);
 
             }

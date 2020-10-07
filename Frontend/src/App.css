@@ -109,7 +109,6 @@
 .navtext3{
   color: red;
   font-weight: bolder;
-  margin-left: 0cm;
 
 }
 .navtext3:hover, .navtext3:focus, .navtext3:active {
@@ -354,8 +353,9 @@ img {
   color: rgb(22, 22, 22);
 }
 .signico2{
+  margin-top: 3.5mm;
   color: rgb(22, 22, 22);
-  margin-left: 14cm;
+  margin-left: 10cm;
 }
 
 .ssearch{

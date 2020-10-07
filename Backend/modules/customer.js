@@ -25,10 +25,8 @@ router.post('/editProfile/:user_id', (req, res) => {
     });
   });
   router.get('/OrderItems/:user_id/:resID/', (req, res) => {
-    console.log(req.params.user_id)
     let sql = `CALL get_orderItems('${req.params.user_id}', '${req.params.resID}');`;
     db.query(sql, (err, result) => {
-      console.log(result[0][0])
       if (err) {
         res.end("Error in Data");
       } 
@@ -57,4 +55,22 @@ router.post('/editProfile/:user_id', (req, res) => {
         res.end((result[0][0]).STATUS);
     });
   });
+
+  router.post('/placeOrder/:user_id/:resID/:orderstatus/:ordermode', (req, res) => {
+    let sql = `CALL place_order('${req.params.user_id}', '${req.params.resID}', '${req.params.orderstatus}', '${req.params.ordermode}')`;
+    db.query(sql, (err, result) => {  
+        res.end((result[0][0]).status);
+    });
+  });
+  router.get('/orderHistory/:cusID', (req, res) => {
+    let sql = `CALL get_orderHistory('${req.params.cusID}')`;
+    db.query(sql, (err, result) => {  
+            if (err) {
+        res.end("Error in Data");
+      } else {
+        res.end(JSON.stringify(result[0]));
+      }
+    });
+  });
+
 module.exports = router;

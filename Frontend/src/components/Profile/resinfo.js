@@ -56,7 +56,7 @@ if (localStorage.getItem("isOwner")==="on"){
 } else {
     icon = null;
     editIcon = null;
-    order = <Button href = '/corders' style = {{backgroundColor: "red", fontSize: "20px", border: '1px solid red', color: "white"}} variant="link">Orders  <FontAwesomeIcon className="" icon={faCartArrowDown} style={{height:"4.5mm", position:"center"}} /> </Button>
+    order = <Button href = "javascript:setTimeout(()=>{window.location = '/corders' },1000);" style = {{backgroundColor: "red", fontSize: "20px", border: '1px solid red', color: "white"}} variant="link">Orders  <FontAwesomeIcon className="" icon={faCartArrowDown} style={{height:"4.5mm", position:"center"}} /> </Button>
 
 }
         let details = this.state.profile
