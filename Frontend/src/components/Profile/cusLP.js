@@ -33,6 +33,7 @@ class CusLP extends Component {
         localStorage.setItem("find", this.state.find)
         localStorage.setItem("location", this.state.location)
         localStorage.setItem("status", "item_not_present")
+        localStorage.setItem("filter", "no_filter")
         window.location = '/csearch'
       }
     }
@@ -58,7 +59,7 @@ class CusLP extends Component {
                         <a class="nav-link" href="/cprofile"><FontAwesomeIcon className="signico2" icon={faIdCard} /></a>
                           </li>
                           <li class="nav-item">
-                        <a class="nav-link navtext3" style={{marginTop:"3mm", marginLeft:"1.5mm"}} href="/orderhistory"><FontAwesomeIcon className="signico" icon={faClock} /> Order History</a>
+                        <a class="nav-link navtext3" style={{marginTop:"3mm", marginLeft:"1.5mm"}} onClick={localStorage.setItem("filter", "no_filter")} href="/orderhistory"><FontAwesomeIcon className="signico" icon={faClock} /> Order History</a>
                           </li>
 
                           <li class="nav-item">

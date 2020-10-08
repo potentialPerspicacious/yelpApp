@@ -56,7 +56,7 @@ delivery = () => {
     localStorage.setItem("ordermode", "delivery")
 }
 placeOrder = () => {
-    localStorage.setItem("orderstatus", "Order Recieved")
+    localStorage.setItem("orderstatus", "New Order")
     localStorage.setItem("status", 'item_not_present')
     axios.post(`http://localhost:3001/customer/placeOrder/${localStorage.getItem("user_id")}/${localStorage.getItem("resID")}/${localStorage.getItem("orderstatus")}/${localStorage.getItem("ordermode")}`)
     .then(response => {

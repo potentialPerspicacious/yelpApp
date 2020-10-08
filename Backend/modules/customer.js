@@ -72,5 +72,15 @@ router.post('/editProfile/:user_id', (req, res) => {
       }
     });
   });
+  router.get('/orderHistoryFilter/:cusID/:filter', (req, res) => {
+    let sql = `CALL get_CorderHistoryFilter('${req.params.cusID}', '${req.params.filter}')`;
+    db.query(sql, (err, result) => {  
+            if (err) {
+        res.end("Error in Data");
+      } else {
+        res.end(JSON.stringify(result[0]));
+      }
+    });
+  });
 
 module.exports = router;

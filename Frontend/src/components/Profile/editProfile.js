@@ -4,11 +4,12 @@ import axios from 'axios';
 import cookie from 'react-cookies';
 import {Redirect} from 'react-router';
 import Banner from '../Navigationbar/banner'
-import TimePicker from 'react-bootstrap-time-picker';
+import {Row, Col} from 'react-bootstrap';
 import ImageUploader from 'react-images-upload';
 import { editProfile } from '../../actions/editProfile'
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types'
+
 
 
 class EditProfile extends Component {
@@ -66,6 +67,9 @@ componentWillMount() {
             cusine: this.state.cusine || details.cusine,
             description: this.state.description || details.description,
             timings: this.state.timings || details.timings,
+            dinein: this.state.dinein || details.dinein,
+            takeout: this.state.takeout || details.takeout,
+            ydelivery: this.state.ydelivery || details.delivery
             // starttime: this.state.starttime || details.starttime,
             // closetime: this.state.closetime || details.closetime
         }
@@ -135,7 +139,36 @@ componentWillMount() {
                        <label class="label-form"> Add/Edit restaurant timings</label>
                            <input onChange = {this.onChange} type="name" class="form-control" name="timings" placeholder="Timings" style={{color:"black"}} defaultValue={details.timings}/>
                        </div>
+                       <left>
+                       <div class="form-group">
 
+                       <label class="label-form"> Add/Edit your restaurant services</label> <br />
+<ol type="a">
+                       <Col align="left" style={{marginTop:"3mm"}}>
+                           <li>
+                        <small>Does your restaurant provide dining-in service?</small>
+                       <input onChange = {this.onChange} type="radio" name= "dinein" value="dinein" placeholder="" style={{marginLeft:"9.35mm"}}/> <small>Yes</small>
+                       <input onChange = {this.onChange} type="radio" name= "dinein" value="no" placeholder="" style={{marginLeft:"3mm"}}/> <small>No</small>
+                       </li>
+                       </Col>
+                       
+                       <Col align="left" style={{marginTop:"3mm"}}>
+                           <li>
+                        <small>Does your restaurant provide take out service?</small>
+                       <input onChange = {this.onChange} type="radio" name= "takeout" value="takeout" placeholder="" style={{marginLeft:"10.5mm"}}/> <small>Yes</small>
+                       <input onChange = {this.onChange} type="radio" name= "takeout" value="no" placeholder="" style={{marginLeft:"3mm"}}/> <small>No</small>
+                       </li>
+                       </Col>
+                       <Col align="left" style={{marginTop:"3mm"}}>
+                           <li>
+                        <small>Does your restaurant provide yelp delivery service?</small>
+                       <input onChange = {this.onChange} type="radio" name= "ydelivery" value="ydelivery" placeholder="" style={{marginLeft:"3.35mm"}}/> <small>Yes</small>
+                       <input onChange = {this.onChange} type="radio" name= "ydelivery" value="no" placeholder="" style={{marginLeft:"3mm"}}/> <small>No</small>
+                       </li>
+                       </Col>
+                       </ol>
+                                              </div>
+                                              </left>
                        {/* <div class="row">
                        <div class="form-group col-md-6">
                        <label class="label-form ">Add/Edit opening time</label>

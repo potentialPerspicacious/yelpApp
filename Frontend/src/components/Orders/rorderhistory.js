@@ -22,6 +22,10 @@ onChange2 = (e) => {
         this.setState({value2: e.target.value});
     }
 
+    setCusID = () => {
+        localStorage.setItem("cusID", this.props.order_history.cusID)
+    }
+
 updateOrder = (e) => {
     e.preventDefault();
     const data = {
@@ -56,7 +60,7 @@ render() {
           <Col align="left" style={{marginLeft:"0mm"}}>
             <Card.Body>
               <Card.Title>Order No - {this.props.order_history.idorderhistory}</Card.Title>
-              <Card.Text><p><FontAwesomeIcon icon={faBuilding} /> <span style={{fontWeight:"bold"}}> Order From: </span> <span style={{textTransform: "uppercase"}}>{this.props.order_history.fname} {this.props.order_history.lname}</span> </p></Card.Text>
+              <Card.Text><p><FontAwesomeIcon icon={faBuilding} /> <span style={{fontWeight:"bold"}}> Order From: </span> <span style={{textTransform: "uppercase"}}><a href="/cprofile" onClick={this.setCusID} style={{textDecoration:"none", color:"black"}}> {this.props.order_history.fname} {this.props.order_history.lname}</a></span> </p></Card.Text>
               <Card.Text><FontAwesomeIcon icon={faCar} /> <span style={{fontWeight:"bold"}}> Order Type: </span> <span style={{textTransform: "uppercase"}}> <i>{this.props.order_history.ordertype}</i></span><span style={{fontWeight:"bold", marginLeft:"3.5cm", marginRight:"1cm"}}> <br/>Change Delivery Status:
               
               <select id="ordertype" onChange={this.onChange2} value={this.state.value2}>
@@ -64,8 +68,8 @@ render() {
                   <option value="pickup">Pickup</option>
                   <option value="delivery">Delivery</option>
                   <option value="Pickup Ready">Pickup Ready</option>
-                  <option value="Onthe way">On the way</option>
                   <option value="Picked Up">Picked Up</option>
+                  <option value="On the way">On the way</option>
                   <option value="Delivered">Delivered</option>
                </select>
               </span></Card.Text>
@@ -73,9 +77,11 @@ render() {
               
               <select id="orderstatus" onChange={this.onChange} value={this.state.value}>
                   <option value="select">Select</option>
+                  <option value="New Order">New Order</option>
+                  <option value="Order Recieved">Order Recieved</option>
                   <option value="Preparing">Preparing</option>
                   <option value="Prepared">Prepared</option>
-                  <option value="Order Recieved">Order Recieved</option>
+                 
                </select>
               </span> </Card.Text>
               
@@ -89,6 +95,7 @@ render() {
 
         </Row>
       </Card>
+      {success.message && <div className='alert alert-success'>{success.message}</div>}
 </div>
     );
 }

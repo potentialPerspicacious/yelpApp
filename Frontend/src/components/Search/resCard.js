@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Card, Button, Col, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {faCity, faUtensils, faEnvelope, faPhoneAlt, faClock, faCar, faShoppingBag, faChair} from "@fortawesome/free-solid-svg-icons";
+import {faCheck, faTimes, faCity, faUtensils, faEnvelope, faPhoneAlt, faClock, faCar, faShoppingBag, faChair} from "@fortawesome/free-solid-svg-icons";
 
 class ResCard extends Component {
 
@@ -13,6 +13,21 @@ class ResCard extends Component {
   }
 
   render() {
+    let dservice=null,
+    tkservice = null,
+    ydservice = null;
+    if(this.props.restaurant_search.dinein === 'dinein'){
+      dservice = (<FontAwesomeIcon className="" icon={faCheck} style={{color: "green"}}/>);
+  } else {
+   dservice = (<FontAwesomeIcon className="" icon={faTimes} style={{color: "red"}}/>) }
+   if(this.props.restaurant_search.takeout === 'takeout'){
+      tkservice = (<FontAwesomeIcon className="" icon={faCheck} style={{color: "green"}}/>);
+  } else {
+      tkservice = (<FontAwesomeIcon className="" icon={faTimes} style={{color: "red"}}/>) }
+   if(this.props.restaurant_search.ydelivery === 'ydelivery'){
+      ydservice = (<FontAwesomeIcon className="" icon={faCheck} style={{color: "green"}}/>);
+  } else {
+      ydservice = (<FontAwesomeIcon className="" icon={faTimes} style={{color: "red"}}/>) }
     // let imageSrc = `${backendServer}/grubhub/images/item/${this.props.menu_item.item_image}`;
     return (
         <Link to="" style={{color:"black", textDecoration: "none"}}>
@@ -28,7 +43,7 @@ class ResCard extends Component {
               <Card.Text> <FontAwesomeIcon icon={faUtensils} />  {this.props.restaurant_search.cusine}</Card.Text>
               <Card.Text><FontAwesomeIcon icon={faEnvelope} />   {this.props.restaurant_search.email} <FontAwesomeIcon icon={faPhoneAlt} style={{marginLeft:"2mm"}} />   {this.props.restaurant_search.contact} </Card.Text>
               <Card.Text><FontAwesomeIcon icon={faClock} /> {this.props.restaurant_search.timings}</Card.Text>
-              <Card.Text><FontAwesomeIcon icon={faCar}  /> <FontAwesomeIcon icon={faShoppingBag} style={{marginLeft:"2cm"}} /> <FontAwesomeIcon icon={faChair} style={{marginLeft:"2cm"}} /> </Card.Text>
+              <Card.Text><FontAwesomeIcon icon={faCar} /> {ydservice} <FontAwesomeIcon icon={faShoppingBag} style={{marginLeft:"2cm"}} /> {tkservice}<FontAwesomeIcon icon={faChair} style={{marginLeft:"2cm"}} />{dservice} </Card.Text>
             </Card.Body>
           </Col>
         </Row>

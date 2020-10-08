@@ -19,6 +19,7 @@ class Cusinfo extends Component {
     }
 
     componentWillMount() {
+        if (localStorage.getItem("isOwner")=== "off"){
         axios.get(`/profile/customer/${localStorage.getItem("user_id")}`)
         .then(response => 
             {this.setState({
@@ -26,12 +27,33 @@ class Cusinfo extends Component {
                     
                 }); 
             })
+        } else if (localStorage.getItem("isOwner")=== "on"){
+            axios.get(`/profile/customer/${localStorage.getItem("cusID")}`)
+            .then(response => 
+                {this.setState({
+                        profile: (response.data) 
+                        
+                    }); 
+                })
+        }
             
 
     }
     render(){
         let details = this.state.profile
+        let edit = null
         console.log(details)
+        if (localStorage.getItem("isOwner")=== "off") {
+            edit =  (<li>
+                <a href='/editCprofile'>
+                    <span className="navicon">
+                    <FontAwesomeIcon icon={faEdit} />
+                    </span>
+                </a>
+            </li>)
+        } else if (localStorage.getItem("isOwner")=== "on") {
+            edit = null
+        }
         return(
             <div>
                 <Banner />
@@ -50,13 +72,7 @@ class Cusinfo extends Component {
                             <ul class='list-unstyled'>
                                 <li>
                                 </li>
-                                <li>
-                                    <a href='/editCprofile'>
-                                        <span className="navicon">
-                                        <FontAwesomeIcon icon={faEdit} />
-                                        </span>
-                                    </a>
-                                </li>
+     {edit}
                             </ul>
                         </div>
                     </div>

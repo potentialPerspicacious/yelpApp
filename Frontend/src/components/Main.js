@@ -16,6 +16,10 @@ import RestaurantPage from './Search/restaurantPage'
 import CusOrders from './Orders/corders';
 import CorderHistory from './Orders/orderhistory';
 import RorderHistory from './Orders/rorders';
+import Creview from './Reviews/creviews';
+import AddEvent from './Events/addevent';
+import Share from './Share/share';
+import Events from './Events/viewEvents';
 
 //Create a Main Component
 class Main extends Component {
@@ -39,6 +43,11 @@ class Main extends Component {
                 <Route exact path="/corders" component={CusOrders}/>
                 <Route exact path="/orderhistory" component={CorderHistory}/>
                 <Route exact path="/rorders" component={RorderHistory}/>
+                <Route exact path="/creviews" component={Creview}/>
+                <Route exact path="/addevent" component={AddEvent}/>
+                <Route exact path="/share" component={Share}/>
+                <Route exact path="/viewevents" component={Events}/>
+
 
 
 

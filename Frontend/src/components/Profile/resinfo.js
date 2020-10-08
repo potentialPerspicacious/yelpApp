@@ -2,14 +2,15 @@ import React, {Component} from 'react';
 import '../../App.css';
 import axios from 'axios';
 import {Link} from 'react-router-dom';
-import { UserProfileNavBar, UserProfileJumbo, NavList, Form, Button, MDBInput, Carousel, Row} from 'react-bootstrap';
+import { UserProfileNavBar, UserProfileJumbo, NavList, Form, Button, MDBInput, Carousel, Row, Col} from 'react-bootstrap';
 import rest1 from '../../images/rest1.jpg'
 import rest2 from '../../images/rest2.jpg'
 import food1 from '../../images/food1.jpg'
 import food2 from '../../images/food2.jpg'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCalendarPlus ,faCartArrowDown, faUtensils, faCamera, faShareAlt, faMapMarkerAlt, faClock, faStar, faStarHalf, faPhoneAlt, faEnvelope, faCheck, faPlus, faEdit } from "@fortawesome/free-solid-svg-icons";
+import { faCalendarPlus ,faCartArrowDown, faUtensils, faCamera, faShareAlt, faMapMarkerAlt, faClock, faStar, faStarHalf, faPhoneAlt, faEnvelope, faCheck, faPlus, faEdit, faCross, faTimes, faCalendar, faCalendarAlt } from "@fortawesome/free-solid-svg-icons";
 import Menu from '../Menu/Menu'
+import Review from '../Reviews/Review'
 
 class Resinfo extends Component {
     constructor(props) {
@@ -47,20 +48,37 @@ class Resinfo extends Component {
     render(){
         let icon = null, 
         order = null,
+        dservice = null,
+        tkservice = null,
+        ydservice=null,
         editIcon = null;
 if (localStorage.getItem("isOwner")==="on"){
-    order = <Button href = '/rorders' style = {{backgroundColor: "red", fontSize: "20px", border: '1px solid red', color: "white"}} variant="link">Orders  <FontAwesomeIcon className="" icon={faCartArrowDown} style={{height:"4.5mm", position:"center"}} /> </Button>
+    order = <Button href = '/rorders' onClick={localStorage.setItem('filter', 'no_filter')} style = {{backgroundColor: "red", fontSize: "20px", border: '1px solid red', color: "white"}} variant="link">Orders  <FontAwesomeIcon className="" icon={faCartArrowDown} style={{height:"4.5mm", position:"center"}} /> </Button>
 
     icon = <a href="/menu/addItem"> <FontAwesomeIcon className="" icon={faPlus} style={{color: "black", marginTop:"1mm", marginLeft: "19.15cm"}} /></a>
-    editIcon =  <a href="/editProfile"> <FontAwesomeIcon className="" icon={faEdit} style={{color: "black", marginTop:"5mm", marginLeft: "18.2cm"}} /></a>
+    editIcon =  <a href="/editProfile"> <FontAwesomeIcon className="" icon={faEdit} style={{color: "black", marginTop:"5mm", marginLeft: "16.5cm"}} /></a>
 } else {
     icon = null;
     editIcon = null;
-    order = <Button href = "javascript:setTimeout(()=>{window.location = '/corders' },1000);" style = {{backgroundColor: "red", fontSize: "20px", border: '1px solid red', color: "white"}} variant="link">Orders  <FontAwesomeIcon className="" icon={faCartArrowDown} style={{height:"4.5mm", position:"center"}} /> </Button>
+    order = <Button href = "javascript:setTimeout(()=>{window.location = '/corders' },1000);"  onClick={localStorage.setItem('filter', 'no_filter')} style = {{backgroundColor: "red", fontSize: "20px", border: '1px solid red', color: "white"}} variant="link">Orders  <FontAwesomeIcon className="" icon={faCartArrowDown} style={{height:"4.5mm", position:"center"}} /> </Button>
 
 }
         let details = this.state.profile
-        // console.log(details)
+        console.log(details)
+        if(details.dinein === 'dinein'){
+            dservice = (<FontAwesomeIcon className="" icon={faCheck} style={{color: "green"}}/>);
+        } else {
+         dservice = (<FontAwesomeIcon className="" icon={faTimes} style={{color: "red"}}/>) }
+         if(details.takeout === 'takeout'){
+            tkservice = (<FontAwesomeIcon className="" icon={faCheck} style={{color: "green"}}/>);
+        } else {
+            tkservice = (<FontAwesomeIcon className="" icon={faTimes} style={{color: "red"}}/>) }
+         if(details.ydelivery === 'ydelivery'){
+            ydservice = (<FontAwesomeIcon className="" icon={faCheck} style={{color: "green"}}/>);
+        } else {
+            ydservice = (<FontAwesomeIcon className="" icon={faTimes} style={{color: "red"}}/>) }
+
+        
         return(
             <div className='container-fluid' >
             <Carousel style={{width:"850px"}}>
@@ -97,27 +115,48 @@ if (localStorage.getItem("isOwner")==="on"){
         <p style={{float: "left", marginLeft: "10px"}}><FontAwesomeIcon className="" icon={faClock} />{'   '}{details.timings}</p>
                        </div>
                        <div>
-                           <p style={{float: "left"}}> <FontAwesomeIcon className="" icon={faCheck} style={{color: "green"}}/> Take out</p>
-                           <p style={{float: "left", marginLeft: "10px"}}> <FontAwesomeIcon className="" icon={faCheck} style={{color: "green"}}/> Delivery</p>
+                       <p style={{float: "left"}}> {dservice} Dining In</p>
+                           <p style={{float: "left", marginLeft:"15px"}}> {tkservice} <span>Take out</span></p>
+                           <p style={{float: "left", marginLeft: "15px"}}> {ydservice} Delivery</p>
                        </div>
                        <br />
                        <br />
                        <div class="inline-block">
                         {order}
-                       <Button href = '/add-photo' style = {{backgroundColor: "transparent", fontSize: "20px", border: '1px solid black', color: 'black'}} variant="link"> Events   <FontAwesomeIcon className="" icon={faCalendarPlus} style={{height:"5mm", position:"center"}} /></Button> {' '}
+                       <Button href = '/viewevents' style = {{backgroundColor: "transparent", fontSize: "20px", border: '1px solid black', color: 'black', marginLeft:"1mm"}} variant="link"> Events   <FontAwesomeIcon className="" icon={faCalendarAlt} style={{height:"5mm", position:"center"}} /></Button> {' '}
                        <Button href = '/share' style = {{backgroundColor: "transparent", fontSize: "20px", border: '1px solid black', color: 'black'}} variant="link"> Share <FontAwesomeIcon className="" icon={faShareAlt} style={{height:"4mm", position:"center"}} /></Button>
                        </div>
 
-                       <hr />
-        <Row><h3 style={{marginLeft:"3.5mm"}}> Menu </h3> {icon}</Row>
+<div className="row">
+                       <div class='col-xs-6' style={{textAlign: "left", height: "100%", marginTop:"0.85cm", marginLeft: "0cm"}}>
+                    <div style={{marginLeft: "10px"}}>
+                        <h3 style={{color:'black'}}>Menu</h3>
+                        <hr />
+                        <Menu />
+                
+                    </div>
+                </div>
+                <div class='col-xs-1' style={{textAlign: "left", height: "100%", borderLeft: "1px solid #e6e6e6", marginTop:"2.1cm", marginLeft: "1.5cm", float:"right"}}>
+                    <div style={{marginLeft: "10px"}}>
+                        <h6 style={{color:'Gray'}}> Review Hightlights</h6>
+                        <hr />
+                        <Review/>
+                
+                    </div>
+                </div>
+                </div>
+                       {/* <Col xs="6">
+        <Row><h3 style={{marginLeft:"0mm"}}> Menu </h3> {icon}</Row>
                        <Menu />
                        <h6> </h6>
-                       <br />
+                       <br /> </Col>
 
                        <br/>
                        <hr />
+                       <Col xs="1">
                        <h4> Review Hightlights</h4>
-                       <br />
+                       <Review />
+                       <br /> </Col> */}
                    </div>
                    </div>
                 </div>

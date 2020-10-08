@@ -60,9 +60,10 @@ render (){
             <div>
            <div class='row' style={{ marginLeft:"10px", marginTop:"2cm"}}>
                    <Col xs="1.5mm">
-                <div class='col-xs-3' style={{marginLeft: "10px", marginTop:"1cm"}}>
-                    <h7 style={{color:'gray'}}> Filters</h7>
-                    <hr />
+                {/* <div class='col-xs-3' style={{marginLeft: "10px", marginTop:"1cm"}}>
+                <h6 style={{color:'gray', fontWeight:"bold"}}> Filters</h6> <br />
+                        <h9 style={{color:'gray'}}> Order Type</h9>
+                        <hr />
                     <p>
                     <Row style={{marginLeft:"0mm"}}>
                     <input onChange = {this.pickup} type="checkbox" name="pickup" placeholder="Curb Side Pickup" style={{marginTop: "1.5mm"}}/> 
@@ -75,7 +76,7 @@ render (){
 
                     </p> </div>
                     <div class='col-xs-3' style={{marginLeft: "10px", marginTop:"1cm"}}>
-                    <h7 style={{color:'gray'}}> Delivery Status</h7>
+                    <h9 style={{color:'gray'}}> Delivery Status</h9>
                     <hr />
                     <p>   
                     <Row style={{marginLeft:"0mm"}}>
@@ -95,7 +96,7 @@ render (){
                     <p style={{marginTop:"0mm", marginLeft:"1mm"}}> Picked up</p>
                     </Row>
                     </p>
-                </div>
+                </div> */}
                 </Col>
                 
                 <div class='col-xs-2' style={{textAlign: "left", height: "100%", borderLeft: "1px solid #e6e6e6", marginTop:"0.85cm", marginLeft: "1.2cm"}}>
@@ -112,9 +113,10 @@ render (){
         basket = (
         <div class='row' style={{ marginLeft:"10px", marginTop:"2cm"}}>
         <Col xs="1.5mm">
-     <div class='col-xs-3' style={{marginLeft: "10px", marginTop:"1cm"}}>
-         <h7 style={{color:'gray'}}> Filters</h7>
-         <hr />
+     {/* <div class='col-xs-3' style={{marginLeft: "10px", marginTop:"1cm"}}>
+     <h6 style={{color:'gray', fontWeight:"bold"}}> Filters</h6> <br />
+                        <h9 style={{color:'gray'}}> Order Type</h9>
+                        <hr />
          <p>
          <Row style={{marginLeft:"0mm"}}>
          <input onChange = {this.pickup} type="checkbox" name="pickup" placeholder="Curb Side Pickup" style={{marginTop: "1.5mm"}}/> 
@@ -127,7 +129,7 @@ render (){
 
          </p> </div>
          <div class='col-xs-3' style={{marginLeft: "10px", marginTop:"1cm"}}>
-         <h7 style={{color:'gray'}}> Delivery Status</h7>
+         <h9 style={{color:'gray'}}> Delivery Status</h9>
          <hr />
          <p>   
          <Row style={{marginLeft:"0mm"}}>
@@ -147,7 +149,7 @@ render (){
          <p style={{marginTop:"0mm", marginLeft:"1mm"}}> Picked up</p>
          </Row>
          </p>
-     </div>
+     </div> */}
      </Col>
      
      <div class='col-xs-2' style={{textAlign: "left", height: "100%", borderLeft: "1px solid #e6e6e6", marginTop:"0.85cm", marginLeft: "1.2cm"}}>

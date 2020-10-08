@@ -8,14 +8,14 @@ class HistoryCard extends Component {
 render() {
     return (
 <div>
-<Card bg="white" style={{ width: "50rem", margin: "2%", height:"12rem" }}>
+<Card bg="white" style={{ width: "50rem", margin: "2%", height:"15rem" }}>
         <Row>
           <Col xs="4.5">
-            <Card.Img style={{marginLeft:"4mm", width: "15rem", height: "12em" }} src="" />
+            <Card.Img style={{marginLeft:"4mm", width: "15rem", height: "15em" }} src="" />
           </Col>
           <Col align="left" style={{marginLeft:"0mm"}}>
             <Card.Body>
-              {/* <Card.Title>{this.props.order_history.name}</Card.Title> */}
+            <Card.Title>Order No - {this.props.order_history.idorderhistory}</Card.Title>
               <Card.Text><p><FontAwesomeIcon icon={faBuilding} /> <span style={{fontWeight:"bold"}}> Ordered From: </span> <span style={{textTransform: "uppercase"}}>{this.props.order_history.name}</span> </p></Card.Text>
               <Card.Text><FontAwesomeIcon icon={faCar} /> <span style={{fontWeight:"bold"}}> Order Type: </span> <span style={{textTransform: "uppercase"}}> <i>{this.props.order_history.ordertype}</i></span></Card.Text>
               <Card.Text><FontAwesomeIcon icon={faHourglass} /><span style={{fontWeight:"bold"}}> Order Status: </span> <span style={{textTransform: "uppercase"}}> <i>{this.props.order_history.orderstatus}</i></span></Card.Text>

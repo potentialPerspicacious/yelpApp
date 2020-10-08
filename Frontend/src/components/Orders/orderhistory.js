@@ -3,7 +3,7 @@ import '../../App.css';
 import cookie from 'react-cookies';
 import {Redirect} from 'react-router';
 import axios from 'axios';
-import {Row, Col} from 'react-bootstrap'
+import {Row, Col, Button} from 'react-bootstrap'
 import logo from '../../images/logo.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch, faNewspaper, faIdCard } from "@fortawesome/free-solid-svg-icons";
@@ -13,8 +13,9 @@ class CorderHistory extends Component {
     constructor(props) {
       super(props);
       this.state = {
-          status: {
-          },
+          status: {},
+          value: "no_filter",
+          checked: {},
           order_history: []
       
       };
@@ -23,12 +24,25 @@ class CorderHistory extends Component {
   }  
 
   getOrderHistory = () => {
+    if(localStorage.getItem("filter") !=='no_filter'){
+        axios.get(`http://localhost:3001/customer/orderHistoryFilter/${localStorage.getItem("user_id")}/${localStorage.getItem("filter")}`)
+        .then(response => {
+                this.setState({
+                    order_history: this.state.order_history.concat(response.data),
+                    status: (response.data[0].STATUS),
+                    checked: (response.data[0].filter)
+                });
+        })
+    } else {
     axios.get(`http://localhost:3001/customer/orderHistory/${localStorage.getItem("user_id")}`)
     .then(response => {
             this.setState({
-                order_history: this.state.order_history.concat(response.data)
+                order_history: this.state.order_history.concat(response.data),
+                status: (response.data[0].STATUS),
+
             });
     })
+}
     }
     orderHistory = () => {
         var itemsRender = [], items, item;
@@ -43,15 +57,31 @@ class CorderHistory extends Component {
             return itemsRender;
         }
     }
+    orderStatus = (e) => {
+        this.setState({value: e.target.value});
+        window.location = '/orderhistory'
+        // console.log(value)
+    }
+    clearFilters = (e) => {
+        localStorage.setItem("filter", 'no_filter')
+        window.location = '/orderhistory'
+    
+    }
+    
     render (){
         let navSearch = null,
         section,
         renderOutput = [];
-        if (this.state && this.state.order_history && this.state.order_history.length > 0) {
-            section = this.orderHistory(this.state.order_history);
-            renderOutput.push(section);
-                }
-            navSearch = (
+        if (this.state.status === "ITEM_PRESENT"){
+            if (this.state && this.state.order_history && this.state.order_history.length > 0) {
+                section = this.orderHistory(this.state.order_history);
+                renderOutput.push(section);
+                    }
+            } else if (this.state.status === "ITEM_NOT_PRESENT"){
+                renderOutput.push (<div> <p style={{color:"red"}}> No filtered Items. </p></div>)
+            }
+        localStorage.setItem("filter", this.state.value)
+        navSearch = (
                 <div>
                 <nav class="navbar navbar-expand-lg">
                 <a class="navbar-brand" href="/">
@@ -85,39 +115,48 @@ class CorderHistory extends Component {
                 {navSearch}
                 <div>
                <div class='row' style={{ marginLeft:"10px", marginTop:"2cm"}}>
-                       <Col xs="1.5mm">
+               <Col xs="1.5mm">
                     <div class='col-xs-3' style={{marginLeft: "10px", marginTop:"1cm"}}>
-                        <h7 style={{color:'gray'}}> Filters</h7>
+                    <h6> <span style={{color:'gray', fontWeight:"bold"}}>Filters</span> <Button style={{color:"red"}} onClick={this.clearFilters} variant="link"><span style={{fontSize:"small", marginLeft:"20mm"}}>clear filters</span></Button> </h6>  <br />
+                        <h9 style={{color:'gray'}}> Order Type</h9>
                         <hr />
                         <p>
                         <Row style={{marginLeft:"0mm"}}>
-                        <input onChange = {this.pickup} type="checkbox" name="pickup" placeholder="Curb Side Pickup" style={{marginTop: "1.5mm"}}/> 
+                        <input onChange = {this.orderStatus} id="or" type="radio" name="orderstatus" value="order recieved" placeholder="Curb Side Pickup" style={{marginTop: "1.5mm"}} checked={this.state.checked === 'order recieved'}/> 
                         <p style={{marginTop:"0mm", marginLeft:"1mm"}}> Order Received </p>
                         </Row>
                         <Row style={{marginLeft:"0mm"}}>
-                        <input onChange = {this.dine} type="checkbox" name="dine" placeholder="Dine In" style={{marginTop: "1.5mm"}}/> 
+                        <input onChange = {this.orderStatus} id="prp" type="radio" name="orderstatus" value="preparing" placeholder="Dine In" style={{marginTop: "1.5mm"}} checked={this.state.checked === 'preparing'}/> 
                         <p style={{marginTop:"0mm", marginLeft:"1mm"}}> Preparing </p>
+                        </Row>
+                        <Row style={{marginLeft:"0mm"}}>
+                        <input onChange = {this.orderStatus} id="no" type="radio" name="orderstatus" value="new order" placeholder="Dine In" style={{marginTop: "1.5mm"}} checked={this.state.checked === 'new order'}/> 
+                        <p style={{marginTop:"0mm", marginLeft:"1mm"}}> New Orders </p>
+                        </Row>
+                        <Row style={{marginLeft:"0mm"}}>
+                        <input onChange = {this.orderStatus} id="co" type="radio" name="orderstatus" value="cancelled order" placeholder="Dine In" style={{marginTop: "1.5mm"}} checked={this.state.checked === 'cancelled order'}/> 
+                        <p style={{marginTop:"0mm", marginLeft:"1mm"}}> Cancelled Orders </p>
                         </Row>
     
                         </p> </div>
                         <div class='col-xs-3' style={{marginLeft: "10px", marginTop:"1cm"}}>
-                        <h7 style={{color:'gray'}}> Delivery Status</h7>
+                        <h9 style={{color:'gray'}}> Delivery Status</h9>
                         <hr />
                         <p>   
                         <Row style={{marginLeft:"0mm"}}>
-                        <input onChange = {this.loc1} type="checkbox" name="pickup" placeholder="Curb Side Pickup" style={{marginTop: "1.5mm"}}/> 
+                        <input onChange = {this.orderStatus} id="clear" type="radio"  name="orderstatus" value="onthe way" placeholder="Curb Side Pickup" style={{marginTop: "1.5mm"}} checked={this.state.checked === 'on the way'}/> 
                         <p style={{marginTop:"0mm", marginLeft:"1mm"}}> On the Way </p>
                         </Row>
                         <Row style={{marginLeft:"0mm"}}>
-                        <input onChange = {this.loc2} type="checkbox" name="dine" placeholder="Dine In" style={{marginTop: "1.5mm"}}/> 
+                        <input onChange = {this.orderStatus} id="clear" type="radio" name="orderstatus" value="delivered" placeholder="Dine In" style={{marginTop: "1.5mm"}} checked={this.state.checked === 'delivered'}/> 
                         <p style={{marginTop:"0mm", marginLeft:"1mm"}}> Delivered </p>
                         </Row>
                         <Row style={{marginLeft:"0mm"}}>
-                        <input onChange = {this.loc3} type="checkbox" name="delivery" placeholder="yelp delivery" style={{marginTop: "1.5mm"}}/> 
+                        <input onChange = {this.orderStatus} id="clear" type="radio" name="orderstatus" value="pickup ready" placeholder="yelp delivery" style={{marginTop: "1.5mm"}} checked={this.state.checked === 'pickup ready'}/> 
                         <p style={{marginTop:"0mm", marginLeft:"1mm"}}> Pick up ready </p>
                         </Row>
                         <Row style={{marginLeft:"0mm"}}>
-                        <input onChange = {this.loc3} type="checkbox" name="delivery" placeholder="yelp delivery" style={{marginTop: "1.5mm"}}/> 
+                        <input onChange = {this.orderStatus} id="clear" type="radio" name="orderstatus" value="picked up" placeholder="yelp delivery" style={{marginTop: "1.5mm"}} checked={this.state.checked === 'picked up'}/> 
                         <p style={{marginTop:"0mm", marginLeft:"1mm"}}> Picked up</p>
                         </Row>
                         </p>

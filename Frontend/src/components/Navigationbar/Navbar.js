@@ -6,7 +6,7 @@ import { userLogout } from '../../actions/login'
 import { connect } from 'react-redux';
 import logo from '../../images/logo.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSignInAlt, faUserPlus } from "@fortawesome/free-solid-svg-icons";
+import { faCalendarPlus, faSignInAlt, faUserPlus } from "@fortawesome/free-solid-svg-icons";
 import { faSearch, faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
 
 
@@ -43,12 +43,14 @@ class Navbar extends Component {
                        {/* <FontAwesomeIcon icon={faSearchLocation} /> */}
                            <input onChange = {this.onChange}  type="search" class="form-control hsloc" name="location" placeholder="Location" style={{color:"black"}}/>
                        </div>
-                       <div class="form-group col-md-3">
+                       <div class="form-group col-md-1">
                        <button class="btn btn-primary hsb" type="submit"> <FontAwesomeIcon icon={faSearch} />
                               </button></div>
-
+                              <li class="nav-item">
+                        <a class="nav-link navtext2" style={{marginLeft:"5cm"}}  href="/addevent"><FontAwesomeIcon className="signico" icon={faCalendarPlus} /> Add Events</a>
+                          </li>
                           <li class="nav-item">
-                        <a class="nav-link navtext2"  href="/login" onClick = {this.handleLogout}><FontAwesomeIcon className="signico" icon={faSignOutAlt} /> Logout</a>
+                        <a class="nav-link navtext3" href="/login" onClick = {this.handleLogout}><FontAwesomeIcon className="signico" icon={faSignOutAlt} /> Logout</a>
                           </li>
           </nav>
           </div>
