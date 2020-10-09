@@ -8,6 +8,7 @@ import logo from '../../images/logo.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch, faNewspaper, faIdCard } from "@fortawesome/free-solid-svg-icons";
 import ResCard from './resCard'
+import Maps from '../Maps/maps'
 
 class Csearch extends Component {
    constructor (props) {
@@ -16,6 +17,7 @@ class Csearch extends Component {
         restaurant_search: [],
         status: {},
         value: "no_filter",
+        mapsFilter: "no_filter",
         checked: {}
 
     }
@@ -63,11 +65,15 @@ restaurants = () => {
    }
    orderStatus = (e) => {
     this.setState({value: e.target.value});
+    localStorage.setItem("mapsFilter", e.target.value)
+
     window.location = '/csearch'
     // console.log(value)
 }
 clearFilters = (e) => {
     localStorage.setItem("filter", 'no_filter')
+    localStorage.setItem("mapsFilter", 'no_filter')
+
     window.location = '/csearch'
 
 }
@@ -106,7 +112,6 @@ clearFilters = (e) => {
   </div>
 
     );
-    console.log(this.state.status)
     if (this.state.status === "ITEM_PRESENT"){
         if (this.state && this.state.restaurant_search && this.state.restaurant_search.length > 0) {
             section = this.restaurants(this.state.restaurant_search);
@@ -167,10 +172,11 @@ clearFilters = (e) => {
                 
                     </div>
                 </div>
-                <div class='col-xs-1' style={{textAlign: "left", height: "100%", borderLeft: "1px solid #e6e6e6", marginTop:"0.85cm", marginLeft: "1.5cm", float:"right"}}>
+                <div class='col-xl-1' style={{width:"100px", textAlign: "left", height: "100%", borderLeft: "1px solid #e6e6e6", marginTop:"0.85cm", marginLeft: "1.5cm", float:"right"}}>
                     <div style={{marginLeft: "10px"}}>
                         <h4 style={{color:'Gray'}}> Maps</h4>
                         <hr />
+                        <Maps />
                 
                     </div>
                 </div>

@@ -88,7 +88,7 @@ componentWillMount() {
         let message = this.state.msg
         if(message == 'USER_UPDATED'){
             success.message = 'Successfully updated the user.'
-            setTimeout(function() {window.location = '/cprofile'}, 3000);
+            setTimeout(function() {window.location = '/cprofile'}, 800);
         }
         return(
             <div>

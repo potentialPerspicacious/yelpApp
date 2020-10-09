@@ -3,8 +3,10 @@ const router = express.Router();
 const db = require('../db.js');
 
 router.post('/editProfile/:user_id', (req, res) => {
+  console.log(req.params.user_id)
     let sql = `CALL Restaurant_Update_BasicProfile('${req.params.user_id}', '${req.body.rname}', '${req.body.email}', '${req.body.zipcode}', '${req.body.location}', '${req.body.contact}', '${req.body.cusine}', '${req.body.description}', '${req.body.timings}', '${req.body.dinein}', '${req.body.takeout}', '${req.body.ydelivery}');`;
     db.query(sql, (err, result) => {
+      console.log(result)
       if (err) {
         res.end("Error in Data");
       }
@@ -78,6 +80,16 @@ router.post('/editProfile/:user_id', (req, res) => {
   });
   router.get('/getEvents/:resID/', (req, res) => {
     let sql = `CALL get_events('${req.params.resID}')`;
+    db.query(sql, (err, result) => {  
+            if (err) {
+        res.end("Error in Data");
+      } else {
+        res.end(JSON.stringify(result[0]));
+      }
+    });
+  });
+  router.get('/getRegisteredPeople/:eventID/', (req, res) => {
+    let sql = `CALL getRegisteredPeople('${req.params.eventID}')`;
     db.query(sql, (err, result) => {  
             if (err) {
         res.end("Error in Data");

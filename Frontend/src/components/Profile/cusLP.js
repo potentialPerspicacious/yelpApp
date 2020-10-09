@@ -6,12 +6,14 @@ import logo from '../../images/logo.png';
 import {Link} from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch, faIdCard, faSignOutAlt, faClock } from "@fortawesome/free-solid-svg-icons";
-
+import Geocode from "react-geocode";
+ 
 
 class CusLP extends Component {
   constructor (props) {
     super(props);
     this.state= {
+      message:"false",
 
     }
   }
@@ -34,9 +36,29 @@ class CusLP extends Component {
         localStorage.setItem("location", this.state.location)
         localStorage.setItem("status", "item_not_present")
         localStorage.setItem("filter", "no_filter")
-        window.location = '/csearch'
+        localStorage.setItem("mapsFilter", "no_filter")
+        Geocode.setApiKey("AIzaSyBb6kf0iPAJGUKRKRW8bXU85u4RNuhSja0");     
+        Geocode.setLanguage("en");
+        Geocode.setRegion("en");
+        Geocode.enableDebug();
+        Geocode.fromAddress(this.state.location).then(
+            response => {
+              const { lat, lng } = response.results[0].geometry.location;
+              console.log(lat, lng)
+              localStorage.setItem('lat', lat)
+              localStorage.setItem('lng', lng)
+            },
+          );
+          setTimeout(function() {window.location = '/csearch'}, 1500);
       }
     }
+    handleEvents=()=>{
+    this.setState({message: "true"})
+    }
+
+    handleReview=()=> {
+      this.setState({message: "true"})
+      }
     render() {
         let redirectVar = null;
         if(cookie.load('cookie')){
@@ -44,15 +66,23 @@ class CusLP extends Component {
         } else {
             redirectVar = <Redirect to = "/"/>
         }
+        let error = {
+          message: null
+        }
+        if(this.state.message === "true"){
+          error.message = 'Please search using location or find tab to proceed.'
+          setTimeout(function() {window.location = '/chome'}, 3000);
+        }
+
         return(
             <div className="bg">
 
 <nav class="navbar navbar-expand-lg navposl navpad">
                           <li class="nav-item">
-                        <a class="nav-link navtext" href="/write-review">Write a Review</a>
+                        <a class="nav-link navtext" href='/' onClick={this.handleReview} >Write a Review</a>
                           </li>
                           <li class="nav-item">
-                        <a class="nav-link navtext" href="/events">Events</a>
+                        <a class="nav-link navtext" href="/viewcevents">Events</a>
                           </li>
 
                           <li class="nav-item">
@@ -83,6 +113,13 @@ class CusLP extends Component {
                        <div class="form-group col-md-3">
                        <button class="btn btn-primary ssb" type="submit" onClick = {this.cSearch}> <FontAwesomeIcon icon={faSearch} />
                               </button></div>
+                              <br />
+                              <br /> <span style={{marginLeft:"6.5cm"}}>
+                              {error.message && <div className='alert alert-danger'>{error.message}</div>}
+
+                              </span>
+
+
                        </div>
             </div>
       

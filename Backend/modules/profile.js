@@ -21,7 +21,7 @@ router.get('/restaurant/:user_id', (req, res) => {
   });
 
   router.get('/customer/:user_id', (req, res) => {
-    let sql = `CALL Customer_Profile_get('${req.params.user_id}', NULL, NULL);`;
+    let sql = `CALL Customer_Profile_get('${req.params.user_id}');`;
     db.query(sql, (err, result) => {
       if (err) {
         res.writeHead(500, {

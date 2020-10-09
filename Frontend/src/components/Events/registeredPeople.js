@@ -1,38 +1,38 @@
 import React, { Component } from "react";
 import axios from "axios";
-import EventsCard from "./eventsCard";
+import RegisteredCard from "./registerCard";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch, faIdCard, faCalendarPlus } from "@fortawesome/free-solid-svg-icons";
 import logo from '../../images/logo.png';
 
 
-class Events extends Component {
+class RegisteredPeople extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            event_items: [],
+            get_people: [],
             status: {}
         };
 
-        this.events = this.events.bind(this);
-        this.getEvents();
+        this.people = this.people.bind(this);
+        this.getPeople();
     }
 
 
-    getEvents = () => {
+    getPeople = () => {
         if (localStorage.getItem("isOwner")==='on'){
-        axios.get(`http://localhost:3001/restaurant/getEvents/${localStorage.getItem("user_id")}`)
+        axios.get(`http://localhost:3001/restaurant/getRegisteredPeople/${localStorage.getItem("eventid")}`)
             .then(response => {
                     this.setState({
-                        event_items: this.state.event_items.concat(response.data),
+                        get_people: this.state.get_people.concat(response.data),
                         status: (response.data[0].STATUS)
                     });
             })
         } else {
-            axios.get(`http://localhost:3001/restaurant/getEvents/${localStorage.getItem("resID")}`)
+            axios.get(`http://localhost:3001/restaurant/getRegisteredPeople/${localStorage.getItem("eventid")}`)
             .then(response => {
                     this.setState({
-                        event_items: this.state.event_items.concat(response.data),
+                        get_people: this.state.get_people.concat(response.data),
                         status: (response.data[0].STATUS)
 
                     });
@@ -41,13 +41,13 @@ class Events extends Component {
         }
     };
 
-    events = () => {
+    people = () => {
         var itemsRender = [], items, item;
-        if (this.state && this.state.event_items && this.state.event_items.length > 0) {
-            items = this.state.event_items
+        if (this.state && this.state.get_people && this.state.get_people.length > 0) {
+            items = this.state.get_people
             if (items.length > 0) {
                 for (var i = 0; i < items.length; i++) {
-                    item = <EventsCard event_items={items[i]}/>;
+                    item = <RegisteredCard get_people={items[i]}/>;
                     itemsRender.push(item);
                 }
             }
@@ -55,24 +55,18 @@ class Events extends Component {
         }
     };
     render() {
-        let message = null,
-        navSearch = null,
-        title = null,
+        let navSearch = null,
             section,
             renderOutput = [];
-        
-        if (this.state.status === 'EVENTS_PRESENT') {
-            if (this.state && this.state.event_items && this.state.event_items.length > 0) {
-                section = this.events(this.state.event_items);
+        console.log(this.state.status)
+        if (this.state.status === 'PEOPLE_PRESENT') {
+            if (this.state && this.state.get_people && this.state.get_people.length > 0) {
+                section = this.people(this.state.get_people);
                 renderOutput.push(section);
                     }
         } else {
-            renderOutput.push(<div><span> <p style={{color:'red'}}> No Events.</p></span></div>)
+            renderOutput.push(<div><span> <p style={{color:'red'}}> No Registrations.</p></span></div>)
         }
-        if(localStorage.getItem("isOwner")==="on"){
-            title = ( <p>Your Events</p>)
-        } else 
-        title = (<p>Events for you</p>)
         navSearch = (
             <div>
             <nav class="navbar navbar-expand-lg">
@@ -109,7 +103,7 @@ class Events extends Component {
            <div class='row' style={{ marginLeft:"30px", marginTop:"2cm"}}>
                 <div class='col-xs-2' style={{textAlign: "left", height: "100%", borderLeft: "1px solid #e6e6e6", marginTop:"0.85cm", marginLeft: "0cm"}}>
                     <div style={{marginLeft: "20px"}}>
-                        <h4 style={{color:'red'}}> {title}</h4>
+                        <h4 style={{color:'red'}}> People Registered</h4>
                         <hr />
                         {renderOutput}
                        {/* <p style={{color:"red", align:"center"}}> Please Add Items to Shopping Bag Before Proceeding</p>            */}
@@ -124,4 +118,4 @@ class Events extends Component {
     }
 }
 
-export default Events;
+export default RegisteredPeople;

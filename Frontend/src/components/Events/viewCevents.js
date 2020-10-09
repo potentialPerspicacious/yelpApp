@@ -1,44 +1,49 @@
 import React, { Component } from "react";
 import axios from "axios";
+import cookie from 'react-cookies'; 
 import EventsCard from "./eventsCard";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch, faIdCard, faCalendarPlus } from "@fortawesome/free-solid-svg-icons";
 import logo from '../../images/logo.png';
 
 
-class Events extends Component {
+class CEvents extends Component {
     constructor(props) {
         super(props);
         this.state = {
             event_items: [],
-            status: {}
+            status: {}, 
         };
 
         this.events = this.events.bind(this);
         this.getEvents();
     }
 
-
-    getEvents = () => {
-        if (localStorage.getItem("isOwner")==='on'){
-        axios.get(`http://localhost:3001/restaurant/getEvents/${localStorage.getItem("user_id")}`)
-            .then(response => {
-                    this.setState({
-                        event_items: this.state.event_items.concat(response.data),
-                        status: (response.data[0].STATUS)
-                    });
-            })
-        } else {
-            axios.get(`http://localhost:3001/restaurant/getEvents/${localStorage.getItem("resID")}`)
-            .then(response => {
-                    this.setState({
-                        event_items: this.state.event_items.concat(response.data),
-                        status: (response.data[0].STATUS)
-
-                    });
-            })
-
+    onChange = (e) => {
+        this.setState({
+            [e.target.name]: e.target.value
+        })
+    }
+    eventSearch = () => {
+        if (cookie.load('cookie')){
+          localStorage.setItem("find", this.state.find)
+          localStorage.setItem("location", this.state.location)
+          window.location = '/viewcevents'
         }
+      }
+    getEvents = () => {
+        const data = {
+            find: this.state.find,
+            location: this.state.location
+        }
+        console.log(data)
+        axios.get(`http://localhost:3001/customer/getCEvents/${localStorage.getItem('find')}/${localStorage.getItem('location')}`)
+            .then(response => {
+                    this.setState({
+                        event_items: this.state.event_items.concat(response.data),
+                        status: (response.data[0].STATUS)
+                    });
+            })
     };
 
     events = () => {
@@ -57,22 +62,17 @@ class Events extends Component {
     render() {
         let message = null,
         navSearch = null,
-        title = null,
             section,
             renderOutput = [];
-        
+        console.log(this.state.status)
         if (this.state.status === 'EVENTS_PRESENT') {
             if (this.state && this.state.event_items && this.state.event_items.length > 0) {
                 section = this.events(this.state.event_items);
                 renderOutput.push(section);
                     }
         } else {
-            renderOutput.push(<div><span> <p style={{color:'red'}}> No Events.</p></span></div>)
+            renderOutput.push(<div><span> <p style={{color:'red'}}> Search Events. Either enter location or event name.</p></span></div>)
         }
-        if(localStorage.getItem("isOwner")==="on"){
-            title = ( <p>Your Events</p>)
-        } else 
-        title = (<p>Events for you</p>)
         navSearch = (
             <div>
             <nav class="navbar navbar-expand-lg">
@@ -81,19 +81,19 @@ class Events extends Component {
           </a>
                    <div class="form-group col-md-3">
                    {/* <FontAwesomeIcon icon={faBuilding} /> */}
-                       <input onChange = {this.onChange} type="search" class="form-control hsearch" name="find" placeholder="Restaurant" style={{color:"black"}}/>
+                       <input onChange = {this.onChange} type="search" class="form-control hsearch" name="find" placeholder="Restaurant, Events, Dishes..." style={{color:"black"}}/>
                    </div>
     
                    <div class="form-group col-md-3">
                    {/* <FontAwesomeIcon icon={faSearchLocation} /> */}
-                       <input onChange = {this.onChange}  type="search" class="form-control hsloc" name="location" placeholder="Location" style={{color:"black"}}/>
+                       <input onChange = {this.onChange}  type="search" class="form-control hsloc" name="location" placeholder="Where?" style={{color:"black"}}/>
                    </div>
                    <div class="form-group col-md-1">
-                   <button class="btn btn-primary hsb" type="submit"> <FontAwesomeIcon icon={faSearch} />
+                   <button class="btn btn-primary hsb" onClick={this.eventSearch}  type="submit"> <FontAwesomeIcon icon={faSearch} />
                           </button></div>
     
                       <li class="nav-item">
-                    <a class="nav-link navtext3" style={{marginLeft:"4.3cm"}}  href="/addevent" ><FontAwesomeIcon className="signico" icon={faCalendarPlus} /> Add Events</a>
+                    <a class="nav-link navtext3" style={{marginLeft:"4.3cm"}}  href="/yourevents" ><FontAwesomeIcon className="signico" icon={faCalendarPlus} /> Your Events</a>
                       </li>
                       <li class="nav-item">
                     <a class="nav-link navtext3"  href="/rhome" ><FontAwesomeIcon className="signico" icon={faIdCard} /> Profile</a>
@@ -109,7 +109,7 @@ class Events extends Component {
            <div class='row' style={{ marginLeft:"30px", marginTop:"2cm"}}>
                 <div class='col-xs-2' style={{textAlign: "left", height: "100%", borderLeft: "1px solid #e6e6e6", marginTop:"0.85cm", marginLeft: "0cm"}}>
                     <div style={{marginLeft: "20px"}}>
-                        <h4 style={{color:'red'}}> {title}</h4>
+                        <h4 style={{color:'red'}}> Events Around You</h4>
                         <hr />
                         {renderOutput}
                        {/* <p style={{color:"red", align:"center"}}> Please Add Items to Shopping Bag Before Proceeding</p>            */}
@@ -124,4 +124,4 @@ class Events extends Component {
     }
 }
 
-export default Events;
+export default CEvents;

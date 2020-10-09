@@ -20,6 +20,9 @@ import Creview from './Reviews/creviews';
 import AddEvent from './Events/addevent';
 import Share from './Share/share';
 import Events from './Events/viewEvents';
+import CEvents from './Events/viewCevents'
+import RegisteredPeople from './Events/registeredPeople';
+import Maps from './Maps/maps';
 
 //Create a Main Component
 class Main extends Component {
@@ -47,6 +50,12 @@ class Main extends Component {
                 <Route exact path="/addevent" component={AddEvent}/>
                 <Route exact path="/share" component={Share}/>
                 <Route exact path="/viewevents" component={Events}/>
+                <Route exact path="/viewcevents" component={CEvents}/>
+                <Route exact path="/registeredPeople" component={RegisteredPeople}/>
+                <Route exact path="/maps" component={Maps}/>
+
+
+
 
 
 
