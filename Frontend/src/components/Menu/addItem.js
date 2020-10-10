@@ -8,6 +8,7 @@ import PropTypes from 'prop-types'
 import {restaurantSignup} from '../../actions/signup'
 import meunImage from '../../images/menubg2.jpg'
 import ImageUploader from 'react-images-upload';
+import {Button} from 'react-bootstrap'
 import axios from 'axios';
 
 
@@ -16,6 +17,8 @@ class AddItem extends Component {
         super(props);
         this.state = {
             msg: {},
+            pictures: [],
+            image: {}
         };
     }
 
@@ -35,7 +38,8 @@ class AddItem extends Component {
             category: this.state.category,
             ingredients: this.state.ingredients,
             description: this.state.description,
-            price: this.state.price
+            price: this.state.price,
+            image: localStorage.getItem("image")
         }
         axios.post(`http://localhost:3001/menu/addItem`, data)
         .then(response => {
@@ -54,6 +58,40 @@ class AddItem extends Component {
     goBack= () => {
         window.location = '/rhome'
    }
+   onImageChange = (e) => {
+    this.setState({
+        pictures: this.state.pictures.concat(e),
+
+    });
+}
+onImageChange = (e) => {
+    this.setState({
+        pictures: this.state.pictures.concat(e),
+
+    });
+}
+onUpload = (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("image", this.state.pictures[0]);
+    const uploadConfig = {
+        headers: {
+            "content-type": "multipart/form-data"
+        }
+    };
+    axios.post(`http://localhost:3001/uploads/items/${localStorage.getItem("dishID")}`, formData, uploadConfig)
+        .then(response => {
+            localStorage.setItem("image", response.data)
+            alert("Image uploaded successfully!");
+            this.setState({
+                fileText: "Choose file...",
+                image: (response.data)
+            });
+        })
+        .catch(err => {
+            console.log("Error");
+        });
+}
 
     render(){
         let message = this.state.msg
@@ -71,10 +109,10 @@ class AddItem extends Component {
         }
         if(message == 'ITEM_ADDED'){
             success.message = 'Successfully added the new dish.'
-            setTimeout(function() {window.location = '/rhome'}, 5000);
+            setTimeout(function() {window.location = '/rhome'}, 1000);
         } else if (message == 'ITEM_EXISTS'){
             error.message = 'Dish already exists please add a different one.'
-            setTimeout(function() {window.location = '/menu/addItem'}, 1500);
+            setTimeout(function() {window.location = '/menu/addItem'}, 1000);
         }
         return(
             <div>
@@ -86,16 +124,25 @@ class AddItem extends Component {
                        <h2>Add a New Menu Item</h2>
                        <br />
                    </div>
+                   <center>
                    <div class="form-group">
                        <label class="label-form"> Upload your dish image</label>
-                       <br />
-                       <ImageUploader
+ <form onSubmit={this.onUpload}><br />
+                                    <div class="custom-file" style={{width: "80%"}}>
+                                    <ImageUploader
                 withIcon={true}
                 buttonText='Choose an image'
-                onChange={this.onDrop}
+                onChange={this.onImageChange}
                 imgExtension={['.jpg', '.gif', '.png', '.gif']}
                 maxFileSize={5242880}
-            /> </div>
+                name='image'
+                singleImage={true}
+            />                                    
+            </div><br/><br/><br /><br /><br/>
+                                    <Button variant='link' type="submit">Upload</Button>
+                                </form>
+            
+                       </div></center>
                    <div class="row">
                        <div class="form-group col-md-6">
                        <label class="label-form"> Enter dish name</label>

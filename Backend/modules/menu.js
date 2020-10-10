@@ -4,7 +4,7 @@ const passwordHash = require('password-hash');
 const db = require('../db.js');
 
 router.post('/addItem', (req, res) => {
-    let sql = `CALL add_item('${(req.body.user_id)}','${req.body.dishname}', '${req.body.category}', '${req.body.ingredients}', '${req.body.description}', '${req.body.price}');`;
+    let sql = `CALL add_item('${(req.body.user_id)}','${req.body.dishname}', '${req.body.category}', '${req.body.ingredients}', '${req.body.description}', '${req.body.price}', '${req.body.image}');`;
     db.query(sql, (err, result) => {
       if (err) {
         res.end("Error in Data");

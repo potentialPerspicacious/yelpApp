@@ -3,10 +3,8 @@ const router = express.Router();
 const db = require('../db.js');
 
 router.post('/editProfile/:user_id', (req, res) => {
-  console.log(req.params.user_id)
     let sql = `CALL Restaurant_Update_BasicProfile('${req.params.user_id}', '${req.body.rname}', '${req.body.email}', '${req.body.zipcode}', '${req.body.location}', '${req.body.contact}', '${req.body.cusine}', '${req.body.description}', '${req.body.timings}', '${req.body.dinein}', '${req.body.takeout}', '${req.body.ydelivery}');`;
     db.query(sql, (err, result) => {
-      console.log(result)
       if (err) {
         res.end("Error in Data");
       }
@@ -48,7 +46,7 @@ router.post('/editProfile/:user_id', (req, res) => {
     });
   });
   router.post('/review/:user_id/:resID', (req, res) => {
-    let sql = `CALL add_review('${req.params.user_id}', '${req.params.resID}', '${req.body.reviews}');`;
+    let sql = `CALL add_review('${req.params.user_id}', '${req.params.resID}', '${req.body.reviews}', '${req.body.rating}');`;
     db.query(sql, (err, result) => {
       if (err) {
         res.end("Error in Data");

@@ -28,7 +28,7 @@ class Csearch extends Component {
    getRestaurants = () => {
 
     if(localStorage.getItem("filter") !=='no_filter'){
-        axios.get(`http://localhost:3001/search/restaurantsFilter/${localStorage.getItem("find")}/${localStorage.getItem("location")}/${localStorage.getItem("filter")}`)
+        axios.get(`http://localhost:3001/search/restaurantsFilter/${localStorage.getItem("find")}/${localStorage.getItem("location")}/${localStorage.getItem("filter")}/${localStorage.getItem("search")}`)
         .then(response => {
                 this.setState({
                     restaurant_search: this.state.restaurant_search.concat(response.data),
@@ -37,7 +37,7 @@ class Csearch extends Component {
                 });
         })
     } else {
-    axios.get(`http://localhost:3001/search/restaurants/${localStorage.getItem("find")}/${localStorage.getItem("location")}`)
+    axios.get(`http://localhost:3001/search/restaurants/${localStorage.getItem("find")}/${localStorage.getItem("location")}/${localStorage.getItem("search")}`)
         .then(response => {
                 this.setState({
                     restaurant_search: this.state.restaurant_search.concat(response.data),
@@ -91,12 +91,12 @@ clearFilters = (e) => {
       </a>
                <div class="form-group col-md-3">
                {/* <FontAwesomeIcon icon={faBuilding} /> */}
-                   <input onChange = {this.onChange} type="search" class="form-control hsearch" name="find" placeholder="Restaurant" style={{color:"black"}}/>
+                   <input onChange = {this.onChange} type="search" class="form-control hsearch" name="find" placeholder="Restaurant, Dishes, Events..." style={{color:"black"}}/>
                </div>
 
                <div class="form-group col-md-3">
                {/* <FontAwesomeIcon icon={faSearchLocation} /> */}
-                   <input onChange = {this.onChange}  type="search" class="form-control hsloc" name="location" placeholder="Location" style={{color:"black"}}/>
+                   <input onChange = {this.onChange}  type="search" class="form-control hsloc" name="location" placeholder="Where?" style={{color:"black"}}/>
                </div>
                <div class="form-group col-md-1">
                <button class="btn btn-primary hsb" type="submit"> <FontAwesomeIcon icon={faSearch} />

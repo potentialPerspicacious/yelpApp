@@ -33,7 +33,6 @@ class ItemCard extends Component {
 
 
   render() {
-    // let imageSrc = `${backendServer}/grubhub/images/item/${this.props.menu_item.item_image}`;
     let icon = null;
     if (localStorage.getItem("isOwner")==="on"){
       icon = (<Link to={{ pathname: "/menu/editItem"}}>
@@ -44,6 +43,10 @@ class ItemCard extends Component {
     let message = this.state.status
     const success = {
         message: null
+    }
+    var imageSrc;
+    if (this.state) {
+        imageSrc = `http://localhost:3001/images/item/${this.props.menu_item.image}`;
     }
     let details = this.state.dish;
     // console.log(this.props.description)
@@ -56,7 +59,7 @@ class ItemCard extends Component {
       <Card bg="white" style={{ width: "50rem", margin: "2%" }}>
         <Row>
           <Col>
-            <Card.Img style={{ width: "15rem", height: "15rem" }} src="" />
+            <Card.Img style={{ width: "15rem", height: "15rem" }} src={imageSrc} />
           </Col>
           <Col align="left" style={{marginLeft:"0mm"}}>
             <Card.Body>

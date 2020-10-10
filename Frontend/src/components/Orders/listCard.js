@@ -4,12 +4,16 @@ import { Card, Row, Col } from "react-bootstrap";
 
 class ListCard extends Component {
 render() {
+  var imageSrc;
+  if (this.props) {
+      imageSrc = `http://localhost:3001/images/item/${this.props.order_items.image}`;
+  }
     return (
 <div>
 <Card bg="white" style={{ width: "50rem", margin: "2%" }}>
         <Row>
           <Col>
-            <Card.Img style={{ width: "15rem", height: "16em" }} src="" />
+            <Card.Img style={{ width: "15rem", height: "16em" }} src={imageSrc} />
           </Col>
           <Col align="left" style={{marginLeft:"0mm"}}>
             <Card.Body>

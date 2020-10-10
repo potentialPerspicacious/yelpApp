@@ -16,6 +16,10 @@ class ResCard extends Component {
     let dservice=null,
     tkservice = null,
     ydservice = null;
+    var imageSrc;
+    if (this.props) {
+      imageSrc = `http://localhost:3001/images/restaurant/${this.props.restaurant_search.image}`;
+    }
     if(this.props.restaurant_search.dinein === 'dinein'){
       dservice = (<FontAwesomeIcon className="" icon={faCheck} style={{color: "green"}}/>);
   } else {
@@ -28,13 +32,12 @@ class ResCard extends Component {
       ydservice = (<FontAwesomeIcon className="" icon={faCheck} style={{color: "green"}}/>);
   } else {
       ydservice = (<FontAwesomeIcon className="" icon={faTimes} style={{color: "red"}}/>) }
-    // let imageSrc = `${backendServer}/grubhub/images/item/${this.props.menu_item.item_image}`;
     return (
         <Link to="" style={{color:"black", textDecoration: "none"}}>
       <Card bg="white" style={{ width: "50rem", height:"18rem", margin: '2%' }} onClick={this.openmenu}>
         <Row>
           <Col>
-            <Card.Img style={{ width: "25rem", height: "18rem" }} />
+            <Card.Img style={{ width: "25rem", height: "18rem" }} src={imageSrc} />
           </Col>
           <Col align="left" >
             <Card.Body >

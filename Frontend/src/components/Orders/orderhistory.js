@@ -8,6 +8,7 @@ import logo from '../../images/logo.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch, faNewspaper, faIdCard } from "@fortawesome/free-solid-svg-icons";
 import HistoryCard from './historycard'
+import Geocode from "react-geocode";
 
 class CorderHistory extends Component {
     constructor(props) {
@@ -67,7 +68,42 @@ class CorderHistory extends Component {
         window.location = '/orderhistory'
     
     }
-    
+    onChange = (e) => {
+        this.setState({
+            [e.target.name]: e.target.value
+        })
+    }
+  
+      cSearch = () => {
+        if (cookie.load('cookie')){
+          localStorage.setItem("find", this.state.find)
+          localStorage.setItem("location", this.state.location)
+          localStorage.setItem("status", "item_not_present")
+          localStorage.setItem("filter", "no_filter")
+          localStorage.setItem("mapsFilter", "no_filter")
+          localStorage.setItem("search", 'true')
+          Geocode.setApiKey("AIzaSyBb6kf0iPAJGUKRKRW8bXU85u4RNuhSja0");     
+          Geocode.setLanguage("en");
+          Geocode.setRegion("en");
+          Geocode.enableDebug();
+          Geocode.fromAddress(this.state.location).then(
+              response => {
+                const { lat, lng } = response.results[0].geometry.location;
+                console.log(lat, lng)
+                localStorage.setItem('lat', lat)
+                localStorage.setItem('lng', lng)
+              },
+            );
+            setTimeout(function() {window.location = '/csearch'}, 1500);
+        }
+      }
+      handleEvents=()=>{
+      this.setState({message: "true"})
+      }
+  
+      handleReview=()=> {
+        this.setState({message: "true"})
+        }
     render (){
         let navSearch = null,
         section,
@@ -89,15 +125,15 @@ class CorderHistory extends Component {
               </a>
                        <div class="form-group col-md-3">
                        {/* <FontAwesomeIcon icon={faBuilding} /> */}
-                           <input onChange = {this.onChange} type="search" class="form-control hsearch" name="find" placeholder="Restaurant" style={{color:"black"}}/>
+                           <input onChange = {this.onChange} type="search" class="form-control hsearch" name="find" placeholder="Restaurant, Dishes, Events..." style={{color:"black"}}/>
                        </div>
         
                        <div class="form-group col-md-3">
                        {/* <FontAwesomeIcon icon={faSearchLocation} /> */}
-                           <input onChange = {this.onChange}  type="search" class="form-control hsloc" name="location" placeholder="Location" style={{color:"black"}}/>
+                           <input onChange = {this.onChange}  type="search" class="form-control hsloc" name="location" placeholder="Where?" style={{color:"black"}}/>
                        </div>
                        <div class="form-group col-md-1">
-                       <button class="btn btn-primary hsb" type="submit"> <FontAwesomeIcon icon={faSearch} />
+                       <button class="btn btn-primary hsb" onClick={this.cSearch} type="submit"> <FontAwesomeIcon icon={faSearch} />
                               </button></div>
         
                           <li class="nav-item">

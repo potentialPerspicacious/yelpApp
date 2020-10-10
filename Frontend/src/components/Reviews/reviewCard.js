@@ -18,7 +18,14 @@ render() {
               <br />
               <br />
               <Card.Text><small style={{color:"gray"}}>Reviewd by: <span style={{textTransform:"uppercase"}}>
-        {this.props.review_items.fname} </span></small></Card.Text>            </Card.Body>
+        {this.props.review_items.fname} </span></small> 
+        <span style={{marginLeft:"2.5cm"}}>
+          <small style={{color:"gray"}}>
+            Rating: {this.props.review_items.ratings}/5
+          </small>
+        </span>
+        
+        </Card.Text>             </Card.Body>
           </Col>
         </Row>
       </Card>

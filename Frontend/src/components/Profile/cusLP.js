@@ -37,6 +37,7 @@ class CusLP extends Component {
         localStorage.setItem("status", "item_not_present")
         localStorage.setItem("filter", "no_filter")
         localStorage.setItem("mapsFilter", "no_filter")
+        localStorage.setItem("search", 'false')
         Geocode.setApiKey("AIzaSyBb6kf0iPAJGUKRKRW8bXU85u4RNuhSja0");     
         Geocode.setLanguage("en");
         Geocode.setRegion("en");

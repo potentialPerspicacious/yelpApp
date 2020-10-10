@@ -53,7 +53,7 @@ class SignupRestaurant extends Component {
         if(this.props.description == 'USER_ADDED'){
             success.message = 'Successfully added the new user.'
             console.log('Success')
-            setTimeout(function() {window.location = '/login'}, 5000);
+            setTimeout(function() {window.location = '/login'}, 1000);
         } else if (this.props.description == 'USER_EXISTS'){
             error.message = 'User already exists please add a different one.'
             setTimeout(function() {window.location = '/signup-restaurant'}, 1500);

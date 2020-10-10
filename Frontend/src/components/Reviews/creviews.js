@@ -28,6 +28,7 @@ class Creview extends Component {
         e.preventDefault();
         const data = {
             reviews: this.state.reviews,
+            rating: this.state.rating
         }
         axios.post(`/restaurant/review/${localStorage.getItem("user_id")}/${localStorage.getItem("resID")}`, data)
             .then(response => 
@@ -62,6 +63,11 @@ class Creview extends Component {
                         <div class="row">
                         <label class="label-form"> Add review to this restaurant</label>
                                 <input type="text" class="form-control textbox" name="reviews" placeholder="Review" style={{color:"black"}} onChange = {this.onChange}/>
+                            </div>
+                            <br />
+                            <div class="row">
+                        <label class="label-form"> Rate your recent dish</label>
+                                <input type="number" class="form-control textbox" name="rating" placeholder="Rate from 1 - 5" style={{color:"black"}} onChange = {this.onChange}/>
                             </div>
                             <br />
                             <br />

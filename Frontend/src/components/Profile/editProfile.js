@@ -9,6 +9,7 @@ import ImageUploader from 'react-images-upload';
 import { editProfile } from '../../actions/editProfile'
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types'
+import {Button} from 'react-bootstrap'
 
 
 
@@ -19,10 +20,8 @@ class EditProfile extends Component {
             pictures: [] , 
             profile: {}, 
             starttime: '7:00',
-            closetime: '7:00'
+            closetime: '7:00',
         }
-        
-        this.onDrop = this.onDrop.bind(this);
     }
     onChangeStartTime = starttime => this.setState({ starttime })
     onChangeCloseTime = closetime => this.setState({ closetime })
@@ -35,11 +34,6 @@ class EditProfile extends Component {
     goBack= () => {
         window.location = '/rhome'
    }
-   onDrop(picture) {
-    this.setState({
-        pictures: this.state.pictures.concat(picture),
-    });
-}
 
 componentWillMount() {
     axios.get(`/profile/restaurant/${localStorage.getItem("user_id")}`)
@@ -76,7 +70,35 @@ componentWillMount() {
         this.props.editProfile(data);
 
     }
+    onImageChange = (e) => {
+        this.setState({
+            pictures: this.state.pictures.concat(e),
+    
+        });
+    }
+    onUpload = (e) => {
+        e.preventDefault();
+        const formData = new FormData();
+        formData.append("image", this.state.pictures[0]);
+        const uploadConfig = {
+            headers: {
+                "content-type": "multipart/form-data"
+            }
+        };
+        axios.post(`http://localhost:3001/uploads/restaurant/${localStorage.getItem("user_id")}`, formData, uploadConfig)
+            .then(response => {
+                alert("Image uploaded successfully!");
+                this.setState({
+                    fileText: "Choose file...",
+                    image: (response.data)
+                });
+            })
+            .catch(err => {
+                console.log("Error");
+            });
+    }
     render(){
+        console.log(this.state.pictures[0])
         const error = {
             message: null
         }
@@ -87,7 +109,7 @@ componentWillMount() {
         // console.log(this.props.description)
         if(this.props.description == 'USER_UPDATED'){
             success.message = 'Successfully updated the user.'
-            setTimeout(function() {window.location = '/rhome'}, 3000);
+            setTimeout(function() {window.location = '/rhome'}, 1000);
         }
         return(
             <div>
@@ -101,17 +123,25 @@ componentWillMount() {
                    </div>
                    <br />
         
+                   <center>
                    <div class="form-group">
-                       <label class="label-form"> Upload/Change your image</label>
-                       <br />
-                       <ImageUploader
+                       <label class="label-form"> Upload your dish image</label>
+ <form onSubmit={this.onUpload}><br />
+                                    <div class="custom-file" style={{width: "80%"}}>
+                                    <ImageUploader
                 withIcon={true}
                 buttonText='Choose an image'
-                onChange={this.onDrop}
+                onChange={this.onImageChange}
                 imgExtension={['.jpg', '.gif', '.png', '.gif']}
                 maxFileSize={5242880}
-            />
-                       </div>
+                name='image'
+                singleImage={true}
+            />                                    
+            </div><br/><br/><br /><br /><br/>
+                                    <Button variant='link' type="submit">Upload</Button>
+                                </form>
+            
+                       </div></center>
                         <div class="form-group">
                        <label class="label-form"> Edit your restaurant name</label>
                            <input defaultValue={details.name} onChange = {this.onChange} type="name" class="form-control" name="rname" placeholder="Restaurant Name" style={{color:"black"}} />

@@ -6,12 +6,17 @@ import { Card, Row, Col } from "react-bootstrap";
 
 class HistoryCard extends Component {
 render() {
+  console.log(this.props.order_history.image)
+  var imageSrc;
+  if (this.props) {
+      imageSrc = `http://localhost:3001/images/restaurant/${this.props.order_history.image}`;
+  }
     return (
 <div>
 <Card bg="white" style={{ width: "50rem", margin: "2%", height:"15rem" }}>
         <Row>
           <Col xs="4.5">
-            <Card.Img style={{marginLeft:"4mm", width: "15rem", height: "15em" }} src="" />
+            <Card.Img style={{marginLeft:"4mm", width: "15rem", height: "15em" }} src={imageSrc} />
           </Col>
           <Col align="left" style={{marginLeft:"0mm"}}>
             <Card.Body>

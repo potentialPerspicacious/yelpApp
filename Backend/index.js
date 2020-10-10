@@ -7,6 +7,10 @@ const restaurant = require("./modules/restaurant");
 const menu = require("./modules/menu");
 const customer = require("./modules/customer")
 const search = require("./modules/search")
+const uploads = require("./modules/uploads")
+const images = require("./modules/images")
+
+
 
 app.use("/login", login);
 app.use("/signup", signup);
@@ -15,6 +19,8 @@ app.use("/restaurant", restaurant);
 app.use("/menu", menu)
 app.use("/customer", customer)
 app.use("/search", search)
+app.use("/uploads", uploads)
+app.use("/images", images)
 
 const port = process.env.PORT || 3001;
 var server = app.listen(port, () => {

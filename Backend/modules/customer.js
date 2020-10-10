@@ -3,6 +3,7 @@ const router = express.Router();
 const db = require('../db.js');
 
 router.post('/editProfile/:user_id', (req, res) => {
+  console.log(req.body.picture)
     let sql = `CALL Customer_Update_BasicProfile('${req.params.user_id}', '${req.body.fname}', '${req.body.lname}', '${req.body.gender}', '${req.body.headline}', '${req.body.city}', '${req.body.email}', '${req.body.zipcode}', '${req.body.address}', '${req.body.contact}', '${req.body.nickname}', '${req.body.yelptime}', '${req.body.hobbies}', '${req.body.about}','${req.body.social}');`;
     db.query(sql, (err, result) => {
       if (err) {
@@ -104,6 +105,17 @@ router.post('/editProfile/:user_id', (req, res) => {
     let sql = `CALL register_event('${req.body.eventid}', '${req.body.cusID}')`;
     db.query(sql, (err, result) => {  
         res.end((result[0][0]).status);
+    });
+  });
+
+  router.get('/yourevents/:user_id/', (req, res) => {
+    let sql = `CALL get_yourevents('${req.params.user_id}')`;
+    db.query(sql, (err, result) => {  
+            if (err) {
+        res.end("Error in Data");
+      } else {
+        res.end(JSON.stringify(result[0]));
+      }
     });
   });
 

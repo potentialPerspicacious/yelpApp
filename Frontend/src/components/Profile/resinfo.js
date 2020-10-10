@@ -51,11 +51,19 @@ class Resinfo extends Component {
         dservice = null,
         tkservice = null,
         ydservice=null,
+        ratings = null,
         editIcon = null;
+
+        let rate = Math.round(4);
+        var rating = []
+        for (var i = 0; i < rate; i++) {
+            ratings = <FontAwesomeIcon className="" icon={faStar} style={{color: "red"}} />;
+            rating.push(ratings);
+        }
 if (localStorage.getItem("isOwner")==="on"){
     order = <Button href = '/rorders' onClick={localStorage.setItem('filter', 'no_filter')} style = {{backgroundColor: "red", fontSize: "20px", border: '1px solid red', color: "white"}} variant="link">Orders  <FontAwesomeIcon className="" icon={faCartArrowDown} style={{height:"4.5mm", position:"center"}} /> </Button>
 
-    icon = <a href="/menu/addItem"> <FontAwesomeIcon className="" icon={faPlus} style={{color: "black", marginTop:"1mm", marginLeft: "19.15cm"}} /></a>
+    icon = <a href="/menu/addItem"> <FontAwesomeIcon className="" icon={faPlus} style={{color: "black", marginTop:"5mm", marginLeft: "19.65cm"}} /></a>
     editIcon =  <a href="/editProfile"> <FontAwesomeIcon className="" icon={faEdit} style={{color: "black", marginTop:"5mm", marginLeft: "16.5cm"}} /></a>
 } else {
     icon = null;
@@ -101,13 +109,8 @@ if (localStorage.getItem("isOwner")==="on"){
         <Row><h1 style={{fontWeight: "bolder", margin:"4mm", textTransform:"uppercase"}}> {details.name}</h1> {editIcon}</Row>
         <FontAwesomeIcon className="" icon={faUtensils} />{'  '}{details.cusine}
         <br/>
-        <FontAwesomeIcon className="" icon={faStar} style={{color: "red"}} />
-        <FontAwesomeIcon className="" icon={faStar} style={{color: "red"}} />
-        <FontAwesomeIcon className="" icon={faStar} style={{color: "red"}} />
-        <FontAwesomeIcon className="" icon={faStar} style={{color: "red"}} />
-        <FontAwesomeIcon className="" icon={faStarHalf} style={{color: "red"}} />
-        <br />
-                       <br />
+            {rating}
+
         <p> <FontAwesomeIcon className="" icon={faMapMarkerAlt} />{'  '}{details.location}{' - '} {details.zipcode}</p>
         <p> <FontAwesomeIcon className="" icon={faPhoneAlt} />{'  '}{details.contact}<span style={{marginLeft:"2cm"}}></span> <FontAwesomeIcon className="" icon={faEnvelope} />{'   '}{details.email}</p>
                        <div style={{overflow: "hidden"}}>
@@ -130,7 +133,11 @@ if (localStorage.getItem("isOwner")==="on"){
 <div className="row">
                        <div class='col-xs-6' style={{textAlign: "left", height: "100%", marginTop:"0.85cm", marginLeft: "0cm"}}>
                     <div style={{marginLeft: "10px"}}>
-                        <h3 style={{color:'black'}}>Menu</h3>
+                       <Row>
+                       <h3 style={{color:'black'}}>Menu</h3>
+                       {icon}
+                           </Row> 
+                        
                         <hr />
                         <Menu />
                 

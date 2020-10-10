@@ -23,6 +23,7 @@ import Events from './Events/viewEvents';
 import CEvents from './Events/viewCevents'
 import RegisteredPeople from './Events/registeredPeople';
 import Maps from './Maps/maps';
+import YourEvents from './Events/yourevents'
 
 //Create a Main Component
 class Main extends Component {
@@ -53,6 +54,7 @@ class Main extends Component {
                 <Route exact path="/viewcevents" component={CEvents}/>
                 <Route exact path="/registeredPeople" component={RegisteredPeople}/>
                 <Route exact path="/maps" component={Maps}/>
+                <Route exact path="/yourevents" component={YourEvents}/>
 
 
 

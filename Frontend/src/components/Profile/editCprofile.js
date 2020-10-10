@@ -4,6 +4,7 @@ import axios from 'axios';
 import cookie from 'react-cookies';
 import {Redirect} from 'react-router';
 import Banner from '../Navigationbar/banner'
+import {Button} from 'react-bootstrap'
 import TimePicker from 'react-bootstrap-time-picker';
 import ImageUploader from 'react-images-upload';
 import { editProfile } from '../../actions/editProfile'
@@ -17,9 +18,9 @@ class EditcProfile extends Component {
         super(props);
         this.state = { 
             profile: {}, 
+            pictures: []
         }
         
-        this.onDrop = this.onDrop.bind(this);
     }
 
     onChange = (e) => {
@@ -30,11 +31,6 @@ class EditcProfile extends Component {
     goBack= () => {
         window.location = '/cprofile'
    }
-   onDrop(picture) {
-    this.setState({
-        pictures: this.state.pictures.concat(picture),
-    });
-}
 
 componentWillMount() {
     axios.get(`/profile/customer/${localStorage.getItem("user_id")}`)
@@ -47,6 +43,34 @@ componentWillMount() {
         })
         
 
+}
+onImageChange = (e) => {
+    this.setState({
+        pictures: this.state.pictures.concat(e),
+
+    });
+}
+
+onUpload = (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("image", this.state.pictures[0]);
+    const uploadConfig = {
+        headers: {
+            "content-type": "multipart/form-data"
+        }
+    };
+    axios.post(`http://localhost:3001/uploads/user/${localStorage.getItem("user_id")}`, formData, uploadConfig)
+        .then(response => {
+            alert("Image uploaded successfully!");
+            this.setState({
+                fileText: "Choose file...",
+                user_image: response.data
+            });
+        })
+        .catch(err => {
+            console.log("Error");
+        });
 }
 
     updateProfile = (e) => {
@@ -67,7 +91,8 @@ componentWillMount() {
             yelptime: this.state.yelptime || details.yelptime,
             hobbies: this.state.hobbies || details.hobbies,
             about: this.state.about || details.about,
-            social: this.state.social || details.social
+            social: this.state.social || details.social,
+            picture: this.state.pictures
   
         }
         axios.post(`http://localhost:3001/customer/editProfile/${localStorage.getItem("user_id")}`, data)
@@ -78,6 +103,9 @@ componentWillMount() {
         })
     }
     render(){
+        console.log(this.state.pictures[0])
+        console.log(this.state.file)
+        console.log(this.state.fileText)
         const error = {
             message: null
         }
@@ -104,14 +132,20 @@ componentWillMount() {
         
                    <div class="form-group">
                        <label class="label-form"> Upload/Change your image</label>
-                       <br />
-                       <ImageUploader
+ <form onSubmit={this.onUpload}><br />
+                                    <div class="custom-file" style={{width: "80%"}}>
+                                    <ImageUploader
                 withIcon={true}
                 buttonText='Choose an image'
-                onChange={this.onDrop}
+                onChange={this.onImageChange}
                 imgExtension={['.jpg', '.gif', '.png', '.gif']}
                 maxFileSize={5242880}
-            />
+                name='image'
+            />                                    
+            </div><br/><br/><br /><br /><br/>
+                                    <Button variant='link' type="submit">Upload</Button>
+                                </form>
+            
                        </div>
                        <div class="row">
                         <div class="form-group col-md-6">

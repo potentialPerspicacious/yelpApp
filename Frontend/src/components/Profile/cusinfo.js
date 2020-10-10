@@ -5,7 +5,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faCamera, faEdit, faIdCard, faPhoneAlt, faGenderless, faAddressCard, faBirthdayCake, faCity} from "@fortawesome/free-solid-svg-icons";
 import { CardImg, Card } from "react-bootstrap";
 import Banner from '../Navigationbar/banner';
-import propic from '../../images/propic.png';
 
 
 
@@ -40,9 +39,14 @@ class Cusinfo extends Component {
 
     }
     render(){
+
         let details = this.state.profile
-        let edit = null
         console.log(details)
+        let edit = null
+        var imageSrc;
+        if (this.state) {
+            imageSrc = `http://localhost:3001/images/user/${details.image}`;
+        }
         if (localStorage.getItem("isOwner")=== "off") {
             edit =  (<li>
                 <a href='/editCprofile'>
@@ -59,7 +63,7 @@ class Cusinfo extends Component {
                 <Banner />
             <div style={{marginTop:"0cm"}}>
                     <div class='row'>
-                            <CardImg style={{marginLeft: "1cm", width: "6cm", height:"6cm"}} variant="left" src={propic} alt="IMG">
+                            <CardImg style={{marginLeft: "1cm", width: "6cm", height:"6cm"}} variant="left" src={imageSrc} alt="IMG">
                             </CardImg>
                         <div class='col-xs-4' style={{marginTop: "2cm", marginLeft: "2cm"}}>
         <h3 className='at'>{details.fname}  {details.lname}</h3>

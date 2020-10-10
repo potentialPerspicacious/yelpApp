@@ -81,12 +81,12 @@ class Events extends Component {
           </a>
                    <div class="form-group col-md-3">
                    {/* <FontAwesomeIcon icon={faBuilding} /> */}
-                       <input onChange = {this.onChange} type="search" class="form-control hsearch" name="find" placeholder="Restaurant" style={{color:"black"}}/>
+                       <input onChange = {this.onChange} type="search" class="form-control hsearch" name="find" placeholder="Restaurant, Dishes, Events..." style={{color:"black"}}/>
                    </div>
     
                    <div class="form-group col-md-3">
                    {/* <FontAwesomeIcon icon={faSearchLocation} /> */}
-                       <input onChange = {this.onChange}  type="search" class="form-control hsloc" name="location" placeholder="Location" style={{color:"black"}}/>
+                       <input onChange = {this.onChange}  type="search" class="form-control hsloc" name="location" placeholder="Where?" style={{color:"black"}}/>
                    </div>
                    <div class="form-group col-md-1">
                    <button class="btn btn-primary hsb" type="submit"> <FontAwesomeIcon icon={faSearch} />

@@ -3,7 +3,7 @@ import axios from "axios";
 import cookie from 'react-cookies'; 
 import EventsCard from "./eventsCard";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSearch, faIdCard, faCalendarPlus } from "@fortawesome/free-solid-svg-icons";
+import { faSearch, faIdCard, faCalendarPlus, faCalendarCheck } from "@fortawesome/free-solid-svg-icons";
 import logo from '../../images/logo.png';
 
 
@@ -81,7 +81,7 @@ class CEvents extends Component {
           </a>
                    <div class="form-group col-md-3">
                    {/* <FontAwesomeIcon icon={faBuilding} /> */}
-                       <input onChange = {this.onChange} type="search" class="form-control hsearch" name="find" placeholder="Restaurant, Events, Dishes..." style={{color:"black"}}/>
+                       <input onChange = {this.onChange} type="search" class="form-control hsearch" name="find" placeholder="Restaurant, Dishes, Events..." style={{color:"black"}}/>
                    </div>
     
                    <div class="form-group col-md-3">
@@ -93,7 +93,7 @@ class CEvents extends Component {
                           </button></div>
     
                       <li class="nav-item">
-                    <a class="nav-link navtext3" style={{marginLeft:"4.3cm"}}  href="/yourevents" ><FontAwesomeIcon className="signico" icon={faCalendarPlus} /> Your Events</a>
+                    <a class="nav-link navtext3" style={{marginLeft:"4.3cm"}}  href="/yourevents" ><FontAwesomeIcon className="signico" icon={faCalendarCheck} /> Your Events</a>
                       </li>
                       <li class="nav-item">
                     <a class="nav-link navtext3"  href="/rhome" ><FontAwesomeIcon className="signico" icon={faIdCard} /> Profile</a>

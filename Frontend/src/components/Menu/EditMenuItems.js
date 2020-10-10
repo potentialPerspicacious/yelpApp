@@ -6,6 +6,8 @@ import {Redirect} from 'react-router';
 import Banner from '../Navigationbar/banner'
 import TimePicker from 'react-bootstrap-time-picker';
 import ImageUploader from 'react-images-upload';
+import {Button} from 'react-bootstrap'
+
 
 
 class EditItem extends Component {
@@ -66,6 +68,34 @@ updatedish = (e) => {
         })
 
     }
+
+    onImageChange = (e) => {
+        this.setState({
+            pictures: this.state.pictures.concat(e),
+    
+        });
+    }
+    onUpload = (e) => {
+        e.preventDefault();
+        const formData = new FormData();
+        formData.append("image", this.state.pictures[0]);
+        const uploadConfig = {
+            headers: {
+                "content-type": "multipart/form-data"
+            }
+        };
+        axios.post(`http://localhost:3001/uploads/items/${localStorage.getItem("user_id")}`, formData, uploadConfig)
+            .then(response => {
+                alert("Image uploaded successfully!");
+                this.setState({
+                    fileText: "Choose file...",
+                    user_image: response.data
+                });
+            })
+            .catch(err => {
+                console.log("Error");
+            });
+    }
     render(){
         let message = this.state.msg
         const error = {
@@ -91,15 +121,23 @@ updatedish = (e) => {
                        <br />
                    </div>
                    <div class="form-group">
-                       <label class="label-form"> Edit your dish image</label>
-                       <br />
-                       <ImageUploader
+                       <label class="label-form"> Edit/Upload your dish image</label>
+ <form onSubmit={this.onUpload}><br />
+                                    <div class="custom-file" style={{width: "80%"}}>
+                                    <ImageUploader
                 withIcon={true}
                 buttonText='Choose an image'
-                onChange={this.onDrop}
+                onChange={this.onImageChange}
                 imgExtension={['.jpg', '.gif', '.png', '.gif']}
                 maxFileSize={5242880}
-            /> </div>
+                name='image'
+                singleImage={true}
+            />                                    
+            </div><br/><br/><br /><br /><br/>
+                                    <Button variant='link' type="submit">Upload</Button>
+                                </form>
+            
+                       </div>
                    <div class="row">
                        <div class="form-group col-md-6">
                        <label class="label-form"> Edit dish name</label>

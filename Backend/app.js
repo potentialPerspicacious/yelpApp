@@ -5,10 +5,12 @@ var session = require('express-session');
 var cookieParser = require('cookie-parser');
 const cors = require('cors');
 
+
 app.use(bodyParser.json());
 app.use(cookieParser());
 
 app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
+
 
 app.use(function (req, res, next) {
   res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
