@@ -2,6 +2,8 @@ import React, { Component} from "react";
 import GoogleMapReact from 'google-map-react';
 import Geocode from "react-geocode";
 import axios from 'axios'
+import backendServer from "../../webConfig"
+
 
 
 
@@ -25,14 +27,14 @@ class Maps extends Component {
     getLocations = () => {
         console.log(localStorage.getItem("mapsFilter"))
         if(localStorage.getItem("mapsFilter") !== ('no_filter')){
-            axios.get(`http://localhost:3001/search/locationsFilter/${localStorage.getItem("find")}/${localStorage.getItem("location")}/${localStorage.getItem("mapsFilter")}`)
+            axios.get(`${backendServer}/search/locationsFilter/${localStorage.getItem("find")}/${localStorage.getItem("location")}/${localStorage.getItem("mapsFilter")}`)
             .then(response => {
                     this.setState({
                         locations: this.state.locations.concat(response.data)
                     });
             })
         } else {
-        axios.get(`http://localhost:3001/search/locations/${localStorage.getItem("find")}/${localStorage.getItem("location")}`)
+        axios.get(`${backendServer}/search/locations/${localStorage.getItem("find")}/${localStorage.getItem("location")}`)
         .then(response => {
                 this.setState({
                     locations: this.state.locations.concat(response.data)

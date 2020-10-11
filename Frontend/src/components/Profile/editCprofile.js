@@ -11,6 +11,8 @@ import { editProfile } from '../../actions/editProfile'
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types'
 import { ThemeConsumer } from 'react-bootstrap/esm/ThemeProvider';
+import backendServer from "../../webConfig"
+
 
 
 class EditcProfile extends Component {
@@ -60,7 +62,7 @@ onUpload = (e) => {
             "content-type": "multipart/form-data"
         }
     };
-    axios.post(`http://localhost:3001/uploads/user/${localStorage.getItem("user_id")}`, formData, uploadConfig)
+    axios.post(`${backendServer}/uploads/user/${localStorage.getItem("user_id")}`, formData, uploadConfig)
         .then(response => {
             alert("Image uploaded successfully!");
             this.setState({
@@ -95,7 +97,7 @@ onUpload = (e) => {
             picture: this.state.pictures
   
         }
-        axios.post(`http://localhost:3001/customer/editProfile/${localStorage.getItem("user_id")}`, data)
+        axios.post(`${backendServer}/customer/editProfile/${localStorage.getItem("user_id")}`, data)
         .then(response => {
             this.setState({
                 msg: (response.data)

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Container, Alert } from "react-bootstrap";
 import axios from "axios";
 import ReviewCard from "./reviewCard";
+import backendServer from "../../webConfig"
 
 class Review extends Component {
     constructor(props) {
@@ -18,7 +19,7 @@ class Review extends Component {
 
     getReviews = () => {
         if (localStorage.getItem("isOwner")==='on'){
-        axios.get(`http://localhost:3001/restaurant/getReviews/${localStorage.getItem("user_id")}`)
+        axios.get(`${backendServer}/restaurant/getReviews/${localStorage.getItem("user_id")}`)
             .then(response => {
                     this.setState({
                         review_items: this.state.review_items.concat(response.data),
@@ -26,7 +27,7 @@ class Review extends Component {
                     });
             })
         } else {
-            axios.get(`http://localhost:3001/restaurant/getReviews/${localStorage.getItem("resID")}`)
+            axios.get(`${backendServer}/restaurant/getReviews/${localStorage.getItem("resID")}`)
             .then(response => {
                     this.setState({
                         review_items: this.state.review_items.concat(response.data),

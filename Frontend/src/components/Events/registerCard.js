@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { Component} from "react";
 import { Card, Row, Col, Button } from "react-bootstrap";
 import axios from 'axios'
+import backendServer from "../../webConfig"
 
 
 class EventsCard extends Component {
@@ -33,7 +34,7 @@ setCusID = () => {
 render() {
     var imageSrc;
     if (this.props) {
-        imageSrc = `http://localhost:3001/images/user/${this.props.get_people.image}`;
+        imageSrc = `${backendServer}/images/user/${this.props.get_people.image}`;
     }
     return (
 <div>

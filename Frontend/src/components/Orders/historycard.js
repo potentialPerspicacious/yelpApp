@@ -2,6 +2,7 @@ import { faBuilding, faCar, faClock, faHourglass, faShoppingBag } from "@fortawe
 import React, { Component} from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Card, Row, Col } from "react-bootstrap";
+import backendServer from "../../webConfig"
 
 
 class HistoryCard extends Component {
@@ -9,7 +10,7 @@ render() {
   console.log(this.props.order_history.image)
   var imageSrc;
   if (this.props) {
-      imageSrc = `http://localhost:3001/images/restaurant/${this.props.order_history.image}`;
+      imageSrc = `${backendServer}/images/restaurant/${this.props.order_history.image}`;
   }
     return (
 <div>

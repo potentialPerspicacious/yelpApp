@@ -9,6 +9,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch, faNewspaper, faIdCard } from "@fortawesome/free-solid-svg-icons";
 import HistoryCard from './historycard'
 import Geocode from "react-geocode";
+import backendServer from "../../webConfig"
+
 
 class CorderHistory extends Component {
     constructor(props) {
@@ -26,7 +28,7 @@ class CorderHistory extends Component {
 
   getOrderHistory = () => {
     if(localStorage.getItem("filter") !=='no_filter'){
-        axios.get(`http://localhost:3001/customer/orderHistoryFilter/${localStorage.getItem("user_id")}/${localStorage.getItem("filter")}`)
+        axios.get(`${backendServer}/customer/orderHistoryFilter/${localStorage.getItem("user_id")}/${localStorage.getItem("filter")}`)
         .then(response => {
                 this.setState({
                     order_history: this.state.order_history.concat(response.data),
@@ -35,7 +37,7 @@ class CorderHistory extends Component {
                 });
         })
     } else {
-    axios.get(`http://localhost:3001/customer/orderHistory/${localStorage.getItem("user_id")}`)
+    axios.get(`${backendServer}/customer/orderHistory/${localStorage.getItem("user_id")}`)
     .then(response => {
             this.setState({
                 order_history: this.state.order_history.concat(response.data),

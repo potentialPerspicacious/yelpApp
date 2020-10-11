@@ -9,6 +9,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch, faNewspaper, faIdCard } from "@fortawesome/free-solid-svg-icons";
 import ResCard from './resCard'
 import Maps from '../Maps/maps'
+import backendServer from "../../webConfig"
+
+
 
 class Csearch extends Component {
    constructor (props) {
@@ -28,7 +31,7 @@ class Csearch extends Component {
    getRestaurants = () => {
 
     if(localStorage.getItem("filter") !=='no_filter'){
-        axios.get(`http://localhost:3001/search/restaurantsFilter/${localStorage.getItem("find")}/${localStorage.getItem("location")}/${localStorage.getItem("filter")}/${localStorage.getItem("search")}`)
+        axios.get(`${backendServer}/search/restaurantsFilter/${localStorage.getItem("find")}/${localStorage.getItem("location")}/${localStorage.getItem("filter")}/${localStorage.getItem("search")}`)
         .then(response => {
                 this.setState({
                     restaurant_search: this.state.restaurant_search.concat(response.data),
@@ -37,7 +40,7 @@ class Csearch extends Component {
                 });
         })
     } else {
-    axios.get(`http://localhost:3001/search/restaurants/${localStorage.getItem("find")}/${localStorage.getItem("location")}/${localStorage.getItem("search")}`)
+    axios.get(`${backendServer}/search/restaurants/${localStorage.getItem("find")}/${localStorage.getItem("location")}/${localStorage.getItem("search")}`)
         .then(response => {
                 this.setState({
                     restaurant_search: this.state.restaurant_search.concat(response.data),

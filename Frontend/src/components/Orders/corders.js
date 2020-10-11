@@ -8,6 +8,8 @@ import logo from '../../images/logo.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch, faNewspaper, faIdCard } from "@fortawesome/free-solid-svg-icons";
 import OrderCard from './orderCard'
+import backendServer from "../../webConfig"
+
 
 class CusOrders extends Component {
   constructor(props) {
@@ -24,7 +26,7 @@ class CusOrders extends Component {
 
 
 getOrderedItems = () => {
-axios.get(`http://localhost:3001/customer/OrderList/${localStorage.getItem("resID")}`)
+axios.get(`${backendServer}/customer/OrderList/${localStorage.getItem("resID")}`)
 .then(response => {
         this.setState({
             ordered_items: this.state.ordered_items.concat(response.data)

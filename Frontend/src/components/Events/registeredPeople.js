@@ -4,6 +4,8 @@ import RegisteredCard from "./registerCard";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch, faIdCard, faCalendarPlus } from "@fortawesome/free-solid-svg-icons";
 import logo from '../../images/logo.png';
+import backendServer from "../../webConfig"
+
 
 
 class RegisteredPeople extends Component {
@@ -21,7 +23,7 @@ class RegisteredPeople extends Component {
 
     getPeople = () => {
         if (localStorage.getItem("isOwner")==='on'){
-        axios.get(`http://localhost:3001/restaurant/getRegisteredPeople/${localStorage.getItem("eventid")}`)
+        axios.get(`${backendServer}/restaurant/getRegisteredPeople/${localStorage.getItem("eventid")}`)
             .then(response => {
                     this.setState({
                         get_people: this.state.get_people.concat(response.data),
@@ -29,7 +31,7 @@ class RegisteredPeople extends Component {
                     });
             })
         } else {
-            axios.get(`http://localhost:3001/restaurant/getRegisteredPeople/${localStorage.getItem("eventid")}`)
+            axios.get(`${backendServer}/restaurant/getRegisteredPeople/${localStorage.getItem("eventid")}`)
             .then(response => {
                     this.setState({
                         get_people: this.state.get_people.concat(response.data),

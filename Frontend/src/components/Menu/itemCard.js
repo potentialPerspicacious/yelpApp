@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faEdit, faCartPlus} from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
+import backendServer from "../../webConfig"
+
 
 class ItemCard extends Component {
   constructor(props) {
@@ -23,7 +25,7 @@ class ItemCard extends Component {
     localStorage.setItem("status", "item_present")
 
     
-    axios.post(`http://localhost:3001/customer/order/${localStorage.getItem("user_id")}/${localStorage.getItem("resID")}/${localStorage.getItem("dishID")}`)
+    axios.post(`${backendServer}/customer/order/${localStorage.getItem("user_id")}/${localStorage.getItem("resID")}/${localStorage.getItem("dishID")}`)
         .then(response => {
                 this.setState({
                     status: (response.data)
@@ -46,7 +48,7 @@ class ItemCard extends Component {
     }
     var imageSrc;
     if (this.state) {
-        imageSrc = `http://localhost:3001/images/item/${this.props.menu_item.image}`;
+        imageSrc = `${backendServer}/images/item/${this.props.menu_item.image}`;
     }
     let details = this.state.dish;
     // console.log(this.props.description)
