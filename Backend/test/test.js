@@ -22,7 +22,7 @@ describe("Yelp", function () {
                 });
         });
 
-        it('Invalid User', () => {
+        it('Error User', () => {
             agent.post("/login")
                 .send({ email_id: "cibo@yelp.edu", password: "password" })
                 .then(function (res) {
@@ -33,44 +33,37 @@ describe("Yelp", function () {
                 });
         });
 
-        it('Successful Login',() => {
-            agent.post("/login")
-                .send({ email_id: "thor.odinson@yelp.com", password: "thor" })
+        it('Get Events - Customer', () => {
+            agent.get("/customer/yourevents/:user_id")
+                .send({ user_id: "10" })
                 .then(function (res) {
-                    expect(res.status).to.equal(401);
+                    expect(res.text).to.equal("Error in Data");
+                    expect(res.status).to.equal(200)
                 })
                 .catch(error => {
                     console.log(error);
                 });
         });
-        it('Successful Signup',() => {
-            agent.post("/login")
-                .send({ fname: "customer",
-                lname: "1",
-                email: "customer.1@yelp.com", 
-                password: "customer1",
-                zipcode: "95110"
-            })
+        it('Get Menu Items', () => {
+            agent.get("/menu/items/:user_id")
+                .send({ user_id: "10" })
                 .then(function (res) {
-                    expect(res.status).to.equal(401);
+                    expect(res.status).to.equal(200)
                 })
                 .catch(error => {
                     console.log(error);
                 });
         });
-        it('Error Signup - Restaurant Owner',() => {
-            agent.post("/login")
-                .send({ rname: "cibo",
-                email: "cibo@yelp.com", 
-                password: "customer1",
-                zipcode: "95110"
-            })
+        it('Get Reviews - Restaurant', () => {
+            agent.get("/restaurant/getReviews/:resID/")
+                .send({ user_id: "10" })
                 .then(function (res) {
-                    expect(res.status).to.equal(401);
+                    expect(res.status).to.equal(200)
                 })
                 .catch(error => {
                     console.log(error);
                 });
         });
+
     });
 });

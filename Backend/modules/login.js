@@ -29,9 +29,6 @@ router.post('/', (req, res) => {
           } else {
             userObject = {user_id: result[0][0].idrestaurant, email_id: result[0][0].email, zipcode: result[0][0].zipcode, isOwner: result[0][0].isOwner}
           }
-          // res.writeHead(200, {
-          //   'Content-Type': 'text/plain'
-          // })
           res.end(JSON.stringify(userObject));
         }
         else {

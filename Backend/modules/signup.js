@@ -32,7 +32,7 @@ router.post('/customer', (req, res) => {
       }
       else if (result && result.length > 0 && result[0][0].status === 'USER_EXISTS') {
         res.end(result[0][0].status);
-      }
+      } 
     });
   });
 
