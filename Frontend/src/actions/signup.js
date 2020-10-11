@@ -1,8 +1,10 @@
 import axios from "axios";
+import backendServer from "../webConfig"
+
 
 export const restaurantSignup = (resdata) => dispatch => {
     axios.defaults.withCredentials = true;
-    axios.post('http://localhost:3001/signup/restaurant', resdata)
+    axios.post(`${backendServer}/signup/restaurant`, resdata)
         .then(response => dispatch({
             type: 'RESTAURANT_SIGNUP',
             payload: response.data

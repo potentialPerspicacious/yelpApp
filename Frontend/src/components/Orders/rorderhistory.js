@@ -3,6 +3,7 @@ import React, { Component} from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Card, Row, Col, Button } from "react-bootstrap";
 import axios from 'axios'
+import backendServer from "../../webConfig"
 
 
 class RHistoryCard extends Component {
@@ -34,7 +35,7 @@ updateOrder = (e) => {
         orderStatus: this.state.value,
         orderType: this.state.value2,
     }
-    axios.post(`http://localhost:3001/restaurant/updateOrder`, data)
+    axios.post(`${backendServer}/restaurant/updateOrder`, data)
     .then(response => {
         this.setState({
             msg: (response.data)

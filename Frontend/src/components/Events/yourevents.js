@@ -4,7 +4,7 @@ import EventsCard from "./eventsCard";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch, faIdCard, faCalendarPlus, faCalendarAlt, faCalendarCheck } from "@fortawesome/free-solid-svg-icons";
 import logo from '../../images/logo.png';
-
+import backendServer from "../../webConfig"
 
 class YourEvents extends Component {
     constructor(props) {
@@ -20,7 +20,7 @@ class YourEvents extends Component {
 
 
     getEvents = () => {
-            axios.get(`http://localhost:3001/customer/yourevents/${localStorage.getItem("user_id")}`)
+            axios.get(`${backendServer}/customer/yourevents/${localStorage.getItem("user_id")}`)
             .then(response => {
                     this.setState({
                         event_items: this.state.event_items.concat(response.data),

@@ -5,6 +5,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faCamera, faEdit, faIdCard, faPhoneAlt, faGenderless, faAddressCard, faBirthdayCake, faCity} from "@fortawesome/free-solid-svg-icons";
 import { CardImg, Card } from "react-bootstrap";
 import Banner from '../Navigationbar/banner';
+import backendServer from "../../webConfig"
+
 
 
 
@@ -45,7 +47,7 @@ class Cusinfo extends Component {
         let edit = null
         var imageSrc;
         if (this.state) {
-            imageSrc = `http://localhost:3001/images/user/${details.image}`;
+            imageSrc = `${backendServer}/images/user/${details.image}`;
         }
         if (localStorage.getItem("isOwner")=== "off") {
             edit =  (<li>

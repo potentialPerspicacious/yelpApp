@@ -5,6 +5,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faEdit, faCartPlus, faCartArrowDown, faShoppingBag, faCar} from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import ListCard from  './listCard'
+import backendServer from "../../webConfig"
+
 
 class OrderCard extends Component {
   constructor(props) {
@@ -21,7 +23,7 @@ class OrderCard extends Component {
 
 }
 getOrderedItems = () => {
-    axios.get(`http://localhost:3001/customer/OrderItems/${localStorage.getItem("user_id")}/${localStorage.getItem("resID")}`)
+    axios.get(`${backendServer}/customer/OrderItems/${localStorage.getItem("user_id")}/${localStorage.getItem("resID")}`)
     .then(response => {
             this.setState({
                 order_items: this.state.order_items.concat(response.data),

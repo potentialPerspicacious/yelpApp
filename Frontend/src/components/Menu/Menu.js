@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import { Container, Alert } from "react-bootstrap";
 import axios from "axios";
 import ItemCard from "./itemCard";
+import backendServer from "../../webConfig"
+
+
 
 class Menu extends Component {
     constructor(props) {
@@ -17,14 +20,14 @@ class Menu extends Component {
 
     getMenuItems = () => {
         if (localStorage.getItem("isOwner")==='on'){
-        axios.get(`http://localhost:3001/menu/items/${localStorage.getItem("user_id")}`)
+        axios.get(`${backendServer}/menu/items/${localStorage.getItem("user_id")}`)
             .then(response => {
                     this.setState({
                         menu_items: this.state.menu_items.concat(response.data)
                     });
             })
         } else {
-            axios.get(`http://localhost:3001/menu/items/${localStorage.getItem("resID")}`)
+            axios.get(`${backendServer}/menu/items/${localStorage.getItem("resID")}`)
             .then(response => {
                     this.setState({
                         menu_items: this.state.menu_items.concat(response.data)

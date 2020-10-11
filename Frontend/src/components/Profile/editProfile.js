@@ -10,6 +10,8 @@ import { editProfile } from '../../actions/editProfile'
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types'
 import {Button} from 'react-bootstrap'
+import backendServer from "../../webConfig"
+
 
 
 
@@ -85,7 +87,7 @@ componentWillMount() {
                 "content-type": "multipart/form-data"
             }
         };
-        axios.post(`http://localhost:3001/uploads/restaurant/${localStorage.getItem("user_id")}`, formData, uploadConfig)
+        axios.post(`${backendServer}/uploads/restaurant/${localStorage.getItem("user_id")}`, formData, uploadConfig)
             .then(response => {
                 alert("Image uploaded successfully!");
                 this.setState({

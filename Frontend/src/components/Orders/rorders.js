@@ -8,6 +8,8 @@ import logo from '../../images/logo.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch, faNewspaper, faIdCard, faWonSign, faCalendarPlus } from "@fortawesome/free-solid-svg-icons";
 import RHistoryCard from './rorderhistory'
+import backendServer from "../../webConfig"
+
 
 class RorderHistory extends Component {
     constructor(props) {
@@ -25,7 +27,7 @@ class RorderHistory extends Component {
 
   getOrderHistory = () => {
     if(localStorage.getItem("filter") !=='no_filter') {
-        axios.get(`http://localhost:3001/restaurant/orderHistoryFilter/${localStorage.getItem("user_id")}/${localStorage.getItem("filter")}`)
+        axios.get(`${backendServer}/restaurant/orderHistoryFilter/${localStorage.getItem("user_id")}/${localStorage.getItem("filter")}`)
         .then(response => {
                 this.setState({
                     order_history: this.state.order_history.concat(response.data),
@@ -34,7 +36,7 @@ class RorderHistory extends Component {
                 });
         })
     } else {
-        axios.get(`http://localhost:3001/restaurant/orderHistory/${localStorage.getItem("user_id")}`)
+        axios.get(`${backendServer}/restaurant/orderHistory/${localStorage.getItem("user_id")}`)
         .then(response => {
                 this.setState({
                     order_history: this.state.order_history.concat(response.data),

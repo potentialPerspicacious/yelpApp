@@ -10,6 +10,8 @@ import meunImage from '../../images/menubg2.jpg'
 import ImageUploader from 'react-images-upload';
 import {Button} from 'react-bootstrap'
 import axios from 'axios';
+import backendServer from "../../webConfig"
+
 
 
 class AddItem extends Component {
@@ -41,7 +43,7 @@ class AddItem extends Component {
             price: this.state.price,
             image: localStorage.getItem("image")
         }
-        axios.post(`http://localhost:3001/menu/addItem`, data)
+        axios.post(`${backendServer}/menu/addItem`, data)
         .then(response => {
             this.setState({
                 msg: (response.data)
@@ -79,7 +81,7 @@ onUpload = (e) => {
             "content-type": "multipart/form-data"
         }
     };
-    axios.post(`http://localhost:3001/uploads/items/${localStorage.getItem("dishID")}`, formData, uploadConfig)
+    axios.post(`${backendServer}/uploads/items/${localStorage.getItem("dishID")}`, formData, uploadConfig)
         .then(response => {
             localStorage.setItem("image", response.data)
             alert("Image uploaded successfully!");

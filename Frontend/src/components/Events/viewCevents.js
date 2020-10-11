@@ -5,6 +5,8 @@ import EventsCard from "./eventsCard";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch, faIdCard, faCalendarPlus, faCalendarCheck } from "@fortawesome/free-solid-svg-icons";
 import logo from '../../images/logo.png';
+import backendServer from "../../webConfig"
+
 
 
 class CEvents extends Component {
@@ -37,7 +39,7 @@ class CEvents extends Component {
             location: this.state.location
         }
         console.log(data)
-        axios.get(`http://localhost:3001/customer/getCEvents/${localStorage.getItem('find')}/${localStorage.getItem('location')}`)
+        axios.get(`${backendServer}/customer/getCEvents/${localStorage.getItem('find')}/${localStorage.getItem('location')}`)
             .then(response => {
                     this.setState({
                         event_items: this.state.event_items.concat(response.data),

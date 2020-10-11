@@ -1,12 +1,14 @@
 import React, { Component} from "react";
 import { Card, Row, Col } from "react-bootstrap";
+import backendServer from "../../webConfig"
+
 
 
 class ListCard extends Component {
 render() {
   var imageSrc;
   if (this.props) {
-      imageSrc = `http://localhost:3001/images/item/${this.props.order_items.image}`;
+      imageSrc = `${backendServer}/images/item/${this.props.order_items.image}`;
   }
     return (
 <div>

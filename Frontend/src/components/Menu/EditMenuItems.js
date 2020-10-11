@@ -7,6 +7,8 @@ import Banner from '../Navigationbar/banner'
 import TimePicker from 'react-bootstrap-time-picker';
 import ImageUploader from 'react-images-upload';
 import {Button} from 'react-bootstrap'
+import backendServer from "../../webConfig"
+
 
 
 
@@ -60,7 +62,7 @@ updatedish = (e) => {
             description: this.state.location || details.description,
             price: this.state.price || details.price
         }
-        axios.post(`http://localhost:3001/menu/updateItem/${localStorage.getItem("dishID")}`, data)
+        axios.post(`${backendServer}/menu/updateItem/${localStorage.getItem("dishID")}`, data)
         .then(response => {
             this.setState({
                 msg: (response.data)
@@ -84,7 +86,7 @@ updatedish = (e) => {
                 "content-type": "multipart/form-data"
             }
         };
-        axios.post(`http://localhost:3001/uploads/items/${localStorage.getItem("user_id")}`, formData, uploadConfig)
+        axios.post(`${backendServer}/uploads/items/${localStorage.getItem("user_id")}`, formData, uploadConfig)
             .then(response => {
                 alert("Image uploaded successfully!");
                 this.setState({

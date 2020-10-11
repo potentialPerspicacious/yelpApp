@@ -3,6 +3,8 @@ import { Card, Button, Col, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faCheck, faTimes, faCity, faUtensils, faEnvelope, faPhoneAlt, faClock, faCar, faShoppingBag, faChair} from "@fortawesome/free-solid-svg-icons";
+import backendServer from "../../webConfig"
+
 
 class ResCard extends Component {
 
@@ -18,7 +20,7 @@ class ResCard extends Component {
     ydservice = null;
     var imageSrc;
     if (this.props) {
-      imageSrc = `http://localhost:3001/images/restaurant/${this.props.restaurant_search.image}`;
+      imageSrc = `${backendServer}/images/restaurant/${this.props.restaurant_search.image}`;
     }
     if(this.props.restaurant_search.dinein === 'dinein'){
       dservice = (<FontAwesomeIcon className="" icon={faCheck} style={{color: "green"}}/>);
