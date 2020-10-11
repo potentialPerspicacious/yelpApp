@@ -1,0 +1,433 @@
+.form-heading { color:#fff; font-size:23px;}
+.panel h2{ color:red; font-size:18px; margin:0 0 8px 0; font-weight: bolder; text-align: center;}
+.panel p { color:#777777; font-size:14px; margin-bottom:20px; line-height:24px; text-align: center;}
+.login-form .form-control {
+  background: #f7f7f7 none repeat scroll 0 0;
+  border: 1px solid #d4d4d4;
+  border-radius: 4px;
+  font-size: 14px;
+  height: 50px;
+  line-height: 50px;
+}
+.main-div {
+  background: #ffffff none repeat scroll 0 0;
+  border-radius: 2px;
+  margin-left: 2cm;
+  max-width: 50%;
+  padding: 50px 110px 90px 90px;
+  padding-top: 20%;
+}
+.login-form .form-group {
+  margin-bottom:10px;
+  width: '90px';
+}
+.login-form{
+  width: 140%;
+  height: fit-content;
+}
+.forgot a {
+  color: #777777;
+  font-size: 14px;
+  text-decoration: underline;
+}
+.login-form  .btn.btn-primary {
+  background: #ff0000 none repeat scroll 0 0;
+  color: #ffffff;
+  font-size: 14px;
+  width: 100%;
+  height: 50px;
+  line-height: 50px;
+  padding: 0;
+}
+.login-form  .btn.btn-secondary {
+  background: blue none repeat scroll 0 0;
+  color: #ffffff;
+  font-size: 14px;
+  width: 100%;
+  height: 50px;
+  line-height: 50px;
+  padding: 0;
+}
+.forgot {
+  text-align: left; margin-bottom:30px;
+}
+.botto-text {
+  color: #ffffff;
+  font-size: 14px;
+  margin: auto;
+}
+.back { text-align: left; margin-top:10px;}
+.back a {color: #444444; font-size: 13px;text-decoration: none;}
+
+.navbar-custom {
+  background-color: #33393d;
+}
+
+.fit {
+  width: 100%;
+  height: 100%;
+}
+.navimage {
+  /* background: url('./images/landingimage.jpg') no-repeat center center fixed; */
+  margin-bottom: 0;
+  color:rgb(69, 121, 178);
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+.bg {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 80%;
+  background: url('https://s3-media0.fl.yelpcdn.com/assets/srv0/yelp_large_assets/fa674c810afa/assets/img/home/hero_photos/sL6pI2T8M-jSGiZzeq6Wxg.jpg') no-repeat center center fixed;
+  background-size: cover;
+}
+
+.lgbg{
+  background: white;
+  width: fit-content;
+}
+
+.navicon {
+  color:black
+}
+.navtext{
+  color: white;
+  font-weight: bolder;
+
+}
+.navtext2{
+  color: red;
+  font-weight: bolder;
+  margin-left: 3cm;
+
+}
+.navtext3{
+  color: red;
+  font-weight: bolder;
+
+}
+.navtext3:hover, .navtext3:focus, .navtext3:active {
+  color: rgba(214, 16, 56, 0.884);
+}
+.navtext2:hover, .navtext2:focus, .navtext2:active {
+  color: rgba(214, 16, 56, 0.884);
+}
+.centered {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.tag{
+  color: rgba(255, 255, 255, 0.589);
+  position: absolute;
+  bottom: 10%;
+  left: 75%;
+  font-family: cursive;
+  font-size: x-large;
+}
+.pic {
+  position: relative;
+  overflow: hidden;
+  width: 185px;
+  height: 185px;
+  margin: 50px auto;
+}
+
+.pic:hover img {
+  -webkit-transition: all 300ms ease-in-out;
+  -o-transition: all 300ms ease-in-out;
+  transition: all 300ms ease-in-out;
+  -webkit-filter: blur(1px);
+  -moz-filter: blur(1px);
+  -ms-filter: blur(1px);
+  -o-filter: blur(1px);
+  filter: blur(1px);
+  transform: scale(1.03);
+}
+
+.register {
+  color:black;
+  padding: 10px;
+  float: right;
+}
+.reregister {
+  margin-left: 0.2mm;
+    float: right;
+  }
+.registerlogin{
+  color: black;
+  float: right;
+  padding: 10px;
+}
+.registercheck{
+  color: black;
+  float: right;
+  padding: 0px;
+}
+.linkback{
+  position: absolute;
+  top: 3.5%;
+  left: 33.33%;
+}
+.slinkback{
+  position: absolute;
+  top: 2.5%;
+  left: 33.33%;
+}
+
+.label-form{
+  float: left;
+  color:rgb(80, 79, 79);
+  font-size: small;
+}
+.dob-form{
+  margin-top: 6mm;
+}
+
+
+.logo {
+  width: 180px;
+  height: 80px;
+  margin: 50px 15cm;
+}
+.search-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.landing {
+  display: flex;
+  justify-content: center;
+}
+
+.navPad{
+  padding-top: 50px;
+  margin-right: 5cm;
+}
+
+.navposl{
+  margin-left: 5cm;
+  padding-top: 50px;
+  margin-right: 5cm;
+}
+
+.navpos{
+margin-left: 13cm;
+  
+}
+.form{
+  float: left;
+  width: 50%;
+  margin-left: 2cm;
+  margin-top: 5mm;
+}
+
+.lico{
+  float: right;
+  width: 40%;
+  padding-top: 5cm;
+}
+.licomen{
+  float: left;
+  width: 40%;
+  padding-top: 5cm;
+}
+
+.signupform{
+  width: 150%;
+  padding: 50px 10px 50px 0;
+  margin-left: 1cm;
+
+}
+.banner {
+  position: relative;
+  background-color:red;
+  height: 15mm;
+  width: 36.5cm;
+}
+.bannerlogo {
+  position: relative;
+  width: 80px;
+  height: 40px;
+  margin: 1.5px 15.5cm;
+}
+.lgbanner{
+  position: relative;
+  float: right;
+}
+.edit{
+  float: right;
+  margin-right: 5mm;
+  margin-top: 5mm;
+}
+.card {
+  /* Add shadows to create the "card" effect */
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+}
+
+/* On mouse-over, add a deeper shadow */
+.card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+/* Add some padding inside the card container */
+.container {
+  padding-top: 15mm;
+  padding: 2px 16px;
+}
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+  border-radius: 5px; /* 5px rounded corners */
+}
+
+/* Add rounded corners to the top left and the top right corner of the image */
+img {
+  border-radius: 5px 5px 0 0;
+}
+.restitle{
+  margin-left: 10mm;
+  margin-top: 1em;
+}
+.cmargin{
+  margin-left: 10mm;
+}
+.linkmargin{
+  margin-left: 7cm;
+  margin-bottom: 5mm;
+}
+.reviewbutton{
+  margin-bottom: 5mm;
+  margin-left: 1cm;
+
+}
+.at{
+  text-transform: uppercase;
+}
+.lgout{
+  position: absolute;
+}
+.search{
+  width: 300px;
+}
+.searchbar{
+  margin-left: 6cm;
+  margin-top: 3mm;
+}
+.sloc{
+  margin-left: 3cm;
+}
+.sb{
+  margin-left: 2.5cm;
+  background-color: red;
+  border-color: red;
+}
+
+.sb:hover, .sb:focus, .sb:active {
+  background-color: red;
+
+}
+.navtext:hover, .navtext:focus, .navtext:active {
+  color: rgb(196, 192, 192);
+  font-weight: bolder;
+}
+.navbar {
+  list-style:none;
+}
+.lgnvtext{
+  color: #ff0000;
+}
+.lgnvtext:hover, .lgnvtext:focus, .lgnvtext:active {
+  color: rgba(117, 11, 32, 0.712);
+}
+
+.signico{
+  color: rgb(22, 22, 22);
+}
+.signico2{
+  margin-top: 3.5mm;
+  color: rgb(22, 22, 22);
+  margin-left: 10cm;
+}
+
+.ssearch{
+  margin-top: 1cm;
+  width: 300px;
+  margin-left: 4.2cm;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+
+.ssloc{
+  margin-top: 1cm;
+  margin-left: 4.5cm;
+  border-radius: 0px;
+  border-radius: 0px;
+}
+
+.ssb{
+  margin-top: 1cm;
+  background-color: red;
+  border-color: red;
+  margin-left: 3.5cm;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+}
+
+.ssb:hover, .ssb:focus, .ssb:active {
+  background-color: red;
+
+}
+.hsearch{
+  margin-top: 5mm;
+  width: 300px;
+  margin-left: 1.7cm;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+
+.hsloc{
+  margin-top: 5mm;
+  margin-left: 8mm;
+  border-radius: 0px;
+  border-radius: 0px;
+}
+.hsb{
+  margin-top: 5mm;
+  background-color: red;
+  border-color: red;
+  margin-left: 0cm;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+}
+
+.hsb:hover, .hsb:focus, .hsb:active {
+  background-color: red;
+
+}
+.additem{
+    width: 150%;
+    padding: 50px 10px 50px 0;
+    margin-left: 4.5cm;
+
+}
+
+.bgmen{
+  background-image: url('./images/menubg.jpg') no-repeat center fixed;;
+
+}
+
+.dob{
+  margin-top: 0cm;
+}
+.profilebox{
+  float: left;
+}
