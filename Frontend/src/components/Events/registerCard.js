@@ -16,21 +16,7 @@ class EventsCard extends Component {
 setCusID = () => {
         localStorage.setItem("cusID", this.props.get_people.cusID)
     }
-    registerEvent =() => {
-        const data = {
-            cusID: localStorage.getItem("user_id"),
-            eventid: this.props.get_people.idevents
-        }
-        console.log(data)
-        axios.post(`/customer/registerEvent`, data)
-        .then(response => 
-            {this.setState({
-                status: (response.data) 
-                    
-                }); 
-            })
 
-    }
 render() {
     var imageSrc;
     if (this.props) {

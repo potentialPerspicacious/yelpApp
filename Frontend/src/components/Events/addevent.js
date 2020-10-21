@@ -4,6 +4,9 @@ import axios from 'axios';
 import Banner from '../Navigationbar/banner'
 import {Row, Col, Button} from 'react-bootstrap'
 import ImageUploader from 'react-images-upload';
+import {addResEvent} from '../../actions/events'
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types'
 
 
 
@@ -38,26 +41,23 @@ class AddEvent extends Component {
             hashtags: this.state.hashtags
 
         }
-        axios.post(`/restaurant/addevent/${localStorage.getItem("user_id")}`, data)
-            .then(response => 
-                {this.setState({
-                    status: (response.data) 
-                        
-                    }); 
-                })
+
+        this.props.addResEvent(data);
+
     }
 
     render (){
+        console.log(this.props.description)
         let success = {
             message: null
         }
         let error = {
             message: null
         }
-        if(this.state.status == 'EVENT_ADDED'){
+        if(this.props.description == 'EVENT_ADDED'){
             success.message = 'Successfully added the event.'
             setTimeout(function() {window.location = '/rhome'}, 1000);
-        } else if (this.state.status == 'EVENT_EXISTS'){
+        } else if (this.props.description == 'EVENT_EXISTS'){
             error.message = 'Event already exists.'
             setTimeout(function() {window.location = '/addevent'}, 1000);
         }
@@ -206,4 +206,14 @@ class AddEvent extends Component {
     }
 }
 
-export default AddEvent
+AddEvent.propTypes = {
+    addResEvent: PropTypes.func.isRequired,
+    description: PropTypes.object.isRequired
+}
+
+const mapStateToProps = state => { 
+    return ({
+        description: state.events.description
+})};
+
+export default connect(mapStateToProps, { addResEvent })(AddEvent);

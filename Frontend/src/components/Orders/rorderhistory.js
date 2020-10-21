@@ -4,6 +4,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Card, Row, Col, Button } from "react-bootstrap";
 import axios from 'axios'
 import backendServer from "../../webConfig"
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types'
+import {updateRorder} from '../../actions/orders'
 
 
 class RHistoryCard extends Component {
@@ -35,15 +38,16 @@ updateOrder = (e) => {
         orderStatus: this.state.value,
         orderType: this.state.value2,
     }
-    axios.post(`${backendServer}/restaurant/updateOrder`, data)
-    .then(response => {
-        this.setState({
-            msg: (response.data)
-        });
-    })
+    this.props.updateRorder(data)
+    // axios.post(`${backendServer}/restaurant/updateOrder`, data)
+    // .then(response => {
+    //     this.setState({
+    //         msg: (response.data)
+    //     });
+    // })
 }
 render() {
-    let message = this.state.msg
+    let message = this.props.description
     let success = {
         message: null
     }
@@ -102,4 +106,15 @@ render() {
 }
 
 }
-export default RHistoryCard;
+
+RHistoryCard.propTypes = {
+    updateRorder: PropTypes.func.isRequired,
+    description: PropTypes.object.isRequired
+  }
+  
+  const mapStateToProps = state => { 
+    return ({
+        description: state.orders.description
+  })};
+  
+  export default connect(mapStateToProps, { updateRorder })(RHistoryCard);

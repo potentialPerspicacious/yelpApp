@@ -3,6 +3,10 @@ import '../../App.css';
 import axios from 'axios';
 import Banner from '../Navigationbar/banner'
 import {Row, Col, Button} from 'react-bootstrap'
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types'
+import {addReview} from '../../actions/reviews'
+
 
 
 
@@ -30,20 +34,21 @@ class Creview extends Component {
             reviews: this.state.reviews,
             rating: this.state.rating
         }
-        axios.post(`/restaurant/review/${localStorage.getItem("user_id")}/${localStorage.getItem("resID")}`, data)
-            .then(response => 
-                {this.setState({
-                    status: (response.data) 
+        this.props.addReview(data)
+        // axios.post(`/restaurant/review/${localStorage.getItem("user_id")}/${localStorage.getItem("resID")}`, data)
+        //     .then(response => 
+        //         {this.setState({
+        //             status: (response.data) 
                         
-                    }); 
-                })
+        //             }); 
+        //         })
     }
 
     render (){
         let success = {
             message: null
         }
-        if(this.state.status == 'REVIEW_ADDED'){
+        if(this.props.description == 'REVIEW_ADDED'){
             success.message = 'Successfully reviewed the restaurant.'
             console.log('Success')
             setTimeout(function() {window.location = '/restaurantPage'}, 1000);
@@ -62,12 +67,12 @@ class Creview extends Component {
                         <br/>
                         <div class="row">
                         <label class="label-form"> Add review to this restaurant</label>
-                                <input type="text" class="form-control textbox" name="reviews" placeholder="Review" style={{color:"black"}} onChange = {this.onChange}/>
+                                <input type="text" class="form-control textbox" name="reviews" placeholder="Review" style={{color:"black"}} onChange = {this.onChange} required="required"/>
                             </div>
                             <br />
                             <div class="row">
                         <label class="label-form"> Rate your recent dish</label>
-                                <input type="number" class="form-control textbox" name="rating" placeholder="Rate from 1 - 5" style={{color:"black"}} onChange = {this.onChange}/>
+                                <input type="number" class="form-control textbox" name="rating" placeholder="Rate from 1 - 5" style={{color:"black"}} onChange = {this.onChange} required="required"/>
                             </div>
                             <br />
                             <br />
@@ -97,4 +102,15 @@ class Creview extends Component {
     }
 }
 
-export default Creview
+
+Creview.propTypes = {
+    addReview: PropTypes.func.isRequired,
+    description: PropTypes.object.isRequired
+  }
+  
+  const mapStateToProps = state => { 
+    return ({
+        description: state.reviews.description
+  })};
+  
+  export default connect(mapStateToProps, { addReview })(Creview);

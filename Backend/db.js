@@ -1,5 +1,5 @@
 const mysql = require('mysql');
-const db = mysql.createPool({
+const db = mysql.createConnection({
     connectionLimit: 100,
     host: 'localhost',
     user: 'yelp',
@@ -8,14 +8,22 @@ const db = mysql.createPool({
     database: 'yelpDB'
 });
 
-db.getConnection((err) => {
-    if(err){
-      console.log(err)
-      throw 'Error occured: ' + err;
+// db.getConnection((err) => {
+//     if(err){
+//       console.log(err)
+//       throw 'Error occured: ' + err;
        
-    } else {
-        console.log("Database connection successful.")
-    }
-  });
+//     } else {
+//         console.log("Database connection successful.")
+//     }
+//   });
+
+db.connect((err) => {
+  if (err) {
+    console.log(`Some error has occured: ${err}`);
+  } else {
+  console.log('Database connection successful.')
+  }
+});
   
 module.exports = db;
