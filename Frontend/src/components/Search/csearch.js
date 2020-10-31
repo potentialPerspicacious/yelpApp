@@ -18,7 +18,6 @@ class Csearch extends Component {
     super(props);
     this.state= {
         restaurant_search: [],
-        status: {},
         value: "no_filter",
         mapsFilter: "no_filter",
         checked: {}
@@ -35,7 +34,6 @@ class Csearch extends Component {
         .then(response => {
                 this.setState({
                     restaurant_search: this.state.restaurant_search.concat(response.data),
-                    status: (response.data[0].STATUS),
                     checked: (response.data[0].filter)
                 });
         })
@@ -44,7 +42,6 @@ class Csearch extends Component {
         .then(response => {
                 this.setState({
                     restaurant_search: this.state.restaurant_search.concat(response.data),
-                    status: (response.data[0].STATUS),
 
                 });
         })
@@ -115,12 +112,12 @@ clearFilters = (e) => {
   </div>
 
     );
-    if (this.state.status === "ITEM_PRESENT"){
+    if (this.state.restaurant_search.length > 0){
         if (this.state && this.state.restaurant_search && this.state.restaurant_search.length > 0) {
             section = this.restaurants(this.state.restaurant_search);
             renderOutput.push(section);
                 }
-        } else if (this.state.status === "ITEM_NOT_PRESENT"){
+        } else {
             renderOutput.push (<div> <p style={{color:"red"}}> No filtered Items. </p></div>)
         }
        return (

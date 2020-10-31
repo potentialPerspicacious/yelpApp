@@ -18,7 +18,8 @@ class EditcProfile extends Component {
     constructor(props) {
         super(props);
         this.state = { 
-            profile: {}, 
+            profileBasic: {},
+            profileAdv: {},
             pictures: []
         }
         
@@ -38,7 +39,8 @@ componentWillMount() {
     .then(response => 
         {console.log(response.data)
             this.setState({
-                profile: (response.data) 
+                profileBasic: response.data,
+                profileAdv: response.data.profileInfo
                 
             }); 
         })
@@ -114,7 +116,12 @@ onUpload = (e) => {
         const success = {
             message: null
         }
-        let details = this.state.profile;
+
+        var proBasic = this.state.profileBasic;
+        var proAdv = this.state.profileAdv;
+        delete proBasic.profileInfo;
+        // delete proAdv._id
+        var details = Object.assign(proBasic, proAdv)
         let message = this.props.description;
         if(message == 'USER_UPDATED'){
             success.message = 'Successfully updated the user.'

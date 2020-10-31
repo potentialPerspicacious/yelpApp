@@ -3,7 +3,7 @@ import backendServer from "../webConfig"
 
 
 export const addMenuItem = (data) => dispatch => {
-    axios.post(`${backendServer}/menu/addItem`, data)
+    axios.post(`${backendServer}/menu/addItem/${localStorage.getItem("user_id")}`, data)
         .then(response => dispatch({
             type: 'ADD_ITEM',
             payload: response.data 

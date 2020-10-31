@@ -2,18 +2,49 @@ const express = require("express");
 const router = express.Router();
 const db = require('../db.js');
 
-router.post('/editProfile/:user_id', (req, res) => {
-    let sql = `CALL Restaurant_Update_BasicProfile('${req.params.user_id}', '${req.body.rname}', '${req.body.email}', '${req.body.zipcode}', '${req.body.location}', '${req.body.contact}', '${req.body.cusine}', '${req.body.description}', '${req.body.timings}', '${req.body.dinein}', '${req.body.takeout}', '${req.body.ydelivery}');`;
-    db.query(sql, (err, result) => {
-      if (err) {
-        res.end("Error in Data");
-      }
-      if (result && result.length > 0 && result[0][0].status === 'USER_UPDATED') {
-        res.end(result[0][0].status);
-      }
-    });
-  });
+// router.post('/editProfile/:user_id', (req, res) => {
+//     let sql = `CALL Restaurant_Update_BasicProfile('${req.params.user_id}', '${req.body.rname}', '${req.body.email}', '${req.body.zipcode}', '${req.body.location}', '${req.body.contact}', '${req.body.cusine}', '${req.body.description}', '${req.body.timings}', '${req.body.dinein}', '${req.body.takeout}', '${req.body.ydelivery}');`;
+//     db.query(sql, (err, result) => {
+//       if (err) {
+//         res.end("Error in Data");
+//       }
+//       if (result && result.length > 0 && result[0][0].status === 'USER_UPDATED') {
+//         res.end(result[0][0].status);
+//       }
+//     });
+//   });
 
+const Profile = require('../Models/RestaurantProfileModel.js');
+
+router.post('/editProfile/:user_id', (req, res) => {
+  Profile.findByIdAndUpdate(req.params.user_id, {
+    name: req.body.rname,
+    email: req.body.email,
+    zipcode: req.body.zipcode,
+    city: req.body.city,
+    profileInfo: {location:req.body.location,
+    contact:req.body.contact,
+    cusine:req.body.cusine,
+    description:req.body.description,
+    timings:req.body.timings,
+    dinein:req.body.dinein,
+    takeout:req.body.takeout,
+    ydelivery:req.body.ydelivery
+    }}, (error, result) => {
+      if (error) {
+          res.writeHead(500, {
+              'Content-Type': 'text/plain'
+          })
+          res.end();  
+      }
+      else {
+          res.writeHead(200, {
+              'Content-Type': 'application/json'
+          });
+          res.end("USER_UPDATED");
+      }
+  });
+});
   router.get('/orderHistory/:resID', (req, res) => {
     let sql = `CALL get_RorderHistory('${req.params.resID}')`;
     db.query(sql, (err, result) => {  

@@ -20,10 +20,10 @@ class ItemCard extends Component {
 
 
   setDishID = () => {
-    localStorage.setItem("dishID", this.props.menu_item.dishID)
+    localStorage.setItem("dishID", this.props.menu_item._id)
   }
   addCart = () => {
-    localStorage.setItem("dishID", this.props.menu_item.dishID)
+    localStorage.setItem("dishID", this.props.menu_item._id)
     localStorage.setItem("status", "item_present")
 
     this.props.addItemCart()
@@ -38,7 +38,7 @@ class ItemCard extends Component {
 
   render() {
     let icon = null;
-    if (localStorage.getItem("isOwner")==="on"){
+    if (localStorage.getItem("type")==="restaurant"){
       icon = (<Link to={{ pathname: "/menu/editItem"}}>
       <Button variant="link" onClick={this.setDishID} name="edit"><FontAwesomeIcon style={{color:"black"}} icon={faEdit}/></Button>&nbsp;
       </Link> )   } else {

@@ -19,7 +19,7 @@ class Menu extends Component {
 
 
     getMenuItems = () => {
-        if (localStorage.getItem("isOwner")==='on'){
+        if (localStorage.getItem("type")==='restaurant'){
         axios.get(`${backendServer}/menu/items/${localStorage.getItem("user_id")}`)
             .then(response => {
                     this.setState({

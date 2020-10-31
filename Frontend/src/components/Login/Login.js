@@ -54,6 +54,7 @@ class Login extends Component{
             isOwner: e.target.value
 
         }) 
+    
     }
     //submit Login handler to send a request to the node backend
     submitLogin = (e) => {
@@ -80,12 +81,13 @@ class Login extends Component{
     render(){
         //redirect based on successful login
         const isowner = this.state.isOwner
+        localStorage.setItem("isOwner", isowner);
         const error = {
             message: null
         }
         let redirectVar = null;
         if(cookie.load('cookie')){
-            if (isowner === "on"){
+            if (this.props.description.type === "restaurant"){
                 redirectVar = <Redirect to= "/rhome"/>
             } else {
                 redirectVar = <Redirect to= "/chome"/>
@@ -102,10 +104,11 @@ class Login extends Component{
             setTimeout(function() {window.location = '/login'}, 2000);
         }
         console.log(this.props.description)
-        if(this.props.description && this.props.description.user_id){
-            localStorage.setItem("email_id", this.props.description.email_id);
-            localStorage.setItem("user_id", this.props.description.user_id);
-            localStorage.setItem("isOwner", this.props.description.isOwner);
+        if(this.props.description && this.props.description._id){
+            localStorage.setItem("email_id", this.props.description.email);
+            localStorage.setItem("user_id", this.props.description._id);
+            localStorage.setItem("type", this.props.description.type);
+
         }
         return(
             <div>
