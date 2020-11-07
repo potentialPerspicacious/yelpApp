@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const passwordHash = require('password-hash');
 const db = require('../db.js');
+var kafka = require("../kafka/client");
+
 
 const Menu = require('../Models/MenuModel.js');
 
@@ -41,6 +43,25 @@ router.post('/addItem/:user_id', (req, res) => {
   });
 
   router.get('/items/:user_id', (req, res) => {
+    kafka.make_request("menu", req.params.user_id, function(err, results) {
+      if (err) {
+        console.log("Inside err");
+        response.json({
+          status: "error",
+          msg: "System Error, Try Again."
+        });
+      } else {
+        console.log("Inside /items else in Backend");
+        response.json({
+          updatedList: results
+        });
+  
+        response.end();
+      }
+    });
+
+
+
     Menu.find({_id: req.params.user_id}, (error, result) => {
       if (error) {
           res.writeHead(500, {

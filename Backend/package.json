@@ -19,6 +19,7 @@
     "express-session": "^1.15.6",
     "express-sessions": "^1.0.6",
     "install": "^0.13.0",
+    "kafka-node": "^3.0.1",
     "mocha": "^5.2.0",
     "mongoose": "^5.10.10",
     "multer": "^1.4.2",
