@@ -6,6 +6,9 @@ import {faEdit, faCartPlus, faCartArrowDown, faShoppingBag, faCar} from "@fortaw
 import axios from "axios";
 import ListCard from  './listCard'
 import backendServer from "../../webConfig"
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types'
+import {placeOrder, cancelOrder} from '../../actions/orders'
 
 
 class OrderCard extends Component {
@@ -15,6 +18,7 @@ class OrderCard extends Component {
         status: {},
         status_message: {},status_message2:{},
         order_items: [],
+        orderID: {}
     };
     
     this.onChange = this.onChange.bind(this);
@@ -25,10 +29,11 @@ class OrderCard extends Component {
 getOrderedItems = () => {
     axios.get(`${backendServer}/customer/OrderItems/${localStorage.getItem("user_id")}/${localStorage.getItem("resID")}`)
     .then(response => {
+        localStorage.setItem("orderID",response.data.splice(0, 1))
             this.setState({
                 order_items: this.state.order_items.concat(response.data),
                 status_message: (response.data),
-                status_message2: (response.data[0].STATUS)
+                // status_message2: (response.data[0].STATUS),
             });
     })
     }
@@ -60,23 +65,28 @@ delivery = () => {
 placeOrder = () => {
     localStorage.setItem("orderstatus", "New Order")
     localStorage.setItem("status", 'item_not_present')
-    axios.post(`http://localhost:3001/customer/placeOrder/${localStorage.getItem("user_id")}/${localStorage.getItem("resID")}/${localStorage.getItem("orderstatus")}/${localStorage.getItem("ordermode")}`)
-    .then(response => {
-            this.setState({
-                status: (response.data)
-            });
-    })
+    this.props.placeOrder()
+    localStorage.removeItem("ordertype")
+    localStorage.removeItem("orderstatus")
+
+    // axios.post(`${backendServer}/customer/placeOrder/${localStorage.getItem("user_id")}/${localStorage.getItem("resID")}/${localStorage.getItem("orderstatus")}/${localStorage.getItem("ordermode")}`)
+    // .then(response => {
+    //         this.setState({
+    //             status: (response.data)
+    //         });
+    // })
     }
 cancelOrder = () => {
     localStorage.removeItem("ordertype")
     localStorage.removeItem("orderstatus")
     localStorage.setItem("status", 'item_not_present')
-    axios.post(`http://localhost:3001/customer/cancelOrders/${localStorage.getItem("user_id")}/${localStorage.getItem("resID")}`)
-    .then(response => {
-            this.setState({
-                status: (response.data)
-            });
-    })
+    this.props.cancelOrder()
+    // axios.post(`${backendServer}/customer/cancelOrders/${localStorage.getItem("user_id")}/${localStorage.getItem("resID")}`)
+    // .then(response => {
+    //         this.setState({
+    //             status: (response.data)
+    //         });
+    // })
     }
 render (){
     // let message2 = this.state.status_message
@@ -89,6 +99,7 @@ render (){
     // }
     let section,
     renderOutput = [];
+    console.log((this.state.orderID))
     if (this.state && this.state.order_items && this.state.order_items.length > 0) {
         section = this.orderItems(this.state.order_items);
         console.log(section)
@@ -100,7 +111,7 @@ render (){
             }
 
 
-    let message = this.state.status
+    let message = this.props.description
     if(message == 'ORDER_CANCELLED'){
         success.message = 'Successfully cancelled the order.'
         setTimeout(function() {window.location = '/csearch'}, 1000);
@@ -134,4 +145,15 @@ render (){
 }
 }
 
-export default OrderCard
+OrderCard.propTypes = {
+    placeOrder: PropTypes.func.isRequired,
+    cancelOrder: PropTypes.func.isRequired,
+    description: PropTypes.object.isRequired
+  }
+  
+  const mapStateToProps = state => { 
+    return ({
+        description: state.orders.description
+  })};
+  
+  export default connect(mapStateToProps, { placeOrder, cancelOrder })(OrderCard);

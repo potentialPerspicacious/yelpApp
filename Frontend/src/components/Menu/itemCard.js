@@ -5,7 +5,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faEdit, faCartPlus} from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import backendServer from "../../webConfig"
-
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types'
+import {addItemCart} from '../../actions/menu'
 
 class ItemCard extends Component {
   constructor(props) {
@@ -18,31 +20,31 @@ class ItemCard extends Component {
 
 
   setDishID = () => {
-    localStorage.setItem("dishID", this.props.menu_item.dishID)
+    localStorage.setItem("dishID", this.props.menu_item._id)
   }
   addCart = () => {
-    localStorage.setItem("dishID", this.props.menu_item.dishID)
+    localStorage.setItem("dishID", this.props.menu_item._id)
     localStorage.setItem("status", "item_present")
 
-    
-    axios.post(`${backendServer}/customer/order/${localStorage.getItem("user_id")}/${localStorage.getItem("resID")}/${localStorage.getItem("dishID")}`)
-        .then(response => {
-                this.setState({
-                    status: (response.data)
-                });
-        })
+    this.props.addItemCart()
+    // axios.post(`${backendServer}/customer/order/${localStorage.getItem("user_id")}/${localStorage.getItem("resID")}/${localStorage.getItem("dishID")}`)
+    //     .then(response => {
+    //             this.setState({
+    //                 status: (response.data)
+    //             });
+    //     })
   }
 
 
   render() {
     let icon = null;
-    if (localStorage.getItem("isOwner")==="on"){
+    if (localStorage.getItem("type")==="restaurant"){
       icon = (<Link to={{ pathname: "/menu/editItem"}}>
       <Button variant="link" onClick={this.setDishID} name="edit"><FontAwesomeIcon style={{color:"black"}} icon={faEdit}/></Button>&nbsp;
       </Link> )   } else {
         icon = <Button variant="link" onClick={this.addCart} name="edit"><FontAwesomeIcon style={{color:"black"}} icon={faCartPlus}/></Button>;
     }
-    let message = this.state.status
+    // let message = this.props.description
     const success = {
         message: null
     }
@@ -52,7 +54,7 @@ class ItemCard extends Component {
     }
     let details = this.state.dish;
     // console.log(this.props.description)
-    if(message == 'ITEM_ADDED'){
+    if(this.props.description == 'ITEM_ADDED'){
         success.message = 'Item added to cart.'
         setTimeout(function() {window.location = '/restaurantPage'}, 500);
     }
@@ -86,4 +88,14 @@ class ItemCard extends Component {
   }
 }
 
-export default ItemCard;
+ItemCard.propTypes = {
+  addItemCart: PropTypes.func.isRequired,
+  description: PropTypes.object.isRequired
+}
+
+const mapStateToProps = state => { 
+  return ({
+      description: state.menu.description
+})};
+
+export default connect(mapStateToProps, { addItemCart })(ItemCard);

@@ -4,6 +4,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Card, Row, Col, Button } from "react-bootstrap";
 import axios from 'axios'
 import backendServer from "../../webConfig"
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types'
+import {updateRorder} from '../../actions/orders'
 
 
 class RHistoryCard extends Component {
@@ -30,20 +33,22 @@ onChange2 = (e) => {
 updateOrder = (e) => {
     e.preventDefault();
     const data = {
-        user_id: localStorage.getItem("user_id"),
+        // user_id: localStorage.getItem("user_id"),
         orderID: this.props.order_history.idorderhistory,
         orderStatus: this.state.value,
         orderType: this.state.value2,
     }
-    axios.post(`${backendServer}/restaurant/updateOrder`, data)
-    .then(response => {
-        this.setState({
-            msg: (response.data)
-        });
-    })
+    this.props.updateRorder(data)
+    // axios.post(`${backendServer}/restaurant/updateOrder`, data)
+    // .then(response => {
+    //     this.setState({
+    //         msg: (response.data)
+    //     });
+    // })
 }
 render() {
-    let message = this.state.msg
+    console.log(this.props.order_history)
+    let message = this.props.description
     let success = {
         message: null
     }
@@ -87,6 +92,8 @@ render() {
               </span> </Card.Text>
               
               <Card.Text><FontAwesomeIcon icon={faClock} /><span style={{fontWeight:"bold"}}> Order Time: </span> <span style={{textTransform: "uppercase"}}> <i>{this.props.order_history.datetime}</i></span></Card.Text>
+              {/* <Card.Text><FontAwesomeIcon icon={faClock} /><span style={{fontWeight:"bold"}}> Order Items: </span> <span style={{textTransform: "uppercase"}}> <i>{this.props.order_history.datetime}</i></span></Card.Text> */}
+
               <Row>
               <Button variant="outline-success" onClick={this.updateOrder}>Update Order</Button>
               <Button style={{marginLeft:"2cm"}}variant="outline-danger" onClick={this.updateOrder}>Cancel Order</Button>
@@ -102,4 +109,15 @@ render() {
 }
 
 }
-export default RHistoryCard;
+
+RHistoryCard.propTypes = {
+    updateRorder: PropTypes.func.isRequired,
+    description: PropTypes.object.isRequired
+  }
+  
+  const mapStateToProps = state => { 
+    return ({
+        description: state.orders.description
+  })};
+  
+  export default connect(mapStateToProps, { updateRorder })(RHistoryCard);

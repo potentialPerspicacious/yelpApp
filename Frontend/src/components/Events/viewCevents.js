@@ -66,7 +66,7 @@ class CEvents extends Component {
         navSearch = null,
             section,
             renderOutput = [];
-        console.log(this.state.status)
+        // console.log(this.state.status)
         if (this.state.status === 'EVENTS_PRESENT') {
             if (this.state && this.state.event_items && this.state.event_items.length > 0) {
                 section = this.events(this.state.event_items);

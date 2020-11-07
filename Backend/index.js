@@ -9,6 +9,7 @@ const customer = require("./modules/customer")
 const search = require("./modules/search")
 const uploads = require("./modules/uploads")
 const images = require("./modules/images")
+const messages = require('./modules/messages')
 
 
 
@@ -21,6 +22,7 @@ app.use("/customer", customer)
 app.use("/search", search)
 app.use("/uploads", uploads)
 app.use("/images", images)
+app.use("/messages", messages)
 
 const port = process.env.PORT || 3001;
 var server = app.listen(port, () => {

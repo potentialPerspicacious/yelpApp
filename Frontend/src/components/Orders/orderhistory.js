@@ -32,16 +32,17 @@ class CorderHistory extends Component {
         .then(response => {
                 this.setState({
                     order_history: this.state.order_history.concat(response.data),
-                    status: (response.data[0].STATUS),
-                    checked: (response.data[0].filter)
-                });
+                    status: (response.data[0]),
+                    checked: (response.data[0])
+                })
         })
     } else {
     axios.get(`${backendServer}/customer/orderHistory/${localStorage.getItem("user_id")}`)
     .then(response => {
+        console.log(response.data)
             this.setState({
                 order_history: this.state.order_history.concat(response.data),
-                status: (response.data[0].STATUS),
+                status: (response.data[0]),
 
             });
     })
@@ -52,7 +53,7 @@ class CorderHistory extends Component {
         if (this.state && this.state.order_history && this.state.order_history.length > 0) {
             items = this.state.order_history
             if (items.length > 0) {
-                for (var i = 0; i < items.length; i++) {
+                for (var i = 1; i < items.length; i++) {
                     item = <HistoryCard order_history={items[i]}/>;
                     itemsRender.push(item);
                 }
@@ -113,6 +114,7 @@ class CorderHistory extends Component {
         if (this.state.status === "ITEM_PRESENT"){
             if (this.state && this.state.order_history && this.state.order_history.length > 0) {
                 section = this.orderHistory(this.state.order_history);
+                console.log(section)
                 renderOutput.push(section);
                     }
             } else if (this.state.status === "ITEM_NOT_PRESENT"){

@@ -8,6 +8,10 @@ import TimePicker from 'react-bootstrap-time-picker';
 import ImageUploader from 'react-images-upload';
 import {Button} from 'react-bootstrap'
 import backendServer from "../../webConfig"
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types'
+import {editMenuItem} from '../../actions/menu'
+
 
 
 
@@ -51,7 +55,6 @@ componentWillMount() {
 }
 
 updatedish = (e) => {
-    console.log("OKK")
         //prevent page from refresh
         e.preventDefault();
         let details = this.state.dish
@@ -62,12 +65,13 @@ updatedish = (e) => {
             description: this.state.location || details.description,
             price: this.state.price || details.price
         }
-        axios.post(`${backendServer}/menu/updateItem/${localStorage.getItem("dishID")}`, data)
-        .then(response => {
-            this.setState({
-                msg: (response.data)
-            });
-        })
+        this.props.editMenuItem(data)
+        // axios.post(`${backendServer}/menu/updateItem/${localStorage.getItem("dishID")}`, data)
+        // .then(response => {
+        //     this.setState({
+        //         msg: (response.data)
+        //     });
+        // })
 
     }
 
@@ -99,7 +103,7 @@ updatedish = (e) => {
             });
     }
     render(){
-        let message = this.state.msg
+        let message = this.props.description
         const error = {
             message: null
         }
@@ -110,7 +114,7 @@ updatedish = (e) => {
         // console.log(this.props.description)
         if(message == 'ITEM_UPDATED'){
             success.message = 'Successfully updated the menu item.'
-            setTimeout(function() {window.location = '/rhome'}, 3000);
+            setTimeout(function() {window.location = '/rhome'}, 1000);
         }
         return(
 <div>
@@ -183,4 +187,14 @@ updatedish = (e) => {
         )
     }
 }
-export default EditItem
+EditItem.propTypes = {
+    editMenuItem: PropTypes.func.isRequired,
+    description: PropTypes.object.isRequired
+}
+
+const mapStateToProps = state => { 
+    return ({
+        description: state.menu.description
+})};
+
+export default connect(mapStateToProps, { editMenuItem })(EditItem);

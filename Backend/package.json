@@ -20,10 +20,13 @@
     "express-sessions": "^1.0.6",
     "install": "^0.13.0",
     "mocha": "^5.2.0",
+    "mongoose": "^5.10.10",
     "multer": "^1.4.2",
     "mysql": "^2.18.1",
     "npm": "^6.14.8",
+    "passport-jwt": "^4.0.0",
     "password-hash": "^1.2.2",
+    "react-paginate": "^6.5.0",
     "redux": "^4.0.5"
   },
   "devDependencies": {},

@@ -52,12 +52,12 @@ class Maps extends Component {
         Geocode.enableDebug();
         if (this.state && this.state.locations && this.state.locations.length > 0) {
             items = this.state.locations
-            console.log(items)
+            // console.log(items.length)
         }
         if(items.length > 0){
             for (var i = 0; i < items.length; i++) {
                 loc = items[i].location
-                console.log((items[i].location))
+                // console.log((items[i].location))
                 Geocode.fromAddress(loc).then(
                     response => {
                         const { lat, lng } = response.results[0].geometry.location;

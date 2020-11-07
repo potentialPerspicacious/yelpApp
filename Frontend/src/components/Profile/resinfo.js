@@ -16,25 +16,27 @@ class Resinfo extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            profile: {},
+            profileBasic: {},
+            profileAdv: {}
         
         };
     }
-
+    
     componentWillMount() {
-        if (localStorage.getItem("isOwner")==='on'){
+        if (localStorage.getItem("type")==='restaurant'){
             axios.get(`/profile/restaurant/${localStorage.getItem("user_id")}`)
             .then(response => 
                 {this.setState({
-                        profile: (response.data) 
-                        
+                    profileBasic: response.data,
+                    profileAdv: response.data.profileInfo
                     }); 
                 })
         } else {
             axios.get(`/profile/restaurant/${localStorage.getItem("resID")}`)
             .then(response => 
                 {this.setState({
-                        profile: (response.data) 
+                    profileBasic: response.data,
+                    profileAdv: response.data.profileInfo
                         
                     }); 
                 })
@@ -60,7 +62,7 @@ class Resinfo extends Component {
             ratings = <FontAwesomeIcon className="" icon={faStar} style={{color: "red"}} />;
             rating.push(ratings);
         }
-if (localStorage.getItem("isOwner")==="on"){
+if (localStorage.getItem("type")==="restaurant"){
     order = <Button href = '/rorders' onClick={localStorage.setItem('filter', 'no_filter')} style = {{backgroundColor: "red", fontSize: "20px", border: '1px solid red', color: "white"}} variant="link">Orders  <FontAwesomeIcon className="" icon={faCartArrowDown} style={{height:"4.5mm", position:"center"}} /> </Button>
 
     icon = <a href="/menu/addItem"> <FontAwesomeIcon className="" icon={faPlus} style={{color: "black", marginTop:"5mm", marginLeft: "19.65cm"}} /></a>
@@ -71,8 +73,12 @@ if (localStorage.getItem("isOwner")==="on"){
     order = <Button href = "javascript:setTimeout(()=>{window.location = '/corders' },1000);"  onClick={localStorage.setItem('filter', 'no_filter')} style = {{backgroundColor: "red", fontSize: "20px", border: '1px solid red', color: "white"}} variant="link">Orders  <FontAwesomeIcon className="" icon={faCartArrowDown} style={{height:"4.5mm", position:"center"}} /> </Button>
 
 }
-        let details = this.state.profile
-        console.log(details)
+        var proBasic = this.state.profileBasic;
+        var proAdv = this.state.profileAdv;
+        delete proBasic.profileInfo;
+        // delete proAdv._id
+        var details = Object.assign(proBasic, proAdv)
+
         if(details.dinein === 'dinein'){
             dservice = (<FontAwesomeIcon className="" icon={faCheck} style={{color: "green"}}/>);
         } else {

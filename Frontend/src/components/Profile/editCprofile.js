@@ -5,13 +5,12 @@ import cookie from 'react-cookies';
 import {Redirect} from 'react-router';
 import Banner from '../Navigationbar/banner'
 import {Button} from 'react-bootstrap'
-import TimePicker from 'react-bootstrap-time-picker';
 import ImageUploader from 'react-images-upload';
-import { editProfile } from '../../actions/editProfile'
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types'
 import { ThemeConsumer } from 'react-bootstrap/esm/ThemeProvider';
 import backendServer from "../../webConfig"
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types'
+import {editCProfile} from '../../actions/editProfile'
 
 
 
@@ -19,7 +18,8 @@ class EditcProfile extends Component {
     constructor(props) {
         super(props);
         this.state = { 
-            profile: {}, 
+            profileBasic: {},
+            profileAdv: {},
             pictures: []
         }
         
@@ -39,7 +39,8 @@ componentWillMount() {
     .then(response => 
         {console.log(response.data)
             this.setState({
-                profile: (response.data) 
+                profileBasic: response.data,
+                profileAdv: response.data.profileInfo
                 
             }); 
         })
@@ -97,12 +98,13 @@ onUpload = (e) => {
             picture: this.state.pictures
   
         }
-        axios.post(`${backendServer}/customer/editProfile/${localStorage.getItem("user_id")}`, data)
-        .then(response => {
-            this.setState({
-                msg: (response.data)
-            });
-        })
+        this.props.editCProfile(data)
+        // axios.post(`${backendServer}/customer/editProfile/${localStorage.getItem("user_id")}`, data)
+        // .then(response => {
+        //     this.setState({
+        //         msg: (response.data)
+        //     });
+        // })
     }
     render(){
         console.log(this.state.pictures[0])
@@ -114,8 +116,13 @@ onUpload = (e) => {
         const success = {
             message: null
         }
-        let details = this.state.profile;
-        let message = this.state.msg
+
+        var proBasic = this.state.profileBasic;
+        var proAdv = this.state.profileAdv;
+        delete proBasic.profileInfo;
+        // delete proAdv._id
+        var details = Object.assign(proBasic, proAdv)
+        let message = this.props.description;
         if(message == 'USER_UPDATED'){
             success.message = 'Successfully updated the user.'
             setTimeout(function() {window.location = '/cprofile'}, 800);
@@ -232,4 +239,14 @@ onUpload = (e) => {
         )
     }
 }
-export default (EditcProfile);
+EditcProfile.propTypes = {
+    editCProfile: PropTypes.func.isRequired,
+    description: PropTypes.object.isRequired
+  }
+  
+  const mapStateToProps = state => { 
+    return ({
+        description: state.edit.description
+  })};
+  
+  export default connect(mapStateToProps, { editCProfile })(EditcProfile);

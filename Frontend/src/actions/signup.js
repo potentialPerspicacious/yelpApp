@@ -23,7 +23,7 @@ export const restaurantSignup = (resdata) => dispatch => {
 
 export const customerSignup = (resdata) => dispatch => {
     axios.defaults.withCredentials = true;
-    axios.post('http://localhost:3001/signup/customer', resdata)
+    axios.post(`${backendServer}/signup/customer`, resdata)
         .then(response => dispatch({
             type: 'CUSTOMER_SIGNUP',
             payload: response.data

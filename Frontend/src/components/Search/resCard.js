@@ -10,7 +10,7 @@ class ResCard extends Component {
 
 
   openmenu = () => {
-     localStorage.setItem("resID", this.props.restaurant_search.idrestaurant)
+     localStorage.setItem("resID", this.props.restaurant_search._id)
      window.location = '/restaurantPage'
   }
 

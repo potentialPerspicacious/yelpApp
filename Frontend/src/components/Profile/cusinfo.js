@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import '../../App.css';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {faCamera, faEdit, faIdCard, faPhoneAlt, faGenderless, faAddressCard, faBirthdayCake, faCity} from "@fortawesome/free-solid-svg-icons";
+import {faCamera, faEdit, faIdCard, faPhoneAlt, faGenderless, faAddressCard, faBirthdayCake, faCity, faChartArea, faComment} from "@fortawesome/free-solid-svg-icons";
 import { CardImg, Card } from "react-bootstrap";
 import Banner from '../Navigationbar/banner';
 import backendServer from "../../webConfig"
@@ -14,7 +14,8 @@ class Cusinfo extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            profile: {},
+            profileBasic: {},
+            profileAdv: {}
         
         };
     }
@@ -24,7 +25,8 @@ class Cusinfo extends Component {
         axios.get(`/profile/customer/${localStorage.getItem("user_id")}`)
         .then(response => 
             {this.setState({
-                    profile: (response.data) 
+                profileBasic: response.data,
+                profileAdv: response.data.profileInfo 
                     
                 }); 
             })
@@ -32,18 +34,19 @@ class Cusinfo extends Component {
             axios.get(`/profile/customer/${localStorage.getItem("cusID")}`)
             .then(response => 
                 {this.setState({
-                        profile: (response.data) 
+                    profileBasic: response.data,
+                    profileAdv: response.data.profileInfo
                         
                     }); 
                 })
         }
-            
-
     }
     render(){
-
-        let details = this.state.profile
-        console.log(details)
+        var proBasic = this.state.profileBasic;
+        var proAdv = this.state.profileAdv;
+        delete proBasic.profileInfo;
+        // delete proAdv._id
+        var details = Object.assign(proBasic, proAdv)
         let edit = null
         var imageSrc;
         if (this.state) {
@@ -58,7 +61,13 @@ class Cusinfo extends Component {
                 </a>
             </li>)
         } else if (localStorage.getItem("isOwner")=== "on") {
-            edit = null
+            edit =  (<li>
+                <a href='/messageCustomer'>
+                    <span className="navicon">
+                    <FontAwesomeIcon icon={faComment} />
+                    </span>
+                </a>
+            </li>)
         }
         return(
             <div>
@@ -94,7 +103,7 @@ class Cusinfo extends Component {
                     <h6 style={{margin:"0px"}}> Address</h6>
                     <p> <FontAwesomeIcon icon={faAddressCard} style={{ height: "3mm", verticalAlign: "top", marginTop:"1.8mm"}}/> {details.address} - {details.zipcode}</p>
                     <h6 style={{margin:"0px"}}> Birthday </h6>
-        <p> <FontAwesomeIcon icon={faBirthdayCake} style={{ height: "3mm", verticalAlign: "top", marginTop:"1.8mm"}}/> {details.month}/{details.day}/{details.year}</p>
+        <p> <FontAwesomeIcon icon={faBirthdayCake} style={{ height: "3mm", verticalAlign: "top", marginTop:"1.8mm"}}/> {details.month}/{details.date}/{details.year}</p>
                 </div>
                 <div class='col-xs-12' style={{textAlign: "left", height: "100%", borderLeft: "1px solid #e6e6e6", marginTop:"0.85cm", marginLeft: "2.5cm"}}>
                     <div style={{marginLeft: "10px"}}>

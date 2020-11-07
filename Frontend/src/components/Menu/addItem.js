@@ -5,12 +5,11 @@ import {Redirect} from 'react-router';
 import Banner from '../Navigationbar/banner'
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types'
-import {restaurantSignup} from '../../actions/signup'
-import meunImage from '../../images/menubg2.jpg'
 import ImageUploader from 'react-images-upload';
 import {Button} from 'react-bootstrap'
 import axios from 'axios';
 import backendServer from "../../webConfig"
+import {addMenuItem} from '../../actions/menu'
 
 
 
@@ -43,19 +42,20 @@ class AddItem extends Component {
             price: this.state.price,
             image: localStorage.getItem("image")
         }
-        axios.post(`${backendServer}/menu/addItem`, data)
-        .then(response => {
-            this.setState({
-                msg: (response.data)
-            });
-        })
-        .catch(err => {
-            if (err.response && err.response.data) {
-                this.setState({
-                    msg: err.response.data
-                });
-            }
-        });
+        this.props.addMenuItem(data)
+        // axios.post(`${backendServer}/menu/addItem`, data)
+        // .then(response => {
+        //     this.setState({
+        //         msg: (response.data)
+        //     });
+        // })
+        // .catch(err => {
+        //     if (err.response && err.response.data) {
+        //         this.setState({
+        //             msg: err.response.data
+        //         });
+        //     }
+        // });
     }
     goBack= () => {
         window.location = '/rhome'
@@ -96,6 +96,7 @@ onUpload = (e) => {
 }
 
     render(){
+        console.log(this.props.description)
         let message = this.state.msg
         let redirectVar = null;
         let error = {
@@ -109,10 +110,10 @@ onUpload = (e) => {
         } else {
             redirectVar = <Redirect to = "/menu/addItem"/>
         }
-        if(message == 'ITEM_ADDED'){
+        if(this.props.description == 'ITEM_ADDED'){
             success.message = 'Successfully added the new dish.'
             setTimeout(function() {window.location = '/rhome'}, 1000);
-        } else if (message == 'ITEM_EXISTS'){
+        } else if (this.props.description == 'ITEM_EXISTS'){
             error.message = 'Dish already exists please add a different one.'
             setTimeout(function() {window.location = '/menu/addItem'}, 1000);
         }
@@ -189,4 +190,15 @@ onUpload = (e) => {
     }
 }
 
-export default AddItem
+
+AddItem.propTypes = {
+    addMenuItem: PropTypes.func.isRequired,
+    description: PropTypes.object.isRequired
+}
+
+const mapStateToProps = state => { 
+    return ({
+        description: state.menu.description
+})};
+
+export default connect(mapStateToProps, { addMenuItem })(AddItem);

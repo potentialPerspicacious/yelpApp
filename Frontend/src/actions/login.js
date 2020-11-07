@@ -4,7 +4,7 @@ import backendServer from "../webConfig"
 
 export const userLogin = (loginData) => dispatch => {
     axios.defaults.withCredentials = true;
-    axios.post(`${backendServer}/login`, loginData)
+    axios.post(`${backendServer}/login/:${localStorage.getItem("isOwner")}`, loginData)
             .then(response => dispatch({
             type: 'USER_LOGIN',
             payload: response.data
