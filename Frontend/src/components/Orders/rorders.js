@@ -31,8 +31,8 @@ class RorderHistory extends Component {
         .then(response => {
                 this.setState({
                     order_history: this.state.order_history.concat(response.data),
-                    status: (response.data[0].STATUS),
-                    checked: (response.data[0].filter)
+                    status: (response.data[0]),
+                    checked: (response.data[0])
                 });
         })
     } else {
@@ -40,7 +40,7 @@ class RorderHistory extends Component {
         .then(response => {
                 this.setState({
                     order_history: this.state.order_history.concat(response.data),
-                    status: (response.data[0].STATUS)
+                    status: (response.data[0])
                 });
         })
 
@@ -52,7 +52,7 @@ class RorderHistory extends Component {
         if (this.state && this.state.order_history && this.state.order_history.length > 0) {
             items = this.state.order_history
             if (items.length > 0) {
-                for (var i = 0; i < items.length; i++) {
+                for (var i = 1; i < items.length; i++) {
                     item = <RHistoryCard order_history={items[i]}/>;
                     itemsRender.push(item);
                 }

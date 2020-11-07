@@ -26,6 +26,7 @@
     "npm": "^6.14.8",
     "passport-jwt": "^4.0.0",
     "password-hash": "^1.2.2",
+    "react-paginate": "^6.5.0",
     "redux": "^4.0.5"
   },
   "devDependencies": {},

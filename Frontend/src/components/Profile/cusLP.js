@@ -5,7 +5,7 @@ import  Navbar  from '../Navigationbar/Navbar';
 import logo from '../../images/logo.png';
 import {Link} from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSearch, faIdCard, faSignOutAlt, faClock } from "@fortawesome/free-solid-svg-icons";
+import { faSearch, faIdCard, faSignOutAlt, faClock, faComment } from "@fortawesome/free-solid-svg-icons";
 import Geocode from "react-geocode";
  
 
@@ -84,6 +84,9 @@ class CusLP extends Component {
                           </li>
                           <li class="nav-item">
                         <a class="nav-link navtext" href="/viewcevents">Events</a>
+                          </li>
+                          <li class="nav-item">
+                        <a class="nav-link navtext" href="/viewMessages"><FontAwesomeIcon icon={faComment} /></a>
                           </li>
 
                           <li class="nav-item">

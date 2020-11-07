@@ -16,7 +16,7 @@ class EventsCard extends Component {
         };
     }
     saveEventID = () => {
-        localStorage.setItem('eventid', this.props.event_items.idevents)
+        localStorage.setItem('eventid', this.props.event_items._id)
     }
     registerEvent =() => {
         const data = {
@@ -27,6 +27,7 @@ class EventsCard extends Component {
 
     }
 render() {
+    console.log(this.props.event_items)
     let success = {
         message: null
     }
@@ -63,7 +64,7 @@ render() {
           <Col align="left" style={{marginLeft:"0mm"}}>
             <Card.Body>
 
-                <Card.Title><p>{this.props.event_items.eventname}</p></Card.Title>
+                <Card.Title><p>{this.props.event_items.event_name}</p></Card.Title>
               <Card.Text><p><FontAwesomeIcon icon={faCity}/> {this.props.event_items.location}</p></Card.Text>
               <Card.Text><p><FontAwesomeIcon icon={faCalendarAlt}/><span style={{marginLeft:"1mm"}}>
                   {this.props.event_items.month}/

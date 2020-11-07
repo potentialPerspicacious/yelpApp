@@ -18,6 +18,7 @@ class OrderCard extends Component {
         status: {},
         status_message: {},status_message2:{},
         order_items: [],
+        orderID: {}
     };
     
     this.onChange = this.onChange.bind(this);
@@ -28,10 +29,11 @@ class OrderCard extends Component {
 getOrderedItems = () => {
     axios.get(`${backendServer}/customer/OrderItems/${localStorage.getItem("user_id")}/${localStorage.getItem("resID")}`)
     .then(response => {
+        localStorage.setItem("orderID",response.data.splice(0, 1))
             this.setState({
                 order_items: this.state.order_items.concat(response.data),
                 status_message: (response.data),
-                status_message2: (response.data[0].STATUS)
+                // status_message2: (response.data[0].STATUS),
             });
     })
     }
@@ -64,6 +66,8 @@ placeOrder = () => {
     localStorage.setItem("orderstatus", "New Order")
     localStorage.setItem("status", 'item_not_present')
     this.props.placeOrder()
+    localStorage.removeItem("ordertype")
+    localStorage.removeItem("orderstatus")
 
     // axios.post(`${backendServer}/customer/placeOrder/${localStorage.getItem("user_id")}/${localStorage.getItem("resID")}/${localStorage.getItem("orderstatus")}/${localStorage.getItem("ordermode")}`)
     // .then(response => {
@@ -95,6 +99,7 @@ render (){
     // }
     let section,
     renderOutput = [];
+    console.log((this.state.orderID))
     if (this.state && this.state.order_items && this.state.order_items.length > 0) {
         section = this.orderItems(this.state.order_items);
         console.log(section)

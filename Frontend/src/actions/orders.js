@@ -3,7 +3,7 @@ import backendServer from "../webConfig"
 
 
 export const placeOrder = (data) => dispatch => {
-    axios.post(`${backendServer}/customer/placeOrder/${localStorage.getItem("user_id")}/${localStorage.getItem("resID")}/${localStorage.getItem("orderstatus")}/${localStorage.getItem("ordermode")}`)
+    axios.post(`${backendServer}/customer/placeOrder/${localStorage.getItem("orderID")}/${localStorage.getItem("orderstatus")}/${localStorage.getItem("ordermode")}`)
     .then(response => dispatch({
             type: 'PLACE_ORDER',
             payload: response.data 
@@ -18,7 +18,7 @@ export const placeOrder = (data) => dispatch => {
         });
 }
 export const cancelOrder = (data) => dispatch => {
-    axios.post(`${backendServer}/customer/cancelOrders/${localStorage.getItem("user_id")}/${localStorage.getItem("resID")}`)
+    axios.post(`${backendServer}/customer/cancelOrders/${localStorage.getItem("orderID")}`)
     .then(response => dispatch({
             type: 'CANCEL_ORDER',
             payload: response.data 

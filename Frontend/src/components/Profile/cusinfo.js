@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import '../../App.css';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {faCamera, faEdit, faIdCard, faPhoneAlt, faGenderless, faAddressCard, faBirthdayCake, faCity} from "@fortawesome/free-solid-svg-icons";
+import {faCamera, faEdit, faIdCard, faPhoneAlt, faGenderless, faAddressCard, faBirthdayCake, faCity, faChartArea, faComment} from "@fortawesome/free-solid-svg-icons";
 import { CardImg, Card } from "react-bootstrap";
 import Banner from '../Navigationbar/banner';
 import backendServer from "../../webConfig"
@@ -40,8 +40,6 @@ class Cusinfo extends Component {
                     }); 
                 })
         }
-            
-
     }
     render(){
         var proBasic = this.state.profileBasic;
@@ -63,7 +61,13 @@ class Cusinfo extends Component {
                 </a>
             </li>)
         } else if (localStorage.getItem("isOwner")=== "on") {
-            edit = null
+            edit =  (<li>
+                <a href='/messageCustomer'>
+                    <span className="navicon">
+                    <FontAwesomeIcon icon={faComment} />
+                    </span>
+                </a>
+            </li>)
         }
         return(
             <div>

@@ -23,7 +23,7 @@ class Review extends Component {
             .then(response => {
                     this.setState({
                         review_items: this.state.review_items.concat(response.data),
-                        status: (response.data[0].STATUS)
+                        status: (response.data[0])
                     });
             })
         } else {
@@ -31,7 +31,7 @@ class Review extends Component {
             .then(response => {
                     this.setState({
                         review_items: this.state.review_items.concat(response.data),
-                        status: (response.data[0].STATUS)
+                        status: (response.data[0])
 
                     });
             })
@@ -44,7 +44,7 @@ class Review extends Component {
         if (this.state && this.state.review_items && this.state.review_items.length > 0) {
             items = this.state.review_items
             if (items.length > 0) {
-                for (var i = 0; i < items.length; i++) {
+                for (var i = 1; i < items.length; i++) {
                     item = <ReviewCard review_items={items[i]} deleteItem={this.deleteItem}/>;
                     itemsRender.push(item);
                 }

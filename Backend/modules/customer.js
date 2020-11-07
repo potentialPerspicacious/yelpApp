@@ -4,6 +4,8 @@ const db = require('../db.js');
 const CustomerProfile = require('../models/CustomerProfileModel')
 const Orders = require('../models/OrdersModel.js');
 const Menu = require('../Models/MenuModel.js');
+const Profile = require('../Models/RestaurantProfileModel.js');
+
 
 
 
@@ -84,7 +86,6 @@ router.post('/editProfile/:user_id', (req, res) => {
         Orders.find({resID: req.params.resID, cusID: req.params.user_id, "dishes.dishID": req.params.dishID, orderPlaced: "NO"},
        (err4, res4)=> {
          if(res4.length === 0){
-           console.log("no here")
           Orders.update({resID: req.params.resID, cusID: req.params.user_id, orderPlaced: "NO"}, {
           $push: {'dishes': {
             dishID: req.params.dishID,
@@ -105,9 +106,7 @@ router.post('/editProfile/:user_id', (req, res) => {
           }
           )
          } else {
-           console.log("This is good")
           Orders.findOneAndUpdate({resID: req.params.resID, cusID: req.params.user_id, "dishes.dishID": req.params.dishID, orderPlaced: "NO"},   {$inc: {"dishes.$.quantity": 1}}, (err3 ,res3) => {
-            console.log(res3)
             if (err3) {
               res.writeHead(500, {
                   'Content-Type': 'text/plain'
@@ -140,6 +139,7 @@ router.post('/editProfile/:user_id', (req, res) => {
     var out = []
     Orders.find({resID: req.params.resID, cusID: req.params.user_id, orderPlaced: "NO"}, (err1, orders) => {
       if(orders[0].dishes.length > 0){
+        out.push(orders[0]._id)
         Menu.findOne({_id: req.params.resID}, (err2, dishes) => {
           for(i=0; i< orders[0].dishes.length; i++){
             for(j=0; j< dishes.dishes.length; j++){
@@ -149,7 +149,7 @@ router.post('/editProfile/:user_id', (req, res) => {
               }
             }
           }
-          console.log(out)
+          // out._id = (orders[0]._id)
           res.end(JSON.stringify(out));
         })
 
@@ -185,28 +185,107 @@ router.post('/editProfile/:user_id', (req, res) => {
     //   }
     // });
   });
-  router.post('/cancelOrders/:user_id/:resID/', (req, res) => {
-    let sql = `CALL cancel_orders('${req.params.user_id}', '${req.params.resID}')`;
-    db.query(sql, (err, result) => {  
-        res.end((result[0][0]).STATUS);
-    });
+  router.post('/cancelOrders/:orderID/', (req, res) => {
+    Orders.findByIdAndRemove(req.params.orderID, (err, result)=>{
+      if (err) {
+        res.writeHead(500, {
+            'Content-Type': 'text/plain'
+        })
+        res.end("Error");  
+    }
+    else {
+        res.writeHead(200, {
+            'Content-Type': 'application/json'
+        });
+        res.end(("ORDER_CANCELLED"));
+    }
+    })
+    // let sql = `CALL cancel_orders('${req.params.user_id}', '${req.params.resID}')`;
+    // db.query(sql, (err, result) => {  
+    //     res.end((result[0][0]).STATUS);
+    // });
   });
 
-  router.post('/placeOrder/:user_id/:resID/:orderstatus/:ordermode', (req, res) => {
-    let sql = `CALL place_order('${req.params.user_id}', '${req.params.resID}', '${req.params.orderstatus}', '${req.params.ordermode}')`;
-    db.query(sql, (err, result) => {  
-        res.end((result[0][0]).status);
-    });
+  router.post('/placeOrder/:orderID/:orderstatus/:ordermode', (req, res) => {
+    console.log(req.params.orderID)
+    Orders.findByIdAndUpdate(req.params.orderID, {
+      orderPlaced: "YES", 
+      orderstatus: req.params.orderstatus,
+      ordermode: req.params.ordermode,
+      date: new Date()
+    }, (err, result) => {
+      if (err) {
+        res.writeHead(500, {
+            'Content-Type': 'text/plain'
+        })
+        res.end("Error");  
+    }
+    else {
+        res.writeHead(200, {
+            'Content-Type': 'application/json'
+        });
+        res.end(("ORDER_PLACED"));
+    }
+    }
+    )
+
+
+
+    // let sql = `CALL place_order('${req.params.user_id}', '${req.params.resID}', '${req.params.orderstatus}', '${req.params.ordermode}')`;
+    // db.query(sql, (err, result) => {  
+    //     res.end((result[0][0]).status);
+    // });
   });
   router.get('/orderHistory/:cusID', (req, res) => {
-    let sql = `CALL get_orderHistory('${req.params.cusID}')`;
-    db.query(sql, (err, result) => {  
-            if (err) {
-        res.end("Error in Data");
+    var orderHistory = []
+    var orderHisObj = {}
+    var dishes = []
+    Orders.find({cusID: req.params.cusID, orderPlaced:"YES"}, (err, result)=>{
+      // console.log(result[0]._doc.dishes)
+      if (result.length > 0){
+        orderHistory.push("ITEM_PRESENT")
+
       } else {
-        res.end(JSON.stringify(result[0]));
+        orderHistory.push("ITEM_NOT_PRESENT")
       }
-    });
+      orderHisObj.ordermode = (result[0].ordermode),
+      orderHisObj.orderstatus = result[0].orderstatus
+      Profile.find({resID: req.params.resID}, (err2, res2) => {
+        // console.log(res2[0]._doc.dishes)
+        for (i=0;i<result[0]._doc.dishes.length; i++){
+          for (j =0; j<res2[0]._doc.dishes.length; j++){
+            // console.log( result[0]._doc.dishes[i].dishID)
+            // console.log( JSON.stringify(res2[0]._doc.dishes[j]._id))
+            if( JSON.stringify(result[0]._doc.dishes[i].dishID) === JSON.stringify(res2[0]._doc.dishes[j]._id)){
+              dishes.push(res2[0]._doc.dishes[j].name)
+            }
+          }
+        }
+        // console.log(dishes)
+        orderHisObj.name = res2[0].name
+        orderHisObj.dishes = dishes
+        // console.log(orderHisObj)
+        orderHistory.push(orderHisObj)
+        // console.log(orderHistory)
+        res.end(JSON.stringify(orderHistory))
+
+
+      })
+
+        })
+
+
+
+    
+    // let sql = `CALL get_orderHistory('${req.params.cusID}')`;
+    // db.query(sql, (err, result) => {  
+    //         if (err) {
+    //     res.end("Error in Data");
+    //   } else {
+    //     res.end(JSON.stringify(result[0]));
+    //   }
+    // });
+
   });
   router.get('/orderHistoryFilter/:cusID/:filter', (req, res) => {
     let sql = `CALL get_CorderHistoryFilter('${req.params.cusID}', '${req.params.filter}')`;

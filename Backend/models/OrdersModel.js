@@ -13,7 +13,7 @@ var Orders = new Schema({ resID: {type: String, required:true},
     cusID: {type: String, required:true},
     orderPlaced: {type: String, default:"NO"},
     orderstatus: {type: String},
-    ordertype: {type: String},
+    ordermode: {type: String},
      dishes: [dish]
 },
 {

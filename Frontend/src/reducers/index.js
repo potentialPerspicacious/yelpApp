@@ -6,6 +6,7 @@ import eventsRedux from './eventsRedux';
 import menuRedux from './menuRedux';
 import ordersRedux from './ordersRedux.js'
 import reviewRedux from './reviewRedux'
+import messagesRedux from './messagesRedux'
 
 export default combineReducers({
     signupRestaurant: signupRedux,
@@ -16,4 +17,6 @@ export default combineReducers({
     menu: menuRedux,
     orders: ordersRedux,
     reviews: reviewRedux,
+    messages: messagesRedux
+    
 });

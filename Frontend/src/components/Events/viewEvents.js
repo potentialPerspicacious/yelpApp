@@ -26,7 +26,7 @@ class Events extends Component {
             .then(response => {
                     this.setState({
                         event_items: this.state.event_items.concat(response.data),
-                        status: (response.data[0].STATUS)
+                        status: (response.data[0])
                     });
             })
         } else {
@@ -34,7 +34,7 @@ class Events extends Component {
             .then(response => {
                     this.setState({
                         event_items: this.state.event_items.concat(response.data),
-                        status: (response.data[0].STATUS)
+                        status: (response.data[0])
 
                     });
             })
@@ -62,7 +62,7 @@ class Events extends Component {
             section,
             renderOutput = [];
         
-        if (this.state.status === 'EVENTS_PRESENT') {
+        if (this.state.event_items.length > 0) {
             if (this.state && this.state.event_items && this.state.event_items.length > 0) {
                 section = this.events(this.state.event_items);
                 renderOutput.push(section);
