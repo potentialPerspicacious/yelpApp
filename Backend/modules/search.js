@@ -28,13 +28,58 @@ router.get('/restaurants/:find/:location/:search', (req, res) => {
         delete proBasic.dishes;
         delete proAdv._id
         var details = Object.assign(proBasic, proAdv)
+        // console.log(details)
         res.end(JSON.stringify(details));
     }
     })
   } else if (req.params.location === 'undefined'){
-    //search by name
-  } else {
+    searchByName.find({
+      name: req.params.find
+    }, (error, result) => {
+      if (error) {
+        res.writeHead(500, {
+            'Content-Type': 'text/plain'
+        })
+        res.end();  
+    }
+    else {
+        res.writeHead(200, {
+            'Content-Type': 'application/json'
+        });
+        var proBasic = result[0]._doc;
+        var proAdv = result[0]._doc.profileInfo;
+        delete proBasic.profileInfo;
+        delete proBasic.dishes;
+        delete proAdv._id
+        var details = Object.assign(proBasic, proAdv)
+        console.log(details)
+        res.end(JSON.stringify(details));
+    }
+    })  } else {
     //search by both
+    searchByLocation.find({
+      city: req.params.location
+    }, (error, result) => {
+      if (error) {
+        res.writeHead(500, {
+            'Content-Type': 'text/plain'
+        })
+        res.end();  
+    }
+    else {
+        res.writeHead(200, {
+            'Content-Type': 'application/json'
+        });
+        var proBasic = result[0]._doc;
+        var proAdv = result[0]._doc.profileInfo;
+        delete proBasic.profileInfo;
+        delete proBasic.dishes;
+        delete proAdv._id
+        var details = Object.assign(proBasic, proAdv)
+        // console.log(details)
+        res.end(JSON.stringify(details));
+    }
+    })
   }
 
   //   if (req.params.find === 'undefined'){

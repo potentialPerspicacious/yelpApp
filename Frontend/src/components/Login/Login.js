@@ -108,6 +108,7 @@ class Login extends Component{
             localStorage.setItem("email_id", this.props.description.email);
             localStorage.setItem("user_id", this.props.description._id);
             localStorage.setItem("type", this.props.description.type);
+            localStorage.setItem("name", this.props.description.name || this.props.description.fname)
 
         }
         return(

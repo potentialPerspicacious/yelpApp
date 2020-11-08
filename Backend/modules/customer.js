@@ -1,12 +1,15 @@
 const express = require("express");
 const router = express.Router();
 const db = require('../db.js');
+var kafka = require("../kafka/client");
+
 const CustomerProfile = require('../models/CustomerProfileModel')
 const Orders = require('../models/OrdersModel.js');
 const Menu = require('../Models/MenuModel.js');
 const Profile = require('../Models/RestaurantProfileModel.js');
-
-
+const Events = require('../models/EventsModel')
+const RegisteredEvents = require('../models/RegisteredEventsModel')
+const Message = require('../models/MessageModel')
 
 
 // router.post('/editProfile/:user_id', (req, res) => {
@@ -154,9 +157,23 @@ router.post('/editProfile/:user_id', (req, res) => {
         })
 
       }
+     kafka.make_request("cart", out, function(err, results) {
+      if (err) {
+        console.log("Inside err");
+        response.json({
+          status: "error",
+          msg: "System Error, Try Again."
+        });
+      } else {
+        console.log("Inside /items else in Backend");
+        response.json({
+          updatedList: results
+        });
+  
+        response.end();
+      }
     })
-
-
+    });
 
 
     // let sql = `CALL get_orderItems('${req.params.user_id}', '${req.params.resID}');`;
@@ -269,7 +286,22 @@ router.post('/editProfile/:user_id', (req, res) => {
         // console.log(orderHistory)
         res.end(JSON.stringify(orderHistory))
 
-
+        kafka.make_request("cusOrders", orderHistory, function(err, results) {
+          if (err) {
+            console.log("Inside err");
+            response.json({
+              status: "error",
+              msg: "System Error, Try Again."
+            });
+          } else {
+            console.log("Inside /items else in Backend");
+            response.json({
+              updatedList: results
+            });
+      
+            response.end();
+          }
+        })
       })
 
         })
@@ -299,27 +331,53 @@ router.post('/editProfile/:user_id', (req, res) => {
   });
 
   router.get('/getCEvents/:find/:location', (req, res) => {
-    if (req.params.find === 'undefined'){
-        req.params.find = 'null'
-    }
-    if (req.params.location === 'undefined'){
-        req.params.location = 'null'
-    }
-    let sql = `CALL get_reqevents('${req.params.location}', '${req.params.find}');`;
-    db.query(sql, (err, result) => {
-        if (err) {
-            res.end("Error in Data");
-          } else{
-            res.end(JSON.stringify(result[0]));
-          }
+    events = []
+    Events.find({city: req.params.location}, (error, result) => {
+      if (error) {
+          res.writeHead(500, {
+              'Content-Type': 'text/plain'
+          })
+          res.end();  
+      }
+      else {
+        // console.log(result[0].events)
+          res.writeHead(200, {
+              'Content-Type': 'application/json'
+          });
+          events.push("EVENTS_PRESENT")
+          events.push(result[0].events)
+          res.end(JSON.stringify(events));
+      }
+    // if (req.params.find === 'undefined'){
+    //     req.params.find = 'null'
+    // }
+    // if (req.params.location === 'undefined'){
+    //     req.params.location = 'null'
+    // }
+    // let sql = `CALL get_reqevents('${req.params.location}', '${req.params.find}');`;
+    // db.query(sql, (err, result) => {
+    //     if (err) {
+    //         res.end("Error in Data");
+    //       } else{
+    //         res.end(JSON.stringify(result[0]));
+    //       }
     });
   });
 
   router.post('/registerEvent', (req, res) => {
-    let sql = `CALL register_event('${req.body.eventid}', '${req.body.cusID}')`;
-    db.query(sql, (err, result) => {  
-        res.end((result[0][0]).status);
-    });
+    RegisteredEvents.findByIdAndUpdate({_id: req.body.cusID}, {
+      $push : {"events" : {event_id: req.body.eventid}}
+    }, (err, result) => {
+      if (err) {
+        res.end("Error in Data");
+      } else {
+        res.end("REGISTERED_EVENT");
+      }
+    })
+    // let sql = `CALL register_event('${req.body.eventid}', '${req.body.cusID}')`;
+    // db.query(sql, (err, result) => {  
+    //     res.end((result[0][0]).status);
+    // });
   });
 
   router.get('/yourevents/:user_id/', (req, res) => {
@@ -332,5 +390,61 @@ router.post('/editProfile/:user_id', (req, res) => {
       }
     });
   });
+
+  router.get('/messagesFrom/:cusID', (req, res) => {
+    Message.find({cusID: req.params.cusID}, (err, result)=>{
+      // console.log(result)
+      if(result) {
+        Profile.findOne({_id: result[0].resID}, (err2, res2) => {
+          if(err){
+            res.end("error in data")
+          } 
+          else {
+            res.end(JSON.stringify(res2))
+          }
+        })
+      }
+    })
+  });
+
+  router.post('/replyMessage/:cusID/:resID/:name', (req, res) => {
+    // Profile.findOne({_id: req.params.resID}, (err1, res1) => {
+
+    // })
+
+    Message.findOne({resID: req.params.resID, cusID: req.params.cusID}, (err, result) => {
+      if(result){
+        Message.findOneAndUpdate({resID: req.params.resID, cusID: req.params.cusID}, {
+          $push: { messages: { msg: req.body.message,
+            message_by: req.params.name}}
+        }, (err2, res2) => {
+          if (err2) {
+            res.end("Error in Data");
+          } else {
+            res.end("MESSAGE_SENT");
+          }
+        })
+      } else {
+        res.end("ACTION_NOT_POSSIBLE")
+
+      }
+      kafka.make_request("messages", "MESSAGE_SENT", function(err, results) {
+        if (err) {
+          console.log("Inside err");
+          response.json({
+            status: "error",
+            msg: "System Error, Try Again."
+          });
+        } else {
+          console.log("Inside /items else in Backend");
+          response.json({
+            updatedList: results
+          });
+    
+          response.end();
+        }
+      })
+    })
+  })
 
 module.exports = router;

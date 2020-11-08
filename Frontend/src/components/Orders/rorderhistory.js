@@ -1,4 +1,4 @@
-import { faBuilding, faCar, faClock, faHourglass, faShoppingBag } from "@fortawesome/free-solid-svg-icons";
+import { faBuilding, faCar, faClock, faHourglass, faList, faShoppingBag } from "@fortawesome/free-solid-svg-icons";
 import React, { Component} from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Card, Row, Col, Button } from "react-bootstrap";
@@ -54,14 +54,14 @@ render() {
     }
     if(message == 'ORDER_UPDATED'){
         success.message = 'Successfully updated the order.'
-        setTimeout(function() {window.location = '/rorders'}, 1000);
+        setTimeout(function() {window.location = '/rorders'}, 10000);
     }
     return (
 <div>
-<Card bg="white" style={{ width: "60rem", margin: "2%", height:"20rem" }}>
+<Card bg="white" style={{ width: "60rem", margin: "2%", height:"21rem" }}>
         <Row>
           <Col xs="4.5">
-            <Card.Img style={{marginLeft:"4mm", width: "15rem", height: "20rem" }} src="" />
+            <Card.Img style={{marginLeft:"4mm", width: "15rem", height: "21rem" }} src="" />
           </Col>
           <Col align="left" style={{marginLeft:"0mm"}}>
             <Card.Body>
@@ -91,7 +91,7 @@ render() {
                </select>
               </span> </Card.Text>
               
-              <Card.Text><FontAwesomeIcon icon={faClock} /><span style={{fontWeight:"bold"}}> Order Time: </span> <span style={{textTransform: "uppercase"}}> <i>{this.props.order_history.datetime}</i></span></Card.Text>
+              <Card.Text><FontAwesomeIcon icon={faList} /><span style={{fontWeight:"bold"}}> Ordered Item/s: </span> <span style={{textTransform: "uppercase"}}> <li>{this.props.order_history.dishes}</li></span></Card.Text>
               {/* <Card.Text><FontAwesomeIcon icon={faClock} /><span style={{fontWeight:"bold"}}> Order Items: </span> <span style={{textTransform: "uppercase"}}> <i>{this.props.order_history.datetime}</i></span></Card.Text> */}
 
               <Row>

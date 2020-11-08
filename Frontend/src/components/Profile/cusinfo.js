@@ -35,7 +35,7 @@ class Cusinfo extends Component {
             .then(response => 
                 {this.setState({
                     profileBasic: response.data,
-                    profileAdv: response.data.profileInfo
+                    profileAdv: response.data.profileInfo,
                         
                     }); 
                 })
@@ -46,11 +46,11 @@ class Cusinfo extends Component {
         var proAdv = this.state.profileAdv;
         delete proBasic.profileInfo;
         // delete proAdv._id
-        var details = Object.assign(proBasic, proAdv)
+        var details = Object.assign(proBasic, proAdv, proBasic.image)
         let edit = null
         var imageSrc;
         if (this.state) {
-            imageSrc = `${backendServer}/images/user/${details.image}`;
+            imageSrc = `${backendServer}/images/user/${details.img}`;
         }
         if (localStorage.getItem("isOwner")=== "off") {
             edit =  (<li>

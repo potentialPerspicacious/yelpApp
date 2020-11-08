@@ -7,6 +7,9 @@ import {Row, Col, Button} from 'react-bootstrap'
 import backendServer from "../../webConfig"
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types'
+import ViewMessage from '../Messages/viewmessage'
+import {cus2res} from '../../actions/messages'
+
 
 class CustomerReply extends Component {
     constructor(props) {
@@ -15,9 +18,27 @@ class CustomerReply extends Component {
 
         }
     }
+    onChange = (e) => {
+        this.setState({
+            [e.target.name]: e.target.value
+        })
+    }
+    sendMessage = (e) => {
+        //prevent page from refresh
+        e.preventDefault();
+        const data = {
+            message: this.state.message
+        }
+        this.props.cus2res(data)
+    }
     render(){
+
         let success = {
             message: null
+        }
+        if(this.props.description == 'MESSAGE_SENT'){
+            success.message = 'Message Sent.'
+            setTimeout(function() {window.location = '/viewMessages'}, 1000);
         }
         return(
             <div>
@@ -27,7 +48,7 @@ class CustomerReply extends Component {
                             <div class="login-form signupform">
                             <div class="main-div signupform">
                         <div class="panel ">
-                            <h2>Send a Message</h2>
+                        <ViewMessage />
                         </div>
                         <br/>
                         <br/>
@@ -42,7 +63,7 @@ class CustomerReply extends Component {
                             </div> */}
                             <Row >
                                 <Col s='3'>
-                                    <Button variant="outline-danger" onClick = {this.SendMessage}>Send</Button>
+                                    <Button variant="outline-danger" onClick = {this.sendMessage}>Send</Button>
                                 </Col>
                                 <Col s='3'>
                                 <Button variant="outline-secondary" onClick = {this.cancelReview}>Cancel</Button>
@@ -65,4 +86,14 @@ class CustomerReply extends Component {
     }
 }
 
-export default CustomerReply
+CustomerReply.propTypes = {
+    sendMsg: PropTypes.func.isRequired,
+    description: PropTypes.object.isRequired
+}
+
+const mapStateToProps = state => { 
+    return ({
+        description: state.messages.description
+})};
+
+export default connect(mapStateToProps, { cus2res })(CustomerReply);

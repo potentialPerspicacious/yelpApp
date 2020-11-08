@@ -14,7 +14,7 @@ class MessageCard extends Component {
         };
     }
     setMsgID = () => {
-        localStorage.setItem("cusID", this.props.message_from._id)
+        localStorage.setItem("resID", this.props.message_from._id)
     }
 
 render() {
@@ -26,9 +26,6 @@ render() {
 <div>
 <Card bg="white" style={{ width: "30rem", margin: "2%", height:"5rem" }}>
 <Row>
-          <Col xs='2'> 
-            <Card.Img style={{ width: "5rem", height: "5em" }} src={imageSrc} />
-          </Col>
           <Col align="left" style={{marginLeft:"0mm"}} xs='8'>
             <Card.Body>
 

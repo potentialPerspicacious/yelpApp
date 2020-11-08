@@ -18,7 +18,7 @@ class ViewMessagesFrom extends Component {
             status: {}, 
         };
 
-        this.events = this.events.bind(this);
+        this.messages = this.messages.bind(this);
         this.getMessagesFrom();
     }
 
@@ -28,22 +28,17 @@ class ViewMessagesFrom extends Component {
         })
     }
 
-    getMessagesFrom = () => {
-        const data = {
-            find: this.state.find,
-            location: this.state.location
-        }
-        console.log(data)
-        axios.get(`${backendServer}/customer/messagesFrom/${localStorage.getItem('find')}/${localStorage.getItem('location')}`)
+    getMessagesFrom = () => {    
+        axios.get(`${backendServer}/customer/messagesFrom/${localStorage.getItem('user_id')}`)
             .then(response => {
                     this.setState({
                         message_from: this.state.message_from.concat(response.data),
-                        status: (response.data[0].STATUS)
+                        status: (response.data)
                     });
             })
     };
 
-    events = () => {
+    messages = () => {
         var itemsRender = [], items, item;
         if (this.state && this.state.message_from && this.state.message_from.length > 0) {
             items = this.state.message_from
@@ -61,9 +56,9 @@ class ViewMessagesFrom extends Component {
             section,
             renderOutput = [];
         console.log(this.state.status)
-        if (this.state.status === 'MESSAGE_PRESENT') {
+        if (this.state.status) {
             if (this.state && this.state.message_from && this.state.message_from.length > 0) {
-                section = this.events(this.state.message_from);
+                section = this.messages(this.state.message_from);
                 renderOutput.push(section);
                     }
         } else {

@@ -4,6 +4,7 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const db = require('../db.js');
+const CustomerProfile = require('../models/CustomerProfileModel')
 
 const userstorage = multer.diskStorage({
     destination: path.join(__dirname, '..') + '/public/uploads/users',
@@ -21,19 +22,27 @@ router.post("/user/:user_id", (req, res) => {
     // console.log(req.file.filename)
     useruploads(req, res, function (err) {
         if (!err) {
-            let imageSql = `UPDATE customerProfile SET image = '${req.file.filename}' WHERE cus_id = ${req.params.user_id}`;
-            db.query(imageSql, (err, result) => {
-                if (err) {
-                    res.writeHead(500, {
-                        'Content-Type': 'text/plain'
-                    });
-                    res.end("Database Error");
-                }
-            });
-            res.writeHead(200, {
-                'Content-Type': 'text/plain'
-            });
-            res.end(req.file.filename);
+            CustomerProfile.findOneAndUpdate({_id: req.params.user_id}, { $set: {
+                image: {img: req.file.filename}
+            }}, (err2, res3) => {
+                if(!err2) {
+                res.writeHead(200, {
+                    'Content-Type': 'text/plain'
+                });
+                res.end(req.file.filename);
+            }
+            }
+            )
+            // let imageSql = `UPDATE customerProfile SET image = '${req.file.filename}' WHERE cus_id = ${req.params.user_id}`;
+            // db.query(imageSql, (err, result) => {
+            //     if (err) {
+            //         res.writeHead(500, {
+            //             'Content-Type': 'text/plain'
+            //         });
+            //         res.end("Database Error");
+            //     }
+            // });
+
         }
         else {
             console.log('Error!');

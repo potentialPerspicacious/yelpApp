@@ -9,6 +9,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch, faNewspaper, faIdCard, faWonSign, faCalendarPlus } from "@fortawesome/free-solid-svg-icons";
 import RHistoryCard from './rorderhistory'
 import backendServer from "../../webConfig"
+import ReactPaginate from 'react-paginate';
+
 
 
 class RorderHistory extends Component {
@@ -19,10 +21,15 @@ class RorderHistory extends Component {
           value: "no_filter",
           checked: {},
           order_history: [],
+          perPage: 2,
+          currentPage: 0,
+          offset: 0
       
       };
       this.orderHistory = this.orderHistory.bind(this);
       this.getOrderHistory();
+      this.handlePageClick = this.handlePageClick.bind(this);
+
   }  
 
   getOrderHistory = () => {
@@ -38,14 +45,16 @@ class RorderHistory extends Component {
     } else {
         axios.get(`${backendServer}/restaurant/orderHistory/${localStorage.getItem("user_id")}`)
         .then(response => {
-                this.setState({
-                    order_history: this.state.order_history.concat(response.data),
-                    status: (response.data[0])
-                });
+            const slice = response.data.slice(this.state.offset, this.state.offset + this.state.perPage)
+            this.state.order_history = []
+            this.setState({
+                order_history: this.state.order_history.concat(slice),
+                pageCount: Math.ceil(response.data.length / this.state.perPage),
+                status: (response.data[0])
+            });
         })
 
     }
-
     }
     orderHistory = () => {
         var itemsRender = [], items, item;
@@ -60,6 +69,19 @@ class RorderHistory extends Component {
             return itemsRender;
         }
     }
+    handlePageClick = (e) => {
+        const selectedPage = e.selected;
+        console.log(selectedPage)
+        const offset = selectedPage * this.state.perPage;
+
+        this.setState({
+            currentPage: selectedPage,
+            offset: offset
+        }, () => {
+            this.orderHistory()
+        });
+
+    };
     orderStatus = (e) => {
             this.setState({value: e.target.value});
             window.location = '/rorders'
@@ -171,6 +193,18 @@ class RorderHistory extends Component {
                             <h4 style={{color:'red'}}> Your Orders</h4>
                             <hr />
                             {renderOutput}
+                            <ReactPaginate
+                    previousLabel={"prev"}
+                    nextLabel={"next"}
+                    breakLabel={"..."}
+                    breakClassName={"break-me"}
+                    pageCount={this.state.pageCount}
+                    marginPagesDisplayed={2}
+                    pageRangeDisplayed={5}
+                    onPageChange={this.handlePageClick}
+                    containerClassName={"pagination"}
+                    subContainerClassName={"pages pagination"}
+                    activeClassName={"active"}/>
                            {/* <p style={{color:"red", align:"center"}}> Please Add Items to Shopping Bag Before Proceeding</p>            */}
                         </div>
                     </div>

@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const db = require('../db.js');
+var kafka = require("../kafka/client");
+
 
 // router.post('/editProfile/:user_id', (req, res) => {
 //     let sql = `CALL Restaurant_Update_BasicProfile('${req.params.user_id}', '${req.body.rname}', '${req.body.email}', '${req.body.zipcode}', '${req.body.location}', '${req.body.contact}', '${req.body.cusine}', '${req.body.description}', '${req.body.timings}', '${req.body.dinein}', '${req.body.takeout}', '${req.body.ydelivery}');`;
@@ -92,8 +94,24 @@ router.post('/editProfile/:user_id', (req, res) => {
         })
         // console.log(dishes)
       })
-
+      kafka.make_request("cusOrders", orderHistory, function(err, results) {
+        if (err) {
+          console.log("Inside err");
+          response.json({
+            status: "error",
+            msg: "System Error, Try Again."
+          });
+        } else {
+          console.log("Inside /items else in Backend");
+          response.json({
+            updatedList: results
+          });
+    
+          response.end();
+        }
+      })
         })
+
     // let sql = `CALL get_RorderHistory('${req.params.resID}')`;
     // db.query(sql, (err, result) => {  
     //         if (err) {
@@ -189,13 +207,28 @@ router.post('/editProfile/:user_id', (req, res) => {
         })
       }
       outs = status.concat(result[0].reviews)
-      console.log(outs)
         res.writeHead(200, {
             'Content-Type': 'application/json'
         });
        
         res.end(JSON.stringify(outs));
     }
+    kafka.make_request("cusOrders", outs, function(err, results) {
+      if (err) {
+        console.log("Inside err");
+        response.json({
+          status: "error",
+          msg: "System Error, Try Again."
+        });
+      } else {
+        console.log("Inside /items else in Backend");
+        response.json({
+          updatedList: results
+        });
+  
+        response.end();
+      }
+    })
     })
     // let sql = `CALL get_reviews('${req.params.resID}')`;
     // db.query(sql, (err, result) => {  
@@ -262,6 +295,22 @@ router.post('/editProfile/:user_id', (req, res) => {
           });
           res.end(JSON.stringify(result[0].events));
       }
+      kafka.make_request("cusOrders", result[0].events, function(err, results) {
+        if (err) {
+          console.log("Inside err");
+          response.json({
+            status: "error",
+            msg: "System Error, Try Again."
+          });
+        } else {
+          console.log("Inside /items else in Backend");
+          response.json({
+            updatedList: results
+          });
+    
+          response.end();
+        }
+      })
   });
     // let sql = `CALL get_events('${req.params.resID}')`;
     // db.query(sql, (err, result) => {  
@@ -284,12 +333,16 @@ router.post('/editProfile/:user_id', (req, res) => {
   });
 
 
-  router.post('/sendMessage/:resID/:cusID', (req, res) => {
+  router.post('/sendMessage/:resID/:cusID/:name', (req, res) => {
+    // Profile.findOne({_id: req.params.resID}, (err1, res1) => {
+
+    // })
+
     Message.findOne({resID: req.params.resID, cusID: req.params.cusID}, (err, result) => {
       if(result){
         Message.findOneAndUpdate({resID: req.params.resID, cusID: req.params.cusID}, {
           $push: { messages: { msg: req.body.message,
-            message_by: req.params.resID}}
+            message_by: req.params.name}}
         }, (err2, res2) => {
           if (err2) {
             res.end("Error in Data");
@@ -306,7 +359,7 @@ router.post('/editProfile/:user_id', (req, res) => {
             } else {
               Message.update({resID: req.params.resID, cusID: req.params.cusID}, {
               $push: { messages: { msg: req.body.message,
-              message_by: req.params.resID}}}, (err3, res3) => {
+              message_by: req.params.name}}}, (err3, res3) => {
               if (err3) {
                 res.end("Error in Data");
               } else {
@@ -318,6 +371,22 @@ router.post('/editProfile/:user_id', (req, res) => {
           })
 
       }
+      kafka.make_request("res2cusMessage", "MESSAGE_SENT", function(err, results) {
+        if (err) {
+          console.log("Inside err");
+          response.json({
+            status: "error",
+            msg: "System Error, Try Again."
+          });
+        } else {
+          console.log("Inside /items else in Backend");
+          response.json({
+            updatedList: results
+          });
+    
+          response.end();
+        }
+      })
     })
   })
 module.exports = router;
