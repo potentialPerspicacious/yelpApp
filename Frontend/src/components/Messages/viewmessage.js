@@ -8,6 +8,8 @@ import backendServer from "../../webConfig"
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types'
 import MessageHisCard from './messageHistoryCard'
+import ChatBubble from 'react-chat-bubble';
+
 
 
 class ViewMessage extends Component {
@@ -21,21 +23,32 @@ class ViewMessage extends Component {
         this.getMessages();
     }
     getMessages = () => {
-        axios.get(`${backendServer}/messages/getMessages/${localStorage.getItem('cusID')}/${localStorage.getItem('resID')}`)
+        if(localStorage.getItem("isOwner") === "on"){
+        axios.get(`${backendServer}/messages/getMessages/${localStorage.getItem('cusID')}/${localStorage.getItem('user_id')}`)
             .then(response => {
                     this.setState({
                         message_items: this.state.message_items.concat(response.data),
-                        status: (response.data[0])
+                        status: (response.data)
                     });
             })
-    };
+        } else if(localStorage.getItem("isOwner") === "off"){
+            axios.get(`${backendServer}/messages/getMessages/${localStorage.getItem('user_id')}/${localStorage.getItem('resID')}`)
+            .then(response => {
+                    this.setState({
+                        message_items: this.state.message_items.concat(response.data),
+                        status: (response.data)
+                    });
+            })
+        }
+    }
 
     messages = () => {
         var itemsRender = [], items, item;
         if (this.state && this.state.message_items && this.state.message_items.length > 0) {
             items = this.state.message_items
+            console.log(items)
             if (items.length > 0) {
-                for (var i = 1; i < items.length; i++) {
+                for (var i = 0; i < items.length; i++) {
                     item = <MessageHisCard message_items={items[i]}/>;
                     itemsRender.push(item);
                 }
@@ -47,22 +60,26 @@ class ViewMessage extends Component {
         let success = {
             message: null
         }
+        console.log(this.state.message_items)
         let section, renderOutput = [];
-        if (this.state.status === 'MESSAGES_PRESENT') {
+        if (this.state.status === 'NO_MESSAGES') {
+            renderOutput.push(<div><span> <p style={{color:'red'}}> Start Your Conversation.</p></span></div>)
+
+        } else {
             if (this.state && this.state.message_items && this.state.message_items.length > 0) {
-                section = this.events(this.state.message_items);
+                section = this.messages(this.state.message_items);
+                console.log(section)
                 renderOutput.push(section);
                     }
-        } else {
-            renderOutput.push(<div><span> <p style={{color:'red'}}> Start Your Conversation.</p></span></div>)
         }
         return(
             <div>
-                <div class='row' style={{ marginLeft:"30px", marginTop:"2cm"}}>
-                <div class='col-xs-2' style={{textAlign: "left", height: "100%", borderLeft: "1px solid #e6e6e6", marginTop:"0.85cm", marginLeft: "0cm"}}>
+                <div class='' style={{ marginLeft:"30px", marginTop:"2cm"}}>
+                <div class='' style={{textAlign: "left", height: "100%", borderLeft: "1px solid #e6e6e6", marginTop:"0.85cm", marginLeft: "0cm"}}>
                     <div style={{marginLeft: "20px"}}>
                         <h4 style={{color:'red'}}> Message History</h4>
                         <hr />
+                        {/* <ChatBubble messages = {this.state.message_items} /> */}
                         {renderOutput}
                        {/* <p style={{color:"red", align:"center"}}> Please Add Items to Shopping Bag Before Proceeding</p>            */}
                     </div>

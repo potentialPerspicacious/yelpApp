@@ -10,7 +10,7 @@ var restaurant = new Schema({
     versionKey: false
 });
 var search1Name = new Schema({
-    name: {type: String, required: true},
+    restaurants: [restaurant]
 },
 {
     versionKey: false
@@ -23,8 +23,8 @@ var search2Location = new Schema({
     versionKey: false
 });
 var search3NameLocation = new Schema({
-    name: {type: String, required: true},
-    city: {type: String, required: true}
+    restaurants: [restaurant]
+
 },
 {
     versionKey: false

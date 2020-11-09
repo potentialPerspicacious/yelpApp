@@ -1,5 +1,11 @@
 var connection = new require("./kafka/Connection");
 var menu = require("./services/menu");
+var cart = require("./services/customerCart");
+var cusOrderHis = require('./services/orderHistoryCustomer')
+var restaurantOrders = require('./services/restaurantOrders')
+var cus2resMessages = require('./services/cus2resMessages')
+var res2cusMessages = require('./services/res2cusMessages')
+var messageRead = require('./services/messages')
 
 function handleTopicRequest(topic_name, fname) {
     //var topic_name = 'root_topic';
@@ -32,3 +38,12 @@ function handleTopicRequest(topic_name, fname) {
   }
 
   handleTopicRequest("menu", menu);
+  handleTopicRequest("cart", cart);
+  handleTopicRequest("cusOrders", cusOrderHis);
+  handleTopicRequest("resOrders", restaurantOrders);
+  handleTopicRequest("messages", res2cusMessages);
+  handleTopicRequest("messages", cus2resMessages);  
+  handleTopicRequest("messages", messageRead);
+
+
+

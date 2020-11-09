@@ -1,7 +1,8 @@
-var Menu = require("../models/MenuModel");
+const Message = require('../models/MessageModel');
 
 function handle_request(msg, callback) {
-  Menu.find({
+  var out = []
+  Message.find({
     _id: msg.user_id
   }).then(
     function(data, err) {

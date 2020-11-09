@@ -118,7 +118,7 @@ render (){
             }
     if(message == 'ORDER_PLACED'){
                 success.message = 'Successfully placed the order.'
-                setTimeout(function() {window.location = '/orderhistory'}, 1000);
+                setTimeout(function() {window.location = '/orderhistory'}, 10000);
                     }
             
     return(

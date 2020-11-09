@@ -4,6 +4,8 @@ import React, { Component} from "react";
 import { Card, Row, Col, Button } from "react-bootstrap";
 import axios from 'axios'
 import backendServer from "../../webConfig"
+import ChatBubble from 'react-chat-bubble';
+
 
 
 class MessageHisCard extends Component {
@@ -18,27 +20,39 @@ class MessageHisCard extends Component {
     }
 
 render() {
-    var imageSrc;
-    if (this.props) {
-        imageSrc = `${backendServer}/images/user/${this.props.message_items.image}`;
+    let chatBubble = null
+    if(this.props.message_items.message_by === localStorage.getItem("name")){
+        chatBubble = (
+<div className="bubbleContainer right">
+    <div className="bubble">
+        <p style={{textDecorationColor: "black", textAlign:"right"}}>
+        ~{this.props.message_items.message_by} <br />
+            {this.props.message_items.msg}</p>
+    </div>
+    <br />
+    <br />
+    <br />
+
+</div>
+        )
+    } else {
+        chatBubble = (
+            <div className="bubbleContainer left">
+                <div className="bubble">
+                    <p style={{textDecorationColor: "black", marginLeft:"10mm"}}>
+                    ~{this.props.message_items.message_by} <br />
+                        {this.props.message_items.msg}</p>
+                </div>
+                <br />
+                <br />
+                <br />
+            </div>
+        )
     }
+    var imageSrc;
     return (
 <div>
-<Card bg="white" style={{ width: "30rem", margin: "2%", height:"5rem" }}>
-<Row>
-          <Col xs='2'> 
-            <Card.Img style={{ width: "5rem", height: "5em" }} src={imageSrc} />
-          </Col>
-          <Col align="left" style={{marginLeft:"0mm"}} xs='8'>
-            <Card.Body>
-
-                <Card.Title>
-    <p style={{textTransform:"uppercase", marginTop:"2mm"}}>{this.props.message_items.name}: {this.props.message_items.msg}</p>
-                    </Card.Title>  
-                  </Card.Body>
-          </Col>
-        </Row>
-      </Card>
+    {chatBubble}
 </div>
     );
 }

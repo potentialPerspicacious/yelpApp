@@ -49,6 +49,7 @@ const passwordHash = require('password-hash');
 const Users = require('../Models/UserModel.js');
 const restaurant = Users.restaurant;
 const customer = Users.customer;
+
 router.post('/:isOwner',(req, res) => {
 if(req.params.isOwner === ":on") {
   restaurant.findOne({ email: req.body.username, password: req.body.password }, (error, user) => {

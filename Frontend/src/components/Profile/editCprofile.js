@@ -79,7 +79,11 @@ onUpload = (e) => {
     updateProfile = (e) => {
         //prevent page from refresh
         e.preventDefault();
-        let details = this.state.profile
+        var proBasic = this.state.profileBasic;
+        var proAdv = this.state.profileAdv;
+        delete proBasic.profileInfo;
+        // delete proAdv._id
+        var details = Object.assign(proBasic, proAdv)
         const data = {
             fname: this.state.fname || details.fname,
             lname: this.state.lname || details.lname,
@@ -125,7 +129,7 @@ onUpload = (e) => {
         let message = this.props.description;
         if(message == 'USER_UPDATED'){
             success.message = 'Successfully updated the user.'
-            setTimeout(function() {window.location = '/cprofile'}, 800);
+            setTimeout(function() {window.location = '/cprofile'}, 5000);
         }
         return(
             <div>

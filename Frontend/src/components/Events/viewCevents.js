@@ -3,9 +3,10 @@ import axios from "axios";
 import cookie from 'react-cookies'; 
 import EventsCard from "./eventsCard";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSearch, faIdCard, faCalendarPlus, faCalendarCheck } from "@fortawesome/free-solid-svg-icons";
+import { faSearch, faIdCard, faCalendarPlus, faCalendarCheck, faSortAlphaDown, faSortNumericDownAlt } from "@fortawesome/free-solid-svg-icons";
 import logo from '../../images/logo.png';
 import backendServer from "../../webConfig"
+import { Button } from "react-bootstrap";
 
 
 
@@ -15,6 +16,7 @@ class CEvents extends Component {
         this.state = {
             event_items: [],
             status: {}, 
+            sort: {}
         };
 
         this.events = this.events.bind(this);
@@ -42,21 +44,33 @@ class CEvents extends Component {
         axios.get(`${backendServer}/customer/getCEvents/${localStorage.getItem('find')}/${localStorage.getItem('location')}`)
             .then(response => {
                     this.setState({
-                        event_items: this.state.event_items.concat(response.data),
-                        status: (response.data[0].STATUS)
+                        event_items: this.state.event_items.concat(response.data[1]),
+                        status: (response.data[0])
                     });
             })
     };
 
+    sortDescending = () => {
+        localStorage.setItem("sort", "descending")
+    }
     events = () => {
         var itemsRender = [], items, item;
         if (this.state && this.state.event_items && this.state.event_items.length > 0) {
             items = this.state.event_items
+            // console.log(items)
             if (items.length > 0) {
+                if(localStorage.getItem("sort") && localStorage.getItem("sort") === "descending" ){
+                    for (var i = (items.length-1); i >= 0; i--) {
+                        console.log(i)
+                        item = <EventsCard event_items={items[i]}/>;
+                        itemsRender.push(item);
+                    }
+                } else {
                 for (var i = 0; i < items.length; i++) {
                     item = <EventsCard event_items={items[i]}/>;
                     itemsRender.push(item);
                 }
+            }
             }
             return itemsRender;
         }
@@ -66,6 +80,7 @@ class CEvents extends Component {
         navSearch = null,
             section,
             renderOutput = [];
+
         // console.log(this.state.status)
         if (this.state.status === 'EVENTS_PRESENT') {
             if (this.state && this.state.event_items && this.state.event_items.length > 0) {
@@ -111,7 +126,11 @@ class CEvents extends Component {
            <div class='row' style={{ marginLeft:"30px", marginTop:"2cm"}}>
                 <div class='col-xs-2' style={{textAlign: "left", height: "100%", borderLeft: "1px solid #e6e6e6", marginTop:"0.85cm", marginLeft: "0cm"}}>
                     <div style={{marginLeft: "20px"}}>
-                        <h4 style={{color:'red'}}> Events Around You</h4>
+                        <h4 style={{color:'red'}}> Events Around You
+                        <span style={{marginLeft:"15cm"}}>
+                            <Button  variant='link' style={{color:"red"}} onClick={this.sortDescending}><FontAwesomeIcon icon={faSortNumericDownAlt} /> </Button></span>
+                            
+                        </h4>
                         <hr />
                         {renderOutput}
                        {/* <p style={{color:"red", align:"center"}}> Please Add Items to Shopping Bag Before Proceeding</p>            */}

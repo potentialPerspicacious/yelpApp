@@ -10,6 +10,8 @@ import { faSearch, faNewspaper, faIdCard } from "@fortawesome/free-solid-svg-ico
 import HistoryCard from './historycard'
 import Geocode from "react-geocode";
 import backendServer from "../../webConfig"
+import ReactPaginate from 'react-paginate';
+
 
 
 class CorderHistory extends Component {
@@ -19,11 +21,16 @@ class CorderHistory extends Component {
           status: {},
           value: "no_filter",
           checked: {},
-          order_history: []
+          order_history: [],
+          perPage: 2,
+          currentPage: 0,
+          offset: 0
       
       };
       this.orderHistory = this.orderHistory.bind(this);
       this.getOrderHistory();
+      this.handlePageClick = this.handlePageClick.bind(this);
+
   }  
 
   getOrderHistory = () => {
@@ -40,11 +47,13 @@ class CorderHistory extends Component {
     axios.get(`${backendServer}/customer/orderHistory/${localStorage.getItem("user_id")}`)
     .then(response => {
         console.log(response.data)
-            this.setState({
-                order_history: this.state.order_history.concat(response.data),
-                status: (response.data[0]),
-
-            });
+        const slice = response.data.slice(this.state.offset, this.state.offset + this.state.perPage)
+        this.state.order_history = []
+        this.setState({
+            order_history: this.state.order_history.concat(slice),
+            pageCount: Math.ceil(response.data.length / this.state.perPage),
+            status: (response.data[0])
+        });
     })
 }
     }
@@ -61,6 +70,19 @@ class CorderHistory extends Component {
             return itemsRender;
         }
     }
+    handlePageClick = (e) => {
+        const selectedPage = e.selected;
+        console.log(selectedPage)
+        const offset = selectedPage * this.state.perPage;
+
+        this.setState({
+            currentPage: selectedPage,
+            offset: offset
+        }, () => {
+            this.orderHistory()
+        });
+
+    };
     orderStatus = (e) => {
         this.setState({value: e.target.value});
         window.location = '/orderhistory'
@@ -208,6 +230,18 @@ class CorderHistory extends Component {
                             <h4 style={{color:'red'}}> Your Orders</h4>
                             <hr />
                             {renderOutput}
+                            <ReactPaginate
+                    previousLabel={"prev"}
+                    nextLabel={"next"}
+                    breakLabel={"..."}
+                    breakClassName={"break-me"}
+                    pageCount={this.state.pageCount}
+                    marginPagesDisplayed={2}
+                    pageRangeDisplayed={5}
+                    onPageChange={this.handlePageClick}
+                    containerClassName={"pagination"}
+                    subContainerClassName={"pages pagination"}
+                    activeClassName={"active"}/>
                            {/* <p style={{color:"red", align:"center"}}> Please Add Items to Shopping Bag Before Proceeding</p>            */}
                         </div>
                     </div>

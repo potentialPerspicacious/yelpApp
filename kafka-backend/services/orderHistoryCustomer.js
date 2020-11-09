@@ -1,8 +1,8 @@
-var Menu = require("../models/MenuModel");
+var Order = require("../models/OrdersModel");
 
 function handle_request(msg, callback) {
-  Menu.find({
-    _id: msg.user_id
+  Order.find({
+    _id: msg.cusID
   }).then(
     function(data, err) {
       if (data) {

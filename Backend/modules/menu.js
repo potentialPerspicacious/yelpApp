@@ -43,25 +43,6 @@ router.post('/addItem/:user_id', (req, res) => {
   });
 
   router.get('/items/:user_id', (req, res) => {
-    kafka.make_request("menu", req.params.user_id, function(err, results) {
-      if (err) {
-        console.log("Inside err");
-        response.json({
-          status: "error",
-          msg: "System Error, Try Again."
-        });
-      } else {
-        console.log("Inside /items else in Backend");
-        response.json({
-          updatedList: results
-        });
-  
-        response.end();
-      }
-    });
-
-
-
     Menu.find({_id: req.params.user_id}, (error, result) => {
       if (error) {
           res.writeHead(500, {
@@ -75,7 +56,25 @@ router.post('/addItem/:user_id', (req, res) => {
           });
           res.end(JSON.stringify(result[0].dishes));
       }
+      kafka.make_request("menu", result[0].dishes, function(err, results) {
+        if (err) {
+          console.log("Inside err");
+          response.json({
+            status: "error",
+            msg: "System Error, Try Again."
+          });
+        } else {
+          console.log("Inside /items else in Backend");
+          response.json({
+            updatedList: results
+          });
+    
+          response.end();
+        }
+      });
   });
+
+
     // Menu.find()
     // let sql = `CALL get_items('${(req.params.user_id)}');`;
     // db.query(sql, (err, result) => {
