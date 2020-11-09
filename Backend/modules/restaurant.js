@@ -2,6 +2,9 @@ const express = require("express");
 const router = express.Router();
 const db = require('../db.js');
 var kafka = require("../kafka/client");
+var passport = require("passport");
+var jwt = require("jsonwebtoken");
+var requireAuth = passport.authenticate("jwt", { session: false });
 
 
 // router.post('/editProfile/:user_id', (req, res) => {
@@ -26,7 +29,7 @@ const { response } = require("express");
 
 
 
-router.post('/editProfile/:user_id', (req, res) => {
+router.post('/editProfile/:user_id', requireAuth, (req, res) => {
   Profile.findByIdAndUpdate(req.params.user_id, {
     name: req.body.rname,
     email: req.body.email,
@@ -55,7 +58,7 @@ router.post('/editProfile/:user_id', (req, res) => {
       }
   });
 });
-  router.get('/orderHistory/:resID', (req, res) => {
+  router.get('/orderHistory/:resID', requireAuth, (req, res) => {
     var orderHistory = []
     var orderHisObj = {}
     var dishes = []
@@ -121,7 +124,7 @@ router.post('/editProfile/:user_id', (req, res) => {
     //   }
     // });
   });
-  router.get('/orderHistoryFilter/:resID/:filter', (req, res) => {
+  router.get('/orderHistoryFilter/:resID/:filter', requireAuth, (req, res) => {
     let sql = `CALL get_RorderHistoryFilter('${req.params.resID}', '${req.params.filter}')`;
     db.query(sql, (err, result) => {  
             if (err) {
@@ -160,7 +163,7 @@ router.post('/editProfile/:user_id', (req, res) => {
     //   }
     // });
   });
-  router.post('/review/:user_id/:resID', (req, res) => {
+  router.post('/review/:user_id/:resID',requireAuth, (req, res) => {
     Reviews.update({_id: req.params.resID}, { $push : { 'reviews': {
       review_description: req.body.reviews,
       rating: req.body.rating, 
@@ -188,7 +191,7 @@ router.post('/editProfile/:user_id', (req, res) => {
     //   }
     // });
   });
-  router.get('/getReviews/:resID/', (req, res) => {
+  router.get('/getReviews/:resID/', requireAuth, (req, res) => {
     let status = ["REVIEW_PRESENT"], outs = []
     Reviews.find({_id: req.params.resID}, (err, result) => {
       if (err) {
@@ -240,7 +243,7 @@ router.post('/editProfile/:user_id', (req, res) => {
     // });
   });
 
-  router.post('/addevent/:user_id', (req, res) => {
+  router.post('/addevent/:user_id', requireAuth, (req, res) => {
     Events.findOne({_id: req.params.user_id, "events.event_name": req.body.eventname, "events.location":req.body.location}, (err, result) => {
       if(result) {
         res.end("EVENT_EXISTS")
@@ -280,7 +283,7 @@ router.post('/editProfile/:user_id', (req, res) => {
     //   }
     // });
   });
-  router.get('/getEvents/:resID/', (req, res) => {
+  router.get('/getEvents/:resID/', requireAuth, (req, res) => {
     Events.find({_id: req.params.resID}, (error, result) => {
       if (error) {
           res.writeHead(500, {
@@ -333,7 +336,7 @@ router.post('/editProfile/:user_id', (req, res) => {
   });
 
 
-  router.post('/sendMessage/:resID/:cusID/:name', (req, res) => {
+  router.post('/sendMessage/:resID/:cusID/:name', requireAuth, (req, res) => {
     // Profile.findOne({_id: req.params.resID}, (err1, res1) => {
 
     // })

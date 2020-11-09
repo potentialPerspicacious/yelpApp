@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch, faIdCard, faCalendarPlus } from "@fortawesome/free-solid-svg-icons";
 import logo from '../../images/logo.png';
 import backendServer from "../../webConfig"
+import cookie from "react-cookies";
 
 
 

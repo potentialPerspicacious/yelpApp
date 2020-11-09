@@ -24,7 +24,8 @@ class ViewMessage extends Component {
     }
     getMessages = () => {
         if(localStorage.getItem("isOwner") === "on"){
-        axios.get(`${backendServer}/messages/getMessages/${localStorage.getItem('cusID')}/${localStorage.getItem('user_id')}`)
+        axios.get(`${backendServer}/messages/getMessages/${localStorage.getItem('cusID')}/${localStorage.getItem('user_id')}`, {
+            headers: { Authorization: `JWT ${cookie.load("token")}` }})
             .then(response => {
                     this.setState({
                         message_items: this.state.message_items.concat(response.data),
@@ -32,7 +33,8 @@ class ViewMessage extends Component {
                     });
             })
         } else if(localStorage.getItem("isOwner") === "off"){
-            axios.get(`${backendServer}/messages/getMessages/${localStorage.getItem('user_id')}/${localStorage.getItem('resID')}`)
+            axios.get(`${backendServer}/messages/getMessages/${localStorage.getItem('user_id')}/${localStorage.getItem('resID')}`, {
+                headers: { Authorization: `JWT ${cookie.load("token")}` }})
             .then(response => {
                     this.setState({
                         message_items: this.state.message_items.concat(response.data),

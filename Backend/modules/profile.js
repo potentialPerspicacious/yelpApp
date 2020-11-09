@@ -1,5 +1,8 @@
 const express = require("express");
 const router = express.Router();
+var passport = require("passport");
+var jwt = require("jsonwebtoken");
+var requireAuth = passport.authenticate("jwt", { session: false });
 // const db = require('../db.js');
 
 // router.get('/restaurant/:user_id', (req, res) => {
@@ -45,7 +48,7 @@ const Profile = require('../Models/RestaurantProfileModel.js');
 const CustomerProfile = require('../Models/CustomerProfileModel.js');
 
 
-router.get('/restaurant/:user_id', (req, res) => {
+router.get('/restaurant/:user_id', requireAuth, (req, res) => {
   Profile.find({_id: req.params.user_id}, (error, result) => {
     //   console.log(result[0])
       if (error) {
@@ -64,7 +67,7 @@ router.get('/restaurant/:user_id', (req, res) => {
   });
 });
 
-router.get('/customer/:user_id', (req, res) => {
+router.get('/customer/:user_id',requireAuth, (req, res) => {
     CustomerProfile.find({_id: req.params.user_id}, (error, result) => {
       //   console.log(result[0])
         if (error) {

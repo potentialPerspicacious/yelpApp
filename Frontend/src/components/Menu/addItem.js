@@ -81,7 +81,8 @@ onUpload = (e) => {
             "content-type": "multipart/form-data"
         }
     };
-    axios.post(`${backendServer}/uploads/items/${localStorage.getItem("dishID")}`, formData, uploadConfig)
+    axios.post(`${backendServer}/uploads/items/${localStorage.getItem("dishID")}`, formData, uploadConfig, {
+        headers: { Authorization: `JWT ${cookie.load("token")}` }})
         .then(response => {
             localStorage.setItem("image", response.data)
             alert("Image uploaded successfully!");

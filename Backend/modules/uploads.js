@@ -18,7 +18,7 @@ const useruploads = multer({
     limits: { fileSize: 1000000 },
 }).single("image");
 
-router.post("/user/:user_id", (req, res) => {
+router.post("/user/:user_id",  (req, res) => {
     // console.log(req.file.filename)
     useruploads(req, res, function (err) {
         if (!err) {

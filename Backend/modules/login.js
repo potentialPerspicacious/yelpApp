@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const passwordHash = require('password-hash');
+var passport = require("passport");
+var jwt = require("jsonwebtoken");
 // const db = require('../db.js');
 
 // router.post('/', (req, res) => {
@@ -46,9 +48,11 @@ const passwordHash = require('password-hash');
 // module.exports = router;
 
 
-const Users = require('../Models/UserModel.js');
+const Users = require('../models/UserModel.js');
 const restaurant = Users.restaurant;
 const customer = Users.customer;
+const crypto = require("crypto");
+
 
 router.post('/:isOwner',(req, res) => {
 if(req.params.isOwner === ":on") {
@@ -60,7 +64,11 @@ if(req.params.isOwner === ":on") {
           res.end("Error Occured");
       }
       if (user) {
-          res.cookie('cookie', user.email, { maxAge: 900000, httpOnly: false, path: '/' });
+        var token = jwt.sign({ id: user._id }, "xyz", {
+            expiresIn: 10080 // in seconds
+          });
+          res.cookie("token", token);
+        //   res.cookie('cookie', user.email, { maxAge: 900000, httpOnly: false, path: '/' });
           req.session.user = user;
           res.writeHead(200, {
               'Content-Type': 'text/plain'
@@ -84,7 +92,11 @@ if(req.params.isOwner === ":on") {
             res.end("Error Occured");
         }
         if (user) {
-            res.cookie('cookie', user.email, { maxAge: 900000, httpOnly: false, path: '/' });
+            var token = jwt.sign({ id: user._id }, "xyz", {
+                expiresIn: 10080 // in seconds
+              });
+              res.cookie("token", token);
+            // res.cookie('cookie', user.email, { maxAge: 900000, httpOnly: false, path: '/' });
             req.session.user = user;
             res.writeHead(200, {
                 'Content-Type': 'text/plain'

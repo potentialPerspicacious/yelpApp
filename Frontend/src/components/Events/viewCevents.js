@@ -41,7 +41,9 @@ class CEvents extends Component {
             location: this.state.location
         }
         console.log(data)
-        axios.get(`${backendServer}/customer/getCEvents/${localStorage.getItem('find')}/${localStorage.getItem('location')}`)
+        axios.get(`${backendServer}/customer/getCEvents/${localStorage.getItem('find')}/${localStorage.getItem('location')}`, 
+        {
+            headers: { Authorization: `JWT ${cookie.load("token")}` }})
             .then(response => {
                     this.setState({
                         event_items: this.state.event_items.concat(response.data[1]),

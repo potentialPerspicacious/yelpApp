@@ -6,6 +6,8 @@ import axios from 'axios'
 import {registerEvent} from '../../actions/events'
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types'
+import cookie from "react-cookies";
+
 
 
 class EventsCard extends Component {
