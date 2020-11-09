@@ -5,6 +5,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch, faIdCard, faCalendarPlus, faCalendarAlt, faCalendarCheck } from "@fortawesome/free-solid-svg-icons";
 import logo from '../../images/logo.png';
 import backendServer from "../../webConfig"
+import cookie from "react-cookies";
+
 
 class YourEvents extends Component {
     constructor(props) {
@@ -20,7 +22,8 @@ class YourEvents extends Component {
 
 
     getEvents = () => {
-            axios.get(`${backendServer}/customer/yourevents/${localStorage.getItem("user_id")}`)
+            axios.get(`${backendServer}/customer/yourevents/${localStorage.getItem("user_id")}`, {
+                headers: { Authorization: `JWT ${cookie.load("token")}` }})
             .then(response => {
                     this.setState({
                         event_items: this.state.event_items.concat(response.data),

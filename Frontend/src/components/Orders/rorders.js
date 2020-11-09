@@ -34,7 +34,9 @@ class RorderHistory extends Component {
 
   getOrderHistory = () => {
     if(localStorage.getItem("filter") !=='no_filter') {
-        axios.get(`${backendServer}/restaurant/orderHistoryFilter/${localStorage.getItem("user_id")}/${localStorage.getItem("filter")}`)
+        axios.get(`${backendServer}/restaurant/orderHistoryFilter/${localStorage.getItem("user_id")}/${localStorage.getItem("filter")}`, 
+        {
+            headers: { Authorization: `JWT ${cookie.load("token")}` }})
         .then(response => {
                 this.setState({
                     order_history: this.state.order_history.concat(response.data),
@@ -43,7 +45,8 @@ class RorderHistory extends Component {
                 });
         })
     } else {
-        axios.get(`${backendServer}/restaurant/orderHistory/${localStorage.getItem("user_id")}`)
+        axios.get(`${backendServer}/restaurant/orderHistory/${localStorage.getItem("user_id")}`,{
+            headers: { Authorization: `JWT ${cookie.load("token")}` }})
         .then(response => {
             const slice = response.data.slice(this.state.offset, this.state.offset + this.state.perPage)
             this.state.order_history = []

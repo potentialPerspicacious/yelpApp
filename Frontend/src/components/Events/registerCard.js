@@ -4,6 +4,8 @@ import React, { Component} from "react";
 import { Card, Row, Col, Button } from "react-bootstrap";
 import axios from 'axios'
 import backendServer from "../../webConfig"
+import cookie from "react-cookies";
+
 
 
 class EventsCard extends Component {

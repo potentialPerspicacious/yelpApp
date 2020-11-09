@@ -44,7 +44,8 @@ class CorderHistory extends Component {
                 })
         })
     } else {
-    axios.get(`${backendServer}/customer/orderHistory/${localStorage.getItem("user_id")}`)
+    axios.get(`${backendServer}/customer/orderHistory/${localStorage.getItem("user_id")}`, {
+        headers: { Authorization: `JWT ${cookie.load("token")}` }})
     .then(response => {
         console.log(response.data)
         const slice = response.data.slice(this.state.offset, this.state.offset + this.state.perPage)

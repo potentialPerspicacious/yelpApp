@@ -7,6 +7,8 @@ import ImageUploader from 'react-images-upload';
 import {addResEvent} from '../../actions/events'
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types'
+import cookie from "react-cookies";
+
 
 
 

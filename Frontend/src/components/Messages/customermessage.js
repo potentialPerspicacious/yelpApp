@@ -29,7 +29,8 @@ class ViewMessagesFrom extends Component {
     }
 
     getMessagesFrom = () => {    
-        axios.get(`${backendServer}/customer/messagesFrom/${localStorage.getItem('user_id')}`)
+        axios.get(`${backendServer}/customer/messagesFrom/${localStorage.getItem('user_id')}`, {
+            headers: { Authorization: `JWT ${cookie.load("token")}` }})
             .then(response => {
                     this.setState({
                         message_from: this.state.message_from.concat(response.data),

@@ -3,6 +3,10 @@ const router = express.Router();
 const db = require('../db.js');
 var kafka = require("../kafka/client");
 
+var passport = require("passport");
+var jwt = require("jsonwebtoken");
+var requireAuth = passport.authenticate("jwt", { session: false });
+
 const CustomerProfile = require('../models/CustomerProfileModel')
 const Orders = require('../models/OrdersModel.js');
 const Menu = require('../Models/MenuModel.js');
@@ -24,7 +28,7 @@ const Message = require('../models/MessageModel')
 //     });
 //   });
 
-router.post('/editProfile/:user_id', (req, res) => {
+router.post('/editProfile/:user_id', requireAuth, (req, res) => {
   CustomerProfile.findByIdAndUpdate(req.params.user_id, {
     fname: req.body.fname,
     lname: req.body.lname,
@@ -56,7 +60,7 @@ router.post('/editProfile/:user_id', (req, res) => {
   });
 });
 
-  router.post('/order/:user_id/:resID/:dishID', (req, res) => {
+  router.post('/order/:user_id/:resID/:dishID', requireAuth, (req, res) => {
     // console.log(req.params.user_id)
     // console.log(req.params.resID)
     // console.log(req.params.dishID)
@@ -138,7 +142,7 @@ router.post('/editProfile/:user_id', (req, res) => {
     //   }
     // });
   });
-  router.get('/OrderItems/:user_id/:resID/', (req, res) => {
+  router.get('/OrderItems/:user_id/:resID/', requireAuth, (req, res) => {
     var out = []
     Orders.find({resID: req.params.resID, cusID: req.params.user_id, orderPlaced: "NO"}, (err1, orders) => {
       if(orders[0].dishes.length > 0){
@@ -202,7 +206,7 @@ router.post('/editProfile/:user_id', (req, res) => {
     //   }
     // });
   });
-  router.post('/cancelOrders/:orderID/', (req, res) => {
+  router.post('/cancelOrders/:orderID/', requireAuth, (req, res) => {
     Orders.findByIdAndRemove(req.params.orderID, (err, result)=>{
       if (err) {
         res.writeHead(500, {
@@ -223,7 +227,7 @@ router.post('/editProfile/:user_id', (req, res) => {
     // });
   });
 
-  router.post('/placeOrder/:orderID/:orderstatus/:ordermode', (req, res) => {
+  router.post('/placeOrder/:orderID/:orderstatus/:ordermode', requireAuth, (req, res) => {
     console.log(req.params.orderID)
     Orders.findByIdAndUpdate(req.params.orderID, {
       orderPlaced: "YES", 
@@ -253,7 +257,7 @@ router.post('/editProfile/:user_id', (req, res) => {
     //     res.end((result[0][0]).status);
     // });
   });
-  router.get('/orderHistory/:cusID', (req, res) => {
+  router.get('/orderHistory/:cusID', requireAuth, (req, res) => {
     var orderHistory = []
     var orderHisObj = {}
     var dishes = []
@@ -319,7 +323,7 @@ router.post('/editProfile/:user_id', (req, res) => {
     // });
 
   });
-  router.get('/orderHistoryFilter/:cusID/:filter', (req, res) => {
+  router.get('/orderHistoryFilter/:cusID/:filter', requireAuth, (req, res) => {
     let sql = `CALL get_CorderHistoryFilter('${req.params.cusID}', '${req.params.filter}')`;
     db.query(sql, (err, result) => {  
             if (err) {
@@ -364,7 +368,7 @@ router.post('/editProfile/:user_id', (req, res) => {
     });
   });
 
-  router.post('/registerEvent', (req, res) => {
+  router.post('/registerEvent', requireAuth, (req, res) => {
     RegisteredEvents.findByIdAndUpdate({_id: req.body.cusID}, {
       $push : {"events" : {event_id: req.body.eventid}}
     }, (err, result) => {
@@ -380,7 +384,7 @@ router.post('/editProfile/:user_id', (req, res) => {
     // });
   });
 
-  router.get('/yourevents/:user_id/', (req, res) => {
+  router.get('/yourevents/:user_id/', requireAuth, (req, res) => {
     let sql = `CALL get_yourevents('${req.params.user_id}')`;
     db.query(sql, (err, result) => {  
             if (err) {
@@ -391,7 +395,7 @@ router.post('/editProfile/:user_id', (req, res) => {
     });
   });
 
-  router.get('/messagesFrom/:cusID', (req, res) => {
+  router.get('/messagesFrom/:cusID', requireAuth, (req, res) => {
     Message.find({cusID: req.params.cusID}, (err, result)=>{
       // console.log(result)
       if(result) {
@@ -407,7 +411,7 @@ router.post('/editProfile/:user_id', (req, res) => {
     })
   });
 
-  router.post('/replyMessage/:cusID/:resID/:name', (req, res) => {
+  router.post('/replyMessage/:cusID/:resID/:name', requireAuth, (req, res) => {
     // Profile.findOne({_id: req.params.resID}, (err1, res1) => {
 
     // })

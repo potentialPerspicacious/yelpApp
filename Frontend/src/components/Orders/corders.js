@@ -26,7 +26,8 @@ class CusOrders extends Component {
 
 
 getOrderedItems = () => {
-axios.get(`${backendServer}/customer/OrderList/${localStorage.getItem("resID")}`)
+axios.get(`${backendServer}/customer/OrderList/${localStorage.getItem("resID")}`,{
+    headers: { Authorization: `JWT ${cookie.load("token")}` }})
 .then(response => {
         this.setState({
             ordered_items: this.state.ordered_items.concat(response.data)
