@@ -10,6 +10,7 @@
     "@fortawesome/free-regular-svg-icons": "^5.15.0",
     "@fortawesome/free-solid-svg-icons": "^5.15.0",
     "@fortawesome/react-fontawesome": "^0.1.11",
+    "apollo-boost": "^0.4.9",
     "axios": "^0.18.0",
     "babel-jest": "^26.5.2",
     "bootstrap": "^4.5.2",

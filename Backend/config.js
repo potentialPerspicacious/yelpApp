@@ -1,5 +1,5 @@
 const config = {
-    mongoDB: 'mongodb+srv://yelp:yelp@cluster0.flsgg.mongodb.net/yelpDB?retryWrites=true&w=majority'
+    mongoDB: 'add you monogodb connection string here'
 };
 
 module.exports = config;
